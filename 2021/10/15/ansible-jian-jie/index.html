@@ -1,0 +1,1436 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="ansible简介, java web">
+    <meta name="description" content="程序员李嘉图的博客">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>ansible简介 | 李嘉图</title>
+    <link rel="icon" type="image/png" href="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/css/my.css">
+
+    <script src="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/jquery/jquery.min.js"></script>
+
+<meta name="generator" content="Hexo 5.4.1">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/medias/logo.svg" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">李嘉图</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/medias/logo.svg" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">李嘉图</div>
+        <div class="logo-desc">
+            
+            程序员李嘉图的博客
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/davidricardo1026" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Look At Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/davidricardo1026" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Look At Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/medias/featureimages/19.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">ansible简介</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        padding: 35px 0 15px 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        padding-bottom: 30px;
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+
+        position: absolute;
+        right: 23.5vw;
+        display: block;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/ansible/">
+                                <span class="chip bg-color">ansible</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E8%BF%90%E7%BB%B4%E5%B7%A5%E5%85%B7/" class="post-category">
+                                运维工具
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2021-10-15
+                </div>
+                
+
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    3.6k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    14 分
+                </div>
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/prism/prism.css">
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h2 id="ansible简介"><a href="#ansible简介" class="headerlink" title="ansible简介"></a>ansible简介</h2><img src="/2021/10/15/ansible-jian-jie/ansible-logo.png" class="" title="ansible-logo">
+<p><code>ansible</code>,<code>[ˈæn.sɪ.bəl]</code>发音,Ansible 是一个开源的基于 OpenSSH 的自动化配置管理工具。可以用它来配置系统、部署软件和编排更高级的IT任务，比如持续部署或零停机更新。<code>ansible</code>的主要目标是简单和易用，并且它还高度关注安全性和可靠性。基于这样的目标，Ansible 适用于开发人员、系统管理员、发布工程师、IT 经理，以及介于两者之间的所有人。Ansible 适合管理几乎所有的环境，从拥有少数实例的小型环境到有数千个实例的企业环境。
+使用<code>ansible</code>无须在被管理的机器上安装代理，所以不存在如何升级远程守护进程的问题，也不存在由于卸载了守护进程而无法管理系统的问题。</p>
+<h3 id="ansible工作方式"><a href="#ansible工作方式" class="headerlink" title="ansible工作方式"></a>ansible工作方式</h3><p>使用<code>ansible</code>无须在被管理的客户端电脑上安装代理之类的组件。它通过普通的 SSH 进行通信，以便从远程计算机检索信息、发出命令和复制文件。这是 Ansible 简化服务器管理的一种方式。任何公开 SSH 端口的服务器都可以通过 Ansible 进行配置和管理。</p>
+<p><code>ansible</code>采用模块化的设计，所以非常容易扩展到各种特定的使用场景。模块可以用任何语言编写，并使用标准 JSON 进行通信。Ansible 的配置文件是用 YAML 格式编写的，因为它使用起来非常简单，并且与主流的标记语言很相似。除了通过命令行工具 Ansible 还可以通过配置脚本(Playbooks)与客户端交互。</p>
+<h3 id="ansible总结"><a href="#ansible总结" class="headerlink" title="ansible总结"></a><code>ansible</code>总结</h3><p>现在云原生比较流行,k8s来管理容器,达到大规模集群的自动化运维,虽然不在一个维度,但是相比起来效率更高,<code>ansible</code>基于ssh,基于linux本身机器,相比k8s来说,更偏向于底层,所以,还是有用武之地的,如果需要自动化操作linux机器,
+<code>ansible</code>本质上来说,就是ssh的加强版,把ssh连接的机器分类,把执行的命令模块化,可编排,做抽象和封装,实现便捷的自动化运维</p>
+<h2 id="ansible安装"><a href="#ansible安装" class="headerlink" title="ansible安装"></a><code>ansible</code>安装</h2><p><code>ansible</code>管理机器分为两种,一种是管理的机器,相当于跳板机,另一种是被管理的机器,因为linux服务器都安装了ssh,所以,可以认为被管理的机器是不需要什么以来的,但是管理的机器,需要安装<code>ansible</code></p>
+<h3 id="安装ansible"><a href="#安装ansible" class="headerlink" title="安装ansible"></a>安装<code>ansible</code></h3><p><code>ansible</code>安装,分为两种,一种是用linux发行版的pkg安装,这个基本上都有,直接安装就好了,例如<code>ubuntu</code>就是下面的命令</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">sudo apt update
+sudo apt install software-properties-common
+sudo add-apt-repository --yes --update ppa:ansible/ansible
+sudo apt install ansible<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>还有一种方式是pip安装, 因为本身<code>ansible</code>是python写的,可以用python的包管理安装,但是这种安装以后,需要一些额外的配置,所以,不推荐在服务器上安装的时候使用这种方式,
+但是这种方式依赖少,自己电脑上装得时候,可以尝试这种方式</p>
+<h2 id="ansible的hello-world"><a href="#ansible的hello-world" class="headerlink" title="ansible的hello world"></a><code>ansible</code>的hello world</h2><p><code>ansible</code>是ssh连接客户机器的,ssh连接分为两种,一种是密码,比较麻烦,也不适合自动化运维,不建议使用,一种是使用公钥登陆,而且这种安全性也高,不过需要一些额外的配置</p>
+<ol>
+<li>生成公钥<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">ssh-keygen -t ed25519 # rsa已经被废弃了,如果使用rsa,还需要使用额外的配置,非常不推荐<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+<li>发送到客户机器<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">ssh-copy-id -i ${your pub file} root@192.168.85.35 #使用什么用户,以及该机器的地址<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+<li>配置ssh,一般来说,不应该使用默认的名字,而且管理的机器一定会有很多的私钥存放,所以,必须要额外的配置<pre class="line-numbers language-configuration" data-language="configuration"><code class="language-configuration">Host 192.168.85.35
+	Hostname 192.168.85.35
+	User root
+	PreferredAuthentications publickey
+	# 如果出现 no mutual signature algorithm 错误,ssh 连接不上的时候,使用 -vvv,查看详细信息
+#   PubkeyAcceptedKeyTypes +ssh-rsa
+    IdentityFile ~/.ssh/ssh8535<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+<li>配置inventory文件,<code>/etc/ansible/hosts</code><pre class="line-numbers language-none"><code class="language-none">vm8535 ansible_ssh_user=root ansible_ssh_host=192.168.85.35 ansible_ssh_port=22<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+<li><code>ansible</code>的hello world,看到输出如下,就表示成功<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ ansible vm8535 -m ping
+vm8535 | SUCCESS =&gt; {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python"
+    },
+    "changed": false,
+    "ping": "pong"
+}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+</ol>
+<h2 id="ansible相关概念"><a href="#ansible相关概念" class="headerlink" title="ansible相关概念"></a><code>ansible</code>相关概念</h2><p><code>ansible</code>的主要概念分为 <code>inventory</code>,即管理那些机器,需要提前配置,<code>Playbooks</code>,是一组IT程序运行的命令集合</p>
+<h3 id="inventory文件"><a href="#inventory文件" class="headerlink" title="inventory文件"></a><code>inventory</code>文件</h3><p>配置操作的主机,主机的配置,如果集合一样,可以有多个集合,集合之间还可以有并集的概念</p>
+<h4 id="简单配置"><a href="#简单配置" class="headerlink" title="简单配置"></a>简单配置</h4><p>默认的文件地址是<code>/etc/ansible/hosts</code>,可以通过<code>/etc/ansible/ansible.cfg</code>配置,类似windows
+的ini文件</p>
+<pre class="line-numbers language-ini" data-language="ini"><code class="language-ini">mail.example.com
+
+<span class="token section"><span class="token punctuation">[</span><span class="token section-name selector">webservers</span><span class="token punctuation">]</span></span>
+foo.example.com
+bar.example.com
+
+<span class="token section"><span class="token punctuation">[</span><span class="token section-name selector">dbservers</span><span class="token punctuation">]</span></span>
+one.example.com
+two.example.com
+three.example.com<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>其中还可以配置主机变量,组变量,合并组,功能比较强大,详细的官方文档在这里
+<a target="_blank" rel="noopener" href="https://ansible-tran.readthedocs.io/en/latest/docs/intro_inventory.html#id7">ansible中文权威指南-inventory文件</a></p>
+<p>这里在配置的时候,可以使用别名,非常方便</p>
+<pre class="line-numbers language-ini" data-language="ini"><code class="language-ini"><span class="token key attr-name">vm8535 ansible_ssh_user</span><span class="token punctuation">=</span><span class="token value attr-value">root ansible_ssh_host=192.168.85.35 ansible_ssh_port=22</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ol>
+<li>这里的<code>vm8535</code>就是主机的名字,以后可以使用这个名字,而不用使用域名或者ip</li>
+<li><code>ansible_ssh_user</code>默认就是你当前的用户,如果你是<code>root</code>,那就是<code>root</code>,这里沿用的是ssh的逻辑,所以,建议显式的配置</li>
+<li><code>ansible_ssh_host</code>就是主机地址,也可以是域名**(/etc/hosts里面的配置,或者公网的域名)**</li>
+<li><code>ansible_ssh_port</code>如果ssh的端口不是默认的,那么这里必须显式的配置</li>
+</ol>
+<p>常用的参数如下</p>
+<pre class="line-numbers language-none"><code class="language-none">ansible_ssh_host
+      将要连接的远程主机名.与你想要设定的主机的别名不同的话,可通过此变量设置.
+
+ansible_ssh_port
+      ssh端口号.如果不是默认的端口号,通过此变量设置.
+
+ansible_ssh_user
+      默认的 ssh 用户名
+
+ansible_ssh_pass
+      ssh 密码(这种方式并不安全,我们强烈建议使用 --ask-pass 或 SSH 密钥)
+
+ansible_sudo_pass
+      sudo 密码(这种方式并不安全,我们强烈建议使用 --ask-sudo-pass)
+
+ansible_sudo_exe (new in version 1.8)
+      sudo 命令路径(适用于1.8及以上版本)
+
+ansible_connection
+      与主机的连接类型.比如:local, ssh 或者 paramiko. Ansible 1.2 以前默认使用 paramiko.1.2 以后默认使用 'smart','smart' 方式会根据是否支持 ControlPersist, 来判断'ssh' 方式是否可行.
+
+ansible_ssh_private_key_file
+      ssh 使用的私钥文件.适用于有多个密钥,而你不想使用 SSH 代理的情况.
+
+ansible_shell_type
+      目标系统的shell类型.默认情况下,命令的执行使用 'sh' 语法,可设置为 'csh' 或 'fish'.
+
+ansible_python_interpreter
+      目标主机的 python 路径.适用于的情况: 系统中有多个 Python, 或者命令路径不是"/usr/bin/python",比如  \*BSD, 或者 /usr/bin/python
+      不是 2.X 版本的 Python.我们不使用 "/usr/bin/env" 机制,因为这要求远程用户的路径设置正确,且要求 "python" 可执行程序名不可为 python以外的名字(实际有可能名为python26).
+
+      与 ansible_python_interpreter 的工作方式相同,可设定如 ruby 或 perl 的路径....<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>注意,如果不是root用户的话,会使用<code>sudo</code>命令,这里建议去服务器,把你使用的用户的<code>sudo</code>配置成,不需要密码,
+否则的话,就失去了自动化配置的意义,每次手动输入<code>sudo</code>密码也是一件不可忍受的事情,在这里<code>/etc/sudoers</code>添加如下配置即可,无需重新启动</p>
+<pre class="line-numbers language-none"><code class="language-none">${your_user_name} ALL=(ALL) NOPASSWD: ALL<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h4 id="patterns"><a href="#patterns" class="headerlink" title="patterns"></a><code>patterns</code></h4><p><code>patterns</code>就是根据<code>inventory</code>选取特定的主机,详情文档
+<a target="_blank" rel="noopener" href="https://ansible-tran.readthedocs.io/en/latest/docs/intro_patterns.html#id1">Ansible中文权威指南-patterns</a></p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">ansible &lt;pattern_goes_here&gt; -m &lt;module_name&gt; -a &lt;arguments&gt;
+ansible webservers -m service -a "name=httpd state=restarted"<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">all # 全部
+
+one.example.com # 域名
+one.example.com:two.example.com # 多个域名
+192.168.1.50 # ip
+192.168.1.* # 多个ip,类似ant风格
+
+webservers #一个组
+webservers:dbservers # 多个组
+
+webservers:!phoenix # 一个组,排除
+
+webservers:dbservers:&amp;staging:!phoenix #多个组交集并排除,注意这里仅仅dbservers:&amp;staging是交集
+
+*.example.com # 多个域名
+*.com # 多个域名
+
+one*.com:dbservers # 域名和组 组合
+
+webservers[0] # 下标0,即该组第一个
+webservers[0-25] # 下标 0-25,即该组 0-25,总共26个
+
+~(web|db).*\.example\.com # 使用正则表达式的域名<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+<h3 id="Playbooks编排"><a href="#Playbooks编排" class="headerlink" title="Playbooks编排"></a><code>Playbooks</code>编排</h3><p>Playbooks 是 Ansible的配置,部署,编排语言.他们可以被描述为一个需要希望远程主机执行命令的方案,或者一组IT程序运行的命令集合.</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/ansible/ansible-examples">playbooks配置实例</a>
+这里面有一些的例子,比如tomcat的,可以参考一下,稍微修改就能符合我们自己的需求</p>
+<h4 id="playbooks基础"><a href="#playbooks基础" class="headerlink" title="playbooks基础"></a><code>playbooks</code>基础</h4><pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token punctuation">---</span>
+<span class="token punctuation">-</span> <span class="token key atrule">hosts</span><span class="token punctuation">:</span> webservers <span class="token comment">#主机</span>
+  <span class="token key atrule">vars</span><span class="token punctuation">:</span> <span class="token comment"># 环境变量</span>
+    <span class="token key atrule">http_port</span><span class="token punctuation">:</span> <span class="token number">80</span>
+    <span class="token key atrule">max_clients</span><span class="token punctuation">:</span> <span class="token number">200</span>
+  <span class="token key atrule">remote_user</span><span class="token punctuation">:</span> root <span class="token comment"># 执行用户</span>
+  <span class="token key atrule">tasks</span><span class="token punctuation">:</span> <span class="token comment"># 任务</span>
+  <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> ensure apache is at the latest version <span class="token comment">#名字</span>
+    <span class="token key atrule">yum</span><span class="token punctuation">:</span> pkg=httpd state=latest <span class="token comment"># action的模块名字 命令参数</span>
+  <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> write the apache config file
+    <span class="token key atrule">template</span><span class="token punctuation">:</span> src=/srv/httpd.j2 dest=/etc/httpd.conf
+    <span class="token key atrule">notify</span><span class="token punctuation">:</span> <span class="token comment"># 通知</span>
+    <span class="token punctuation">-</span> restart apache
+  <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> ensure apache is running
+    <span class="token key atrule">service</span><span class="token punctuation">:</span> name=httpd state=started
+  <span class="token key atrule">handlers</span><span class="token punctuation">:</span> <span class="token comment"># 通知处理</span>
+    <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> restart apache
+      <span class="token key atrule">service</span><span class="token punctuation">:</span> name=httpd state=restarted<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>完整的结构</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token punctuation">---</span>
+
+<span class="token punctuation">-</span> <span class="token key atrule">hosts</span><span class="token punctuation">:</span> webservers
+
+  <span class="token key atrule">pre_tasks</span><span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> <span class="token key atrule">shell</span><span class="token punctuation">:</span> echo 'hello'
+
+  <span class="token key atrule">roles</span><span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> <span class="token punctuation">{</span> <span class="token key atrule">role</span><span class="token punctuation">:</span> some_role <span class="token punctuation">}</span>
+
+  <span class="token key atrule">tasks</span><span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> <span class="token key atrule">shell</span><span class="token punctuation">:</span> echo 'still busy'
+
+  <span class="token key atrule">post_tasks</span><span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> <span class="token key atrule">shell</span><span class="token punctuation">:</span> echo 'goodbye'<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+<h4 id="playbooks-task-幂等性"><a href="#playbooks-task-幂等性" class="headerlink" title="playbooks task 幂等性"></a><code>playbooks</code> <code>task</code> 幂等性</h4><p>在运行 playbook 时（从上到下执行）,如果一个 host 执行 task 失败,这个 host 将会从整个 playbook 的 rotation 中移除. 如果发生执行失败的情况,请修正 playbook 中的错误,然后重新执行即可.</p>
+<p>每个 task 的目标在于执行一个 moudle, 通常是带有特定的参数来执行.在参数中可以使用变量（variables）.</p>
+<p>modules 具有”幂等”性,意思是如果你再一次地执行 moudle（译者注:比如遇到远端系统被意外改动,需要恢复原状）,moudle 只会执行必要的改动,只会改变需要改变的地方.所以重复多次执行 playbook 也很安全.</p>
+<p>对于 command module 和 shell module,重复执行 playbook,实际上是重复运行同样的命令.如果执行的命令类似于 ‘chmod’ 或者 ‘setsebool’ 这种命令,这没有任何问题.也可以使用一个叫做 ‘creates’ 的 flag 使得这两个 module 变得具有”幂等”特性 （不是必要的）.</p>
+<h4 id="jinja2-模板"><a href="#jinja2-模板" class="headerlink" title="jinja2 模板"></a><code>jinja2</code> 模板</h4><p><code>ansible</code>几乎所有的地方都可以引用变量,使用<code>jinja2</code>的语法</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml">My amp goes to <span class="token punctuation">{</span><span class="token punctuation">{</span> max_amp_value <span class="token punctuation">}</span><span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">template</span><span class="token punctuation">:</span> src=foo.cfg.j2 dest=<span class="token punctuation">{</span><span class="token punctuation">{</span> remote_install_path <span class="token punctuation">}</span><span class="token punctuation">}</span>/foo.cfg<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h4 id="include-语句"><a href="#include-语句" class="headerlink" title="include 语句"></a><code>include</code> 语句</h4><pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> this is a play at the top level of a file
+  <span class="token key atrule">hosts</span><span class="token punctuation">:</span> all
+  <span class="token key atrule">remote_user</span><span class="token punctuation">:</span> root
+
+  <span class="token key atrule">tasks</span><span class="token punctuation">:</span>
+
+  <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> say hi
+    <span class="token key atrule">tags</span><span class="token punctuation">:</span> foo
+    <span class="token key atrule">shell</span><span class="token punctuation">:</span> echo "hi<span class="token punctuation">...</span>"
+
+<span class="token punctuation">-</span> <span class="token key atrule">include</span><span class="token punctuation">:</span> load_balancers.yml <span class="token comment"># 包含其它task</span>
+<span class="token punctuation">-</span> <span class="token key atrule">include</span><span class="token punctuation">:</span> webservers.yml <span class="token comment"># 包含其它task</span>
+<span class="token punctuation">-</span> <span class="token key atrule">include</span><span class="token punctuation">:</span> dbservers.yml <span class="token comment"># 包含其它task</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="roles-定义结构"><a href="#roles-定义结构" class="headerlink" title="roles 定义结构"></a><code>roles</code> 定义结构</h4><pre class="line-numbers language-none"><code class="language-none">site.yml
+webservers.yml
+fooservers.yml
+roles/
+   common/
+     files/
+     templates/
+     tasks/
+     handlers/
+     vars/
+     defaults/
+     meta/
+   webservers/
+     files/
+     templates/
+     tasks/
+     handlers/
+     vars/
+     defaults/
+     meta/<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>这是playbook</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token punctuation">---</span>
+<span class="token punctuation">-</span> <span class="token key atrule">hosts</span><span class="token punctuation">:</span> webservers
+  <span class="token key atrule">roles</span><span class="token punctuation">:</span>
+     <span class="token punctuation">-</span> common
+     <span class="token punctuation">-</span> webservers<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>这个 playbook 为一个角色 ‘x’ 指定了如下的行为：</p>
+<ol>
+<li>如果 roles/x/tasks/main.yml 存在, 其中列出的 tasks 将被添加到 play 中</li>
+<li>如果 roles/x/handlers/main.yml 存在, 其中列出的 handlers 将被添加到 play 中</li>
+<li>如果 roles/x/vars/main.yml 存在, 其中列出的 variables 将被添加到 play 中</li>
+<li>如果 roles/x/meta/main.yml 存在, 其中列出的 “角色依赖” 将被添加到 roles 列表中 (1.3 and later)</li>
+<li>所有 copy tasks 可以引用 roles/x/files/ 中的文件，不需要指明文件的路径。</li>
+<li>所有 script tasks 可以引用 roles/x/files/ 中的脚本，不需要指明文件的路径。</li>
+<li>所有 template tasks 可以引用 roles/x/templates/ 中的文件，不需要指明文件的路径。</li>
+<li>所有 include tasks 可以引用 roles/x/tasks/ 中的文件，不需要指明文件的路径。</li>
+</ol>
+<h5 id="参数化引用-role"><a href="#参数化引用-role" class="headerlink" title="参数化引用 role"></a>参数化引用 <code>role</code></h5><pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token punctuation">---</span>
+
+<span class="token punctuation">-</span> <span class="token key atrule">hosts</span><span class="token punctuation">:</span> webservers
+  <span class="token key atrule">roles</span><span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> common
+    <span class="token punctuation">-</span> <span class="token punctuation">{</span> <span class="token key atrule">role</span><span class="token punctuation">:</span> foo_app_instance<span class="token punctuation">,</span> <span class="token key atrule">dir</span><span class="token punctuation">:</span> <span class="token string">'/opt/a'</span><span class="token punctuation">,</span>  <span class="token key atrule">port</span><span class="token punctuation">:</span> <span class="token number">5000</span> <span class="token punctuation">}</span> <span class="token comment">#两个相同的role,但是参数不一样</span>
+    <span class="token punctuation">-</span> <span class="token punctuation">{</span> <span class="token key atrule">role</span><span class="token punctuation">:</span> foo_app_instance<span class="token punctuation">,</span> <span class="token key atrule">dir</span><span class="token punctuation">:</span> <span class="token string">'/opt/b'</span><span class="token punctuation">,</span>  <span class="token key atrule">port</span><span class="token punctuation">:</span> <span class="token number">5001</span> <span class="token punctuation">}</span> <span class="token comment">#</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>等价于以下的写法</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token punctuation">---</span>
+<span class="token punctuation">-</span> <span class="token key atrule">hosts</span><span class="token punctuation">:</span> webservers
+  <span class="token key atrule">roles</span><span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> common
+    <span class="token punctuation">-</span> <span class="token key atrule">role</span><span class="token punctuation">:</span> foo_app_instance
+      <span class="token key atrule">vars</span><span class="token punctuation">:</span>
+        <span class="token key atrule">dir</span><span class="token punctuation">:</span> <span class="token string">'/opt/a'</span>
+        <span class="token key atrule">app_port</span><span class="token punctuation">:</span> <span class="token number">5000</span>
+      <span class="token key atrule">tags</span><span class="token punctuation">:</span> typeA
+    <span class="token punctuation">-</span> <span class="token key atrule">role</span><span class="token punctuation">:</span> foo_app_instance
+      <span class="token key atrule">vars</span><span class="token punctuation">:</span>
+        <span class="token key atrule">dir</span><span class="token punctuation">:</span> <span class="token string">'/opt/b'</span>
+        <span class="token key atrule">app_port</span><span class="token punctuation">:</span> <span class="token number">5001</span>
+      <span class="token key atrule">tags</span><span class="token punctuation">:</span> typeB<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="ansible实践"><a href="#ansible实践" class="headerlink" title="ansible实践"></a><code>ansible</code>实践</h2><p>这里假设要部署一个java的项目,安装jdk,copy jar文件,copy 脚本來实践</p>
+<p>项目结构如下,完全按照<code>roles</code>的规范来</p>
+<img src="/2021/10/15/ansible-jian-jie/project_structure.png" class="" title="project_structure">
+
+<p><code>site.yml</code>内容</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token punctuation">---</span>
+
+<span class="token punctuation">-</span> <span class="token key atrule">hosts</span><span class="token punctuation">:</span> plb_servers
+  <span class="token key atrule">remote_user</span><span class="token punctuation">:</span> root
+
+  <span class="token key atrule">roles</span><span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> deploy<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><code>main.yml</code>内容</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token punctuation">---</span>
+
+<span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Make home dir
+  <span class="token key atrule">file</span><span class="token punctuation">:</span>
+    <span class="token key atrule">path</span><span class="token punctuation">:</span> <span class="token string">"{{home_dir}}"</span>
+    <span class="token key atrule">state</span><span class="token punctuation">:</span> directory
+
+<span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Copy jdk
+  <span class="token key atrule">copy</span><span class="token punctuation">:</span>
+    <span class="token key atrule">src</span><span class="token punctuation">:</span> jdk<span class="token punctuation">-</span>8u291<span class="token punctuation">-</span>linux<span class="token punctuation">-</span>x64.tar.gz
+    <span class="token key atrule">dest</span><span class="token punctuation">:</span> <span class="token string">"{{home_dir}}"</span>
+
+<span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Extract jdk
+  <span class="token key atrule">command</span><span class="token punctuation">:</span> chdir=<span class="token punctuation">{</span><span class="token punctuation">{</span>home_dir<span class="token punctuation">}</span><span class="token punctuation">}</span> /bin/tar xvf jdk<span class="token punctuation">-</span>8u291<span class="token punctuation">-</span>linux<span class="token punctuation">-</span>x64.tar.gz <span class="token punctuation">-</span>C . creates=jdk1.8.0_291
+
+<span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Copy fat jar
+  <span class="token key atrule">copy</span><span class="token punctuation">:</span>
+    <span class="token key atrule">src</span><span class="token punctuation">:</span> <span class="token string">"{{exec_jar_name}}"</span>
+    <span class="token key atrule">dest</span><span class="token punctuation">:</span> <span class="token string">"{{home_dir}}"</span>
+
+<span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Copy start script
+  <span class="token key atrule">template</span><span class="token punctuation">:</span>
+    <span class="token key atrule">src</span><span class="token punctuation">:</span> start.sh
+    <span class="token key atrule">dest</span><span class="token punctuation">:</span> <span class="token string">"{{home_dir}}"</span>
+    <span class="token key atrule">mode</span><span class="token punctuation">:</span> <span class="token number">0755</span>
+
+<span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Copy stop script
+  <span class="token key atrule">template</span><span class="token punctuation">:</span>
+    <span class="token key atrule">src</span><span class="token punctuation">:</span> stop.sh
+    <span class="token key atrule">dest</span><span class="token punctuation">:</span> <span class="token string">"{{home_dir}}"</span>
+    <span class="token key atrule">mode</span><span class="token punctuation">:</span> <span class="token number">0755</span>
+
+<span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Copy ehcache config
+  <span class="token key atrule">template</span><span class="token punctuation">:</span>
+    <span class="token key atrule">src</span><span class="token punctuation">:</span> ehcache.xml
+    <span class="token key atrule">dest</span><span class="token punctuation">:</span> <span class="token string">"{{home_dir}}"</span>
+
+<span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Make ehcache dir
+  <span class="token key atrule">file</span><span class="token punctuation">:</span>
+    <span class="token key atrule">path</span><span class="token punctuation">:</span> <span class="token string">"{{home_dir}}/ehcache"</span>
+    <span class="token key atrule">state</span><span class="token punctuation">:</span> directory
+
+<span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> start app
+  <span class="token key atrule">command</span><span class="token punctuation">:</span>
+    <span class="token key atrule">cmd</span><span class="token punctuation">:</span> <span class="token string">"{{home_dir}}/start.sh"</span>
+
+<span class="token comment">#- name: wait for app to start</span>
+<span class="token comment">#  wait_for:</span>
+<span class="token comment">#    port: "{{http_port}}"</span>
+<span class="token comment">#    timeout: 12</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="aisible注意事项"><a href="#aisible注意事项" class="headerlink" title="aisible注意事项"></a><code>aisible</code>注意事项</h2><h3 id="yaml的jinja2陷阱"><a href="#yaml的jinja2陷阱" class="headerlink" title="yaml的jinja2陷阱"></a><code>yaml</code>的<code>jinja2</code>陷阱</h3><p>yaml语法不能<code>{</code>开头,所以如果开头使用<code>jinja2</code>语法,应该要注意</p>
+<p>错误</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token punctuation">-</span> <span class="token key atrule">hosts</span><span class="token punctuation">:</span> app_servers
+  <span class="token key atrule">vars</span><span class="token punctuation">:</span>
+      <span class="token key atrule">app_path</span><span class="token punctuation">:</span> <span class="token punctuation">{</span><span class="token punctuation">{</span> base_path <span class="token punctuation">}</span><span class="token punctuation">}</span>/22<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>正确</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token punctuation">-</span> <span class="token key atrule">hosts</span><span class="token punctuation">:</span> app_servers
+  <span class="token key atrule">vars</span><span class="token punctuation">:</span>
+       <span class="token key atrule">app_path</span><span class="token punctuation">:</span> <span class="token string">"{{ base_path }}/22"</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<div style="display: none">
+### db操作
+
+<p><code>ansible</code>执行db操作,这里要区分,不同的数据库,如mysql还是oracle,还是postgresql,每个都需要使用不同的插件,而且需要不同的依赖,所以,要求还是比较高的,尤其是
+oracle,因为不是开源的,所以,没有社区支持,比较麻烦</p>
+<p>所以,如果使用<code>ansible</code>来执行db操作,相对于来说麻烦一些,这里可以考虑在应用中,执行操作,可选的方案有<code>flyway</code></p>
+</div>
+
+<h3 id="幂等性"><a href="#幂等性" class="headerlink" title="幂等性"></a>幂等性</h3><p>脚本应该按照幂等性的原则来说,前面也提到过,也就是,中间任意一个步骤失败,不用去服务器删除文件之类的,直接重新执行即可,如果你使用<code>ansible</code>本身的模块,那么大部分
+情况下,你是不用考虑幂等性的,但是如果你执行的是自己的脚本,如shell命令,这里你可能需要额外的使用<code>creates</code>来完成幂等性</p>
+<div style="display: none">
+### shell后台任务陷阱
+
+<p><code>ansible</code>本身通过包装ssh命令来执行<code>shell</code>脚本,所以,执行完以后,便会退出,所以,如果你需要执行后台任务,你需要使用<code>setsid</code>或者<code>nohup</code>来确保你的任务
+不会被中断,这个你需要写在脚本里面,否则,基本就是刚执行,就中断,几乎就像没执行一样</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">#!/bin/bash
+export LANG=zh_CN.UTF-8
+setsid {{home_dir}}/jdk1.8.0_291/bin/java -jar {{home_dir}}/{{exec_jar_name}} &gt; all.log 2 &gt;&amp; 1
+# 如果不加setsid,那么java启动以后,立马被kill,只会看到一个空的all.log文件<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+</div>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">David.Lee.Ricardo</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://nobug.xin/2021/10/15/ansible-jian-jie/">https://nobug.xin/2021/10/15/ansible-jian-jie/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">David.Lee.Ricardo</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/ansible/">
+                                    <span class="chip bg-color">ansible</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2021/10/26/jprofiler-jian-shu/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/medias/featureimages/19.jpg" class="responsive-img" alt="jprofiler简述">
+                        
+                        <span class="card-title">jprofiler简述</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            jprofiler简要描述
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-10-26
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E5%B7%A5%E5%85%B7/" class="post-category">
+                                    工具
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90/">
+                        <span class="chip bg-color">性能分析</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2021/10/05/jdk-yuan-ma-yue-du-tui-jian/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/medias/featureimages/16.jpg" class="responsive-img" alt="jdk源码阅读推荐">
+                        
+                        <span class="card-title">jdk源码阅读推荐</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            jdk那些源码推荐阅读
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-10-05
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E5%BB%BA%E8%AE%AE/" class="post-category">
+                                    建议
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E9%98%85%E8%AF%BB%E6%BA%90%E7%A0%81/">
+                        <span class="chip bg-color">阅读源码</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('64')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+        newdiv.innerHTML += '<br />'
+            + '来源: 李嘉图<br />'
+            + '文章作者: David.Lee.Ricardo<br />'
+            + '文章链接: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归作者所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () {bodyElement.removeChild(newdiv);}, 200);
+    });
+</script>
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/codeBlock/codeShrink.js"></script>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+    <div class="container row center-align" style="margin-bottom: 15px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2019-2022</span>
+            
+            <span id="year">2019</span>
+            <a href="/about" target="_blank">David.Lee.Ricardo</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+            &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
+                class="white-color">21.5k</span>&nbsp;字
+            
+            
+            
+            
+            
+            <br>
+            
+            <span id="sitetime">载入运行时间...</span>
+            <script>
+                function siteTime() {
+                    var seconds = 1000;
+                    var minutes = seconds * 60;
+                    var hours = minutes * 60;
+                    var days = hours * 24;
+                    var years = days * 365;
+                    var today = new Date();
+                    var startYear = "2019";
+                    var startMonth = "11";
+                    var startDate = "30";
+                    var startHour = "0";
+                    var startMinute = "0";
+                    var startSecond = "0";
+                    var todayYear = today.getFullYear();
+                    var todayMonth = today.getMonth() + 1;
+                    var todayDate = today.getDate();
+                    var todayHour = today.getHours();
+                    var todayMinute = today.getMinutes();
+                    var todaySecond = today.getSeconds();
+                    var t1 = Date.UTC(startYear, startMonth, startDate, startHour, startMinute, startSecond);
+                    var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+                    var diff = t2 - t1;
+                    var diffYears = Math.floor(diff / years);
+                    var diffDays = Math.floor((diff / days) - diffYears * 365);
+                    var diffHours = Math.floor((diff - (diffYears * 365 + diffDays) * days) / hours);
+                    var diffMinutes = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours) /
+                        minutes);
+                    var diffSeconds = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours -
+                        diffMinutes * minutes) / seconds);
+                    if (startYear == todayYear) {
+                        document.getElementById("year").innerHTML = todayYear;
+                        document.getElementById("sitetime").innerHTML = "本站已安全运行 " + diffDays + " 天 " + diffHours +
+                            " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+                    } else {
+                        document.getElementById("year").innerHTML = startYear + " - " + todayYear;
+                        document.getElementById("sitetime").innerHTML = "本站已安全运行 " + diffYears + " 年 " + diffDays +
+                            " 天 " + diffHours + " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+                    }
+                }
+                setInterval(siteTime, 1000);
+            </script>
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link ">
+    <a href="https://github.com/davidricardo1026" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:david.ricardo@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=2778333155" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 2778333155" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+    <a href="https://www.zhihu.com/people/li-jia-tu-86-11-29/activities" class="tooltipped" target="_blank" data-tooltip="关注我的知乎: https://www.zhihu.com/people/li-jia-tu-86-11-29/activities" data-position="top" data-delay="50">
+        <i class="fab fa-zhihu1">知</i>
+    </a>
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/materialize/materialize.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/aos/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/js/matery.js"></script>
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/others/clicklove.js" async="async"></script>
+    
+    
+
+    
+
+    
+
+	
+    
+
+    
+
+    
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/background/ribbon-dynamic.js" async="async"></script>
+    
+
+    
+    <script src="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

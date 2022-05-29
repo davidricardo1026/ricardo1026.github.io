@@ -1,0 +1,1288 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="skywalking-ui简介, java web">
+    <meta name="description" content="程序员李嘉图的博客">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>skywalking-ui简介 | 李嘉图</title>
+    <link rel="icon" type="image/png" href="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/css/my.css">
+
+    <script src="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/jquery/jquery.min.js"></script>
+
+<meta name="generator" content="Hexo 5.4.1">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/medias/logo.svg" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">李嘉图</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/medias/logo.svg" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">李嘉图</div>
+        <div class="logo-desc">
+            
+            程序员李嘉图的博客
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/davidricardo1026" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Look At Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/davidricardo1026" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Look At Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/medias/featureimages/20.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">skywalking-ui简介</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        padding: 35px 0 15px 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        padding-bottom: 30px;
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+
+        position: absolute;
+        right: 23.5vw;
+        display: block;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/skyWalking/">
+                                <span class="chip bg-color">skyWalking</span>
+                            </a>
+                        
+                            <a href="/tags/%E7%9B%91%E6%8E%A7/">
+                                <span class="chip bg-color">监控</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/" class="post-category">
+                                中间件
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2021-09-22
+                </div>
+                
+
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    2.1k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    8 分
+                </div>
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/prism/prism.css">
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h2 id="skyWalking-ui简介"><a href="#skyWalking-ui简介" class="headerlink" title="skyWalking-ui简介"></a>skyWalking-ui简介</h2><p><strong>基于<code>v8.7.0</code>版本</strong>
+skyWalking-UI是一个纯前端的项目,使用的是<code>vue</code>+<code>typescript</code>,但是<code>skywalking</code>为了方便用户使用,直接使用了<code>spring-gateway</code>打包成了可执行jar,方便用户使用</p>
+<h3 id="UI概览"><a href="#UI概览" class="headerlink" title="UI概览"></a>UI概览</h3><p>其实<code>skywalking</code>的UI每个界面进去点点,看看名字,差不多就那样,这里不会详细的介绍每个界面,但是会系统性的介绍一些重点的界面,以及一些缺失的功能</p>
+<h4 id="Global"><a href="#Global" class="headerlink" title="Global"></a>Global</h4><img src="/2021/09/22/skywalking-ui-jian-jie/global.png" class="" title="global">
+
+<ol>
+<li>Services load（CPM - calls per minute）：服务平均每分钟请求数。</li>
+<li>Slow Services（ms）：慢响应服务，单位ms。</li>
+<li>Un-Health services（Apdex）：Apdex 性能指标，1为满分。</li>
+<li>Slow Endpoints（ms）：全局维度的慢响应端点（API）。例如一个接口，是全局Top N的数据，通过这个可以观测平台性能情况。<pre class="line-numbers language-none"><code class="language-none">表示采集样本中某些值的占比，Skywalking 有 “p50、p75、p90、p95、p99” 一些列值。
+图中的 “p99:61010” 表示 99% 请求的响应时间在61010ms以内。
+而99%一般用于抛掉一些极端值，表示绝大多数请求。<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre></li>
+<li>Global Response Latency（percentile in ms）：全局响应延迟百分位数统计，单位 ms。<pre class="line-numbers language-none"><code class="language-none">可译为热力图、热度图都可以，途中颜色越深，表示请求数越多，这和 GitHub Contributions 很像，commit 越多，颜色越深。
+横坐标是响应时间，鼠标放上去，可以看到具体的数量。
+通过热力图，一方面可以直观感受平台的整体流量，另一方面也可以感受整体性能。<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre></li>
+</ol>
+<h4 id="Service"><a href="#Service" class="headerlink" title="Service"></a>Service</h4><img src="/2021/09/22/skywalking-ui-jian-jie/service.png" class="" title="service">
+
+<ol>
+<li>Service Apdex（数字）:当前服务的评分</li>
+<li>Service Apdex（折线图）：一段时间内Apdex评分</li>
+<li>Service Avg Response Times（ms）：平均响应延时，单位ms</li>
+<li>Service Response Time Percentile：百分比响应延时，参考Global Response Latency（percentile in ms）</li>
+<li>Successful Rate（数字）：请求成功率</li>
+<li>Successful Rate（折线图）：一段时间的请求成功率</li>
+<li>Servce Load（CPM / PPM）（数字）：每分钟请求数，</li>
+<li>Servce Load（CPM / PPM）（折线图）：不同时间的每分钟请求数</li>
+<li>Service Throughput （Bytes）：该指标只适用于TCP 服务。当前服务的吞吐量。</li>
+<li>Servce Instances Load（CPM / PPM）：每个服务实例的每分钟请求数</li>
+<li>Show Service Instance：每个 服务 实例 的最大延时</li>
+<li>Service Instance Successful Rate：每个服务实例的请求成功率</li>
+</ol>
+<h4 id="Instance"><a href="#Instance" class="headerlink" title="Instance"></a>Instance</h4><img src="/2021/09/22/skywalking-ui-jian-jie/instance.png" class="" title="instance">
+
+<ol>
+<li>Service Instance Load （CPM / PPM）：当前实例的每分钟请求数</li>
+<li>Service Instance Throughput （Bytes）：该指标只适用于TCP 服务。当前服务实例的吞吐量。</li>
+<li>Service Instance Successful Rate（%）：当前实例的请求成功率</li>
+<li>Service Instance Latency（ms）：当前实例的响应延时</li>
+<li>JVM CPU（Java Service）：jvm占用CPU的百分比</li>
+<li>JVM Memory (Java Service)：JVM内存占用大小，单位m，包括堆内存，与堆外内存（直接内存）</li>
+<li>JVM GC Time（ms）：JVM垃圾回收时间，包含YGC和OGC</li>
+<li>JVM GC Count：JVM垃圾回收次数，包含YGC和OGC</li>
+<li>JVM Thread Count (Java Service)
+10 其他参数我就不介绍了，.net的东西。</li>
+</ol>
+<h4 id="Endpoint"><a href="#Endpoint" class="headerlink" title="Endpoint"></a>Endpoint</h4><img src="/2021/09/22/skywalking-ui-jian-jie/endpoint.png" class="" title="endpoint">
+
+<ol>
+<li>Endpoint Load in Current Service（CPM / PPM）：每个端点（API）每分钟请求数</li>
+<li>Slow Endpoints in Current Service（ms）：每个端点（API）的最慢响应请求时间，单位ms</li>
+<li>Successful Rate in Current Service（%）：每个端点（API）的请求成功率</li>
+<li>接下来是每个端点的情况</li>
+<li>Endpoint Load：当前端点每个时间段的请求数据</li>
+<li>Endpoint Avg Response Time：当前端点每个时间段的请求行响应时间</li>
+<li>Endpoint Response Time Percentile（ms）：当前端点每个时间段的响应时间占比</li>
+<li>Endpoint Successful Rate（%）：当前端点每个时间段的请求成功率</li>
+</ol>
+<h4 id="Database"><a href="#Database" class="headerlink" title="Database"></a>Database</h4>
+
+<ol>
+<li>Database Avg Response Time（ms）：当前数据库事件平均响应时间，单位ms</li>
+<li>Database Access Successful Rate（%）：当前数据库访问成功率</li>
+<li>Database Traffic（CPM: Calls Per Minute）：当前数据库每分钟请求数</li>
+<li>Database Access Latency Percentile（ms）：数据库不同比例的响应时间，单位ms</li>
+<li>Slow Statements（ms）：前N个慢查询，单位ms</li>
+<li>All Database Loads（CPM: Calls Per Minute）：所有数据库中请求量排序</li>
+<li>Un-Health Databases：所有数据库不健康排名，请求成功率排名，失败最多的请求在最上。</li>
+</ol>
+<h3 id="jvm监控"><a href="#jvm监控" class="headerlink" title="jvm监控"></a>jvm监控</h3><h4 id="没有心跳检测"><a href="#没有心跳检测" class="headerlink" title="没有心跳检测"></a>没有心跳检测</h4><p>没错,<code>skywalking</code>是没有心跳检测的,从界面上是看不到心跳相关的东西,但是<code>skywalking</code>的服务,有当前实例,实例里面有<code>jvm memory</code>,比如可以通过分析jvm的的堆从0开始增长
+和变为0,来查看实例的存活情况,变相的达到心跳检测的结果.下面有查询时间,默认是查询最近15分钟的,所以,只要是在这个时间包含之内的,都可以查到</p>
+<img src="/2021/09/22/skywalking-ui-jian-jie/15min.png" class="" title="查询信息">
+<img src="/2021/09/22/skywalking-ui-jian-jie/timepicker.png" class="" title="时间范围选择">
+
+<h4 id="只有堆和非堆"><a href="#只有堆和非堆" class="headerlink" title="只有堆和非堆"></a>只有堆和非堆</h4><p>只能堆内存和非堆内存,没有堆内存里面的详细信息,而且也只有<code>young gc</code>和<code>old gc</code>,没有<code>full gc</code></p>
+<h3 id="vm-监控"><a href="#vm-监控" class="headerlink" title="vm 监控"></a>vm 监控</h3><p>vm监控使用的是<code>Prometheus</code>的<code>node-exporter</code>,然后通过<code>OpenTelemetry Collector</code>收集到<code>oap</code></p>
+<ol>
+<li>安装<code>node-exporter</code>启动</li>
+<li>安装<code>OpenTelemetry Collector</code>并启动</li>
+<li>修改<code>oap</code>的配置,重新启动</li>
+</ol>
+<h4 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h4><ol>
+<li>安装<code>node-exporter</code></li>
+</ol>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">wget https://github.com/prometheus/node_exporter/releases/download/v*/node_exporter-*.*-amd64.tar.gz
+tar xvfz node_exporter-*.*-amd64.tar.gz
+cd node_exporter-*.*-amd64
+./node_exporter --web.listen-address=:19100 # 如何需要启动别的端口,添加这个参数<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ol start="2">
+<li>安装<code>OpenTelemetry Collector</code>并启动</li>
+</ol>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">FROM alpine:3.13 as certs
+RUN apk --update add ca-certificates
+
+FROM alpine:3.13 AS otelcol
+COPY otelcol /
+# Note that this shouldn't be necessary, but in some cases the file seems to be
+# copied with the execute bit lost (see #1317)
+RUN chmod 755 /otelcol
+
+FROM scratch
+
+ARG USER_UID=10001
+USER ${USER_UID}
+
+COPY --from=certs /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
+COPY --from=otelcol /otelcol /
+COPY config.yaml /etc/otel/config.yaml
+ENTRYPOINT ["/otelcol"]
+CMD ["--config", "/etc/otel/config.yaml"]
+EXPOSE 4317 55678 55679<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">receivers</span><span class="token punctuation">:</span>
+  <span class="token key atrule">prometheus</span><span class="token punctuation">:</span>
+    <span class="token key atrule">config</span><span class="token punctuation">:</span>
+      <span class="token key atrule">scrape_configs</span><span class="token punctuation">:</span>
+        <span class="token punctuation">-</span> <span class="token key atrule">job_name</span><span class="token punctuation">:</span> <span class="token string">'otel-collector'</span>
+          <span class="token key atrule">scrape_interval</span><span class="token punctuation">:</span> 10s
+          <span class="token key atrule">static_configs</span><span class="token punctuation">:</span>
+            <span class="token punctuation">-</span> <span class="token key atrule">targets</span><span class="token punctuation">:</span> <span class="token punctuation">[</span> <span class="token string">'192.168.85.35:19100'</span> <span class="token punctuation">]</span>
+
+<span class="token key atrule">processors</span><span class="token punctuation">:</span>
+  <span class="token key atrule">batch</span><span class="token punctuation">:</span>
+
+<span class="token key atrule">exporters</span><span class="token punctuation">:</span>
+  <span class="token key atrule">opencensus</span><span class="token punctuation">:</span>
+    <span class="token key atrule">endpoint</span><span class="token punctuation">:</span> <span class="token string">"192.168.85.35:20630"</span> <span class="token comment"># The OAP Server address</span>
+    <span class="token key atrule">insecure</span><span class="token punctuation">:</span> <span class="token boolean important">true</span>
+  <span class="token comment"># Exports data to the console</span>
+  <span class="token key atrule">logging</span><span class="token punctuation">:</span>
+    <span class="token key atrule">logLevel</span><span class="token punctuation">:</span> debug
+
+<span class="token key atrule">service</span><span class="token punctuation">:</span>
+  <span class="token key atrule">pipelines</span><span class="token punctuation">:</span>
+    <span class="token key atrule">metrics</span><span class="token punctuation">:</span>
+      <span class="token key atrule">receivers</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>prometheus<span class="token punctuation">]</span>
+      <span class="token key atrule">processors</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>batch<span class="token punctuation">]</span>
+      <span class="token key atrule">exporters</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>opencensus<span class="token punctuation">,</span>logging<span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">docker run --name collector -v "/etc/opentelemetry-collector/otel-collector-config.yaml":"/etc/otel/config.yaml" -p 54317:4317 -p 55678:55678 -p 55679:55679 otel/opentelemetry-collector:0.34.0<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<ol start="3">
+<li>修改<code>oap</code>的配置,重新启动</li>
+</ol>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">receiver-otel</span><span class="token punctuation">:</span>
+  <span class="token key atrule">selector</span><span class="token punctuation">:</span> $<span class="token punctuation">{</span>SW_OTEL_RECEIVER<span class="token punctuation">:</span>default<span class="token punctuation">}</span>
+  <span class="token key atrule">default</span><span class="token punctuation">:</span>
+    <span class="token key atrule">enabledHandlers</span><span class="token punctuation">:</span> $<span class="token punctuation">{</span>SW_OTEL_RECEIVER_ENABLED_HANDLERS<span class="token punctuation">:</span><span class="token string">"oc"</span><span class="token punctuation">}</span>
+    <span class="token key atrule">enabledOcRules</span><span class="token punctuation">:</span> $<span class="token punctuation">{</span>SW_OTEL_RECEIVER_ENABLED_OC_RULES<span class="token punctuation">:</span><span class="token string">"vm"</span><span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ol start="4">
+<li>效果如下</li>
+</ol>
+<img src="/2021/09/22/skywalking-ui-jian-jie/vm.png" class="" title="vm监控信息">
+
+
+<h3 id="追踪功能"><a href="#追踪功能" class="headerlink" title="追踪功能"></a>追踪功能</h3><p>追踪功能可以看到每次的请求,<code>skywalking</code>通过记录每次请求,来完成系统的各种分析,其中可以根据时间和tags进行过滤</p>
+<ol>
+<li>tags,注意必须配置了的tags才能搜索</li>
+<li>还可以根据服务,实例,状态来查询</li>
+</ol>
+<h3 id="性能剖析"><a href="#性能剖析" class="headerlink" title="性能剖析"></a>性能剖析</h3><p>可以新建任务,采集固定的次数,然后根据采集的次数,可以通过代码堆栈来一步步分析,代码那里比较慢</p>
+<h3 id="暂时不支持自定义指标"><a href="#暂时不支持自定义指标" class="headerlink" title="暂时不支持自定义指标"></a>暂时不支持自定义指标</h3><p>虽然<code>skywalking</code>可以自定义一些指标的样式,和是否显示,但是目前没有查到相关的资料,可以自定义指标,所以,目前只有官方的指标可以用,<strong>不过,如果想看某个接口的查询次数,可以在追踪里面查询,然后一页是15行,大致看出来这个接口的调用次数</strong></p>
+<h3 id="告警功能-重点"><a href="#告警功能-重点" class="headerlink" title="告警功能(重点)"></a>告警功能(重点)</h3><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/heihaozi/p/apache-skywalking-alarm.html">一片非常不错的告警讲解文章</a>
+<a target="_blank" rel="noopener" href="https://github.com/apache/skywalking/blob/master/docs/en/setup/backend/backend-alarm.md">官方文档</a>
+<a target="_blank" rel="noopener" href="https://skywalking.apache.org/zh/2020-12-13-skywalking-alarm/">发送到钉钉群</a>
+注意,如果不需要全部的<code>entity</code>,可以根据包含,排除,名称和标签,名字和regex,标签,多个维度来组合,达到精准的告警,比如根据包含,我只监控某个名称的<code>endpoint</code></p>
+<p><code>label</code>是这样子的,可以查看指标的编辑页面看到,不是每个指标都有的</p>
+<img src="/2021/09/22/skywalking-ui-jian-jie/labels.png" class="" title="labels就是这样子">
+
+<p>告警支持简单规则和复合规则,而且支持<code>webhooks</code>,目前支持<code>Webhook</code>,<code>gRPCHook</code>,<code>Slack Chat Hook</code>,<code>WeChat Hook</code>,<code>Dingtalk Hook</code>,<code>Feishu Hook</code>,<code>WeLink Hook</code></p>
+<h5 id="常用的指标简介"><a href="#常用的指标简介" class="headerlink" title="常用的指标简介"></a>常用的指标简介</h5><ol>
+<li><code>endpoint_avg</code>,针对全部<code>endpoint</code>,可以告警响应时间,可以根据包含,监控重点业务的响应时间,超时就报警</li>
+<li><code>endpoint_sla</code>,针对全部<code>endpoint</code>,监控成功率,配置成小于100%,那就是有失败就告警</li>
+<li><code>vm</code>监控里面的<code>meter_vm_cpu_total_percentage</code>,cpu全部负载平均值,可以查看vm是否负载严重</li>
+<li><code>vm</code>监控里面的<code>meter_vm_memory_used</code>,内存使用,可以查看vm内存是否耗尽,一般来说,cpu超负荷,内存爆满,就是机器要挂的征兆</li>
+</ol>
+<p>以下是一个实例配置,特定的<code>endpoint</code>响应时间,10分钟一个周期,超过一次就报警,如果你想超过就报警,就把周期设置短一些,比如1分钟报警一次,这样10分钟就能报警10次</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">endpoint_avg_laon_login_rule</span><span class="token punctuation">:</span>
+ <span class="token key atrule">metrics-name</span><span class="token punctuation">:</span> endpoint_avg
+ <span class="token key atrule">include-names</span><span class="token punctuation">:</span>
+   <span class="token punctuation">-</span> <span class="token string">'{POST}/login in ladon'</span>
+ <span class="token key atrule">op</span><span class="token punctuation">:</span> <span class="token string">"&gt;"</span>
+ <span class="token key atrule">threshold</span><span class="token punctuation">:</span> <span class="token number">10</span>
+ <span class="token key atrule">period</span><span class="token punctuation">:</span> <span class="token number">10</span>
+ <span class="token key atrule">count</span><span class="token punctuation">:</span> <span class="token number">1</span>
+ <span class="token key atrule">message</span><span class="token punctuation">:</span> Response time of endpoint <span class="token punctuation">{</span>name<span class="token punctuation">}</span> is more than 10ms in 10 minutes of last 10 minutes<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">David.Lee.Ricardo</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://nobug.xin/2021/09/22/skywalking-ui-jian-jie/">https://nobug.xin/2021/09/22/skywalking-ui-jian-jie/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">David.Lee.Ricardo</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/skyWalking/">
+                                    <span class="chip bg-color">skyWalking</span>
+                                </a>
+                            
+                                <a href="/tags/%E7%9B%91%E6%8E%A7/">
+                                    <span class="chip bg-color">监控</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2021/09/30/detaease-yuan-ma-xiu-gai-zhi-jie-bu-shu/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/medias/featureimages/3.jpg" class="responsive-img" alt="detaease源码修改直接部署">
+                        
+                        <span class="card-title">detaease源码修改直接部署</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            detaease使用springboot可执行jar部署
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-09-30
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/" class="post-category">
+                                    中间件
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/dataease/">
+                        <span class="chip bg-color">dataease</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2021/09/13/skywalking-oap-shu-ju-jie-shou/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/medias/featureimages/8.jpg" class="responsive-img" alt="skywalking-oap数据接收">
+                        
+                        <span class="card-title">skywalking-oap数据接收</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            skywalking-oap数据接收
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-09-13
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/" class="post-category">
+                                    中间件
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/skyWalking/">
+                        <span class="chip bg-color">skyWalking</span>
+                    </a>
+                    
+                    <a href="/tags/%E7%9B%91%E6%8E%A7/">
+                        <span class="chip bg-color">监控</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('64')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+        newdiv.innerHTML += '<br />'
+            + '来源: 李嘉图<br />'
+            + '文章作者: David.Lee.Ricardo<br />'
+            + '文章链接: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归作者所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () {bodyElement.removeChild(newdiv);}, 200);
+    });
+</script>
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/codeBlock/codeShrink.js"></script>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+    <div class="container row center-align" style="margin-bottom: 15px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2019-2022</span>
+            
+            <span id="year">2019</span>
+            <a href="/about" target="_blank">David.Lee.Ricardo</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+            &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
+                class="white-color">21.5k</span>&nbsp;字
+            
+            
+            
+            
+            
+            <br>
+            
+            <span id="sitetime">载入运行时间...</span>
+            <script>
+                function siteTime() {
+                    var seconds = 1000;
+                    var minutes = seconds * 60;
+                    var hours = minutes * 60;
+                    var days = hours * 24;
+                    var years = days * 365;
+                    var today = new Date();
+                    var startYear = "2019";
+                    var startMonth = "11";
+                    var startDate = "30";
+                    var startHour = "0";
+                    var startMinute = "0";
+                    var startSecond = "0";
+                    var todayYear = today.getFullYear();
+                    var todayMonth = today.getMonth() + 1;
+                    var todayDate = today.getDate();
+                    var todayHour = today.getHours();
+                    var todayMinute = today.getMinutes();
+                    var todaySecond = today.getSeconds();
+                    var t1 = Date.UTC(startYear, startMonth, startDate, startHour, startMinute, startSecond);
+                    var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+                    var diff = t2 - t1;
+                    var diffYears = Math.floor(diff / years);
+                    var diffDays = Math.floor((diff / days) - diffYears * 365);
+                    var diffHours = Math.floor((diff - (diffYears * 365 + diffDays) * days) / hours);
+                    var diffMinutes = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours) /
+                        minutes);
+                    var diffSeconds = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours -
+                        diffMinutes * minutes) / seconds);
+                    if (startYear == todayYear) {
+                        document.getElementById("year").innerHTML = todayYear;
+                        document.getElementById("sitetime").innerHTML = "本站已安全运行 " + diffDays + " 天 " + diffHours +
+                            " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+                    } else {
+                        document.getElementById("year").innerHTML = startYear + " - " + todayYear;
+                        document.getElementById("sitetime").innerHTML = "本站已安全运行 " + diffYears + " 年 " + diffDays +
+                            " 天 " + diffHours + " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+                    }
+                }
+                setInterval(siteTime, 1000);
+            </script>
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link ">
+    <a href="https://github.com/davidricardo1026" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:david.ricardo@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=2778333155" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 2778333155" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+    <a href="https://www.zhihu.com/people/li-jia-tu-86-11-29/activities" class="tooltipped" target="_blank" data-tooltip="关注我的知乎: https://www.zhihu.com/people/li-jia-tu-86-11-29/activities" data-position="top" data-delay="50">
+        <i class="fab fa-zhihu1">知</i>
+    </a>
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/materialize/materialize.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/aos/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/js/matery.js"></script>
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/others/clicklove.js" async="async"></script>
+    
+    
+
+    
+
+    
+
+	
+    
+
+    
+
+    
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/background/ribbon-dynamic.js" async="async"></script>
+    
+
+    
+    <script src="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>
