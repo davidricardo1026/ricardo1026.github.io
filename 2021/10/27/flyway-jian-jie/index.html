@@ -423,7 +423,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.6k
+                    1.7k
                 </div>
                 
 
@@ -448,7 +448,7 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p><strong>本文基于springboot2集成使用</strong></p>
+                <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p><strong>本文基于springboot2集成使用</strong></p>
 <h3 id="flyway是什么"><a href="#flyway是什么" class="headerlink" title="flyway是什么"></a>flyway是什么</h3><p>flyway是一款开源的资料库版本管理工具，它更倾向于规约优于配置的方式。
 flyway可以独立于应用实现管理并跟踪资料库变更，支援资料库版本自动升级，并且有一套预设的规约，
 不需要复杂的配置。Migrations可以写成SQL指令码，也可以写在Java程式码中，不仅支援Command Line和Java API，
@@ -510,6 +510,11 @@ Flyway 就会重新应用该脚本. 它并不用于版本更新, 这类的 migra
 </ol>
 <h3 id="另一种sql文件夹风格"><a href="#另一种sql文件夹风格" class="headerlink" title="另一种sql文件夹风格"></a>另一种sql文件夹风格</h3><p>可以使用文件夹来区分,但是还是依照版本号规则来执行</p>
 <img src="/2021/10/27/flyway-jian-jie/sql_directory.png" class="" title="多文件夹">
+
+
+<h2 id="最佳实践"><a href="#最佳实践" class="headerlink" title="最佳实践"></a>最佳实践</h2><h3 id="语义化sql文件名字"><a href="#语义化sql文件名字" class="headerlink" title="语义化sql文件名字"></a>语义化sql文件名字</h3><p>前面给的例子中,都是用的v1,v2,v3这样的版本号,其实是非常不友好的,因为这样的话,我不知道我的语义化版本和我的sql脚本到底怎么对应,所以,这样是非常不好的,好的方式应该是
+使用语义化版本来命名这些sql文件,这样约定下来,就非常清晰</p>
+<img src="/2021/10/27/flyway-jian-jie/semver_sqlfile.png" class="" title="语义化版本sql文件命名">
 
 <h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><h3 id="配置详解"><a href="#配置详解" class="headerlink" title="配置详解"></a>配置详解</h3><pre class="line-numbers language-properties" data-language="properties"><code class="language-properties">flyway.baseline-description对执行迁移时基准版本的描述.
 flyway.baseline-on-migrate当迁移时发现目标schema非空，而且带有没有元数据的表时，是否自动执行基准迁移，默认false.
@@ -919,7 +924,7 @@ flyway.validate-on-migrate迁移时是否校验，默认为true<span aria-hidden
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">21.5k</span>&nbsp;字
+                class="white-color">24.4k</span>&nbsp;字
             
             
             
