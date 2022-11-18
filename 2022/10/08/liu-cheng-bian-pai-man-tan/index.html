@@ -1,0 +1,1317 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="流程编排漫谈, java web">
+    <meta name="description" content="程序员李嘉图的博客">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>流程编排漫谈 | 李嘉图</title>
+    <link rel="icon" type="image/png" href="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/css/my.css">
+
+    <script src="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/jquery/jquery.min.js"></script>
+
+<meta name="generator" content="Hexo 5.4.1">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/medias/logo.svg" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">李嘉图</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/medias/logo.svg" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">李嘉图</div>
+        <div class="logo-desc">
+            
+            程序员李嘉图的博客
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/davidricardo1026" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Look At Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/davidricardo1026" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Look At Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/medias/featureimages/3.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">流程编排漫谈</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        padding: 35px 0 15px 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        padding-bottom: 30px;
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+
+        position: absolute;
+        right: 23.5vw;
+        display: block;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/%E6%9C%8D%E5%8A%A1%E7%BC%96%E6%8E%92/">
+                                <span class="chip bg-color">服务编排</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E6%A6%82%E5%BF%B5%E4%BB%8B%E7%BB%8D/" class="post-category">
+                                概念介绍
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2022-10-08
+                </div>
+                
+
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    5k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    20 分
+                </div>
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/prism/prism.css">
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="流程编排漫谈"><a href="#流程编排漫谈" class="headerlink" title="流程编排漫谈"></a>流程编排漫谈</h1><p>讲述流程编排的概念,分类,以及传统的流程引擎代表flowable</p>
+<h2 id="流程编排的使用场景"><a href="#流程编排的使用场景" class="headerlink" title="流程编排的使用场景"></a>流程编排的使用场景</h2><p>使用到流程编排的场景,大体都是复杂多变的,而且需要动态的执行,如果使用硬编码来开发,代码需要经常修改,而且如果代码耦合严重,代码的可维护性也非常差,
+那么代码修改以后,出错的概率大大增加,常见的场景如下</p>
+<ol>
+<li>oa,企业办公场景</li>
+<li>电商算促销</li>
+<li>etl清洗</li>
+<li>规则引擎</li>
+<li>微服务编排</li>
+<li>其余复杂的流程场景,适合使用责任链的设计模式的场景</li>
+</ol>
+<h2 id="流程编排定义"><a href="#流程编排定义" class="headerlink" title="流程编排定义"></a>流程编排定义</h2><p>设计好的流程,在流程引擎的驱动下,按照设计,一个个组件的执行动态执行下去,可以通过上下文共享数据</p>
+<ol>
+<li>流程定义,定义一个流程如何执行</li>
+<li>流程组件,流程执行的一个个节点</li>
+<li>流程上下文,组件之间共享数据的机制</li>
+</ol>
+<h2 id="流程编排和服务编排"><a href="#流程编排和服务编排" class="headerlink" title="流程编排和服务编排"></a>流程编排和服务编排</h2><p>现在的流程编排一般分为传统的流程编排,比较学院派,以BPMN为主,典型的框架就是activity/Camunda/flowable,还有的就是一些比较冷门,或者没那么出名的框架,弱点的甚至是流线型的
+流程定义,强大的就是DAG的流程定义,DAG系的相对功能更强大  </p>
+<p>这面这张图展示了bpmn的三兄弟,有篇文章对三兄弟做了相对比较全面的对比<a href="https://www.ithere.net/article/1454000794869297153" title="三兄弟" target="">三兄弟</a></p>
+<img src="/2022/10/08/liu-cheng-bian-pai-man-tan/threeBro.jpg" class="" title="三兄弟">
+<p>总结下来就是目前flowable更易用,功能比较强大,但是Camunda也很有前途</p>
+<p>随便云的兴起和云原生的兴起,服务编排的概念兴起,所以服务编排,就是编排微服务,微服务编排的常见的有三种方式</p>
+<ol>
+<li>Orchestration（编制）,就是有个流程引擎,然后控制各个服务,中心化管理,动态管理</li>
+<li>Choreography（编排）,去中心化管理,用消息连接,节点之间对等,相对动态管理</li>
+<li>api网关,用网关来聚合各种服务,类似编制,但是切入点不一样,具体看实现,也可以硬编码,也可以使用流程的动态管理</li>
+</ol>
+<h2 id="流程编排与AOP"><a href="#流程编排与AOP" class="headerlink" title="流程编排与AOP"></a>流程编排与AOP</h2><p>切面编程的思维,在如今非常常见,在spring中,随便一个方法可能有好多个切面,各种proxy,但是切面目前针对的都是方法级别,有方法,才能有切面,但是流程编排,可以随意的
+前后添加组件,比如本来某个流程增加了一个步骤,那么就可以增加一个组件,然后插入其中,等于说,可以是无限扩展,所有,从某种程度来说,流程编排是切面的升级版,
+流程编排通过上下文,让程序拥有了无限扩展的能力,而且随便可以方便的配置可视化的界面,可视化监控业务</p>
+<h2 id="初识BPMN"><a href="#初识BPMN" class="headerlink" title="初识BPMN"></a>初识BPMN</h2><p>BPMN,业务流程模型和标记法（BPMN, Business Process Model and Notation）,维基百科的描述就很不错,这里摘要一下</p>
+<p>一些流程图的示例</p>
+<img src="/2022/10/08/liu-cheng-bian-pai-man-tan/BPMN-AProcesswithNormalFlow.jpg" class="" title="带正常流的流程">
+<img src="/2022/10/08/liu-cheng-bian-pai-man-tan/BPMN-DiscussionCycle.jpg" class="" title="讨论">
+<img src="/2022/10/08/liu-cheng-bian-pai-man-tan/BPMN-E-MailVotingProcess.jpg" class="" title="电子邮件的投票流程">
+<img src="/2022/10/08/liu-cheng-bian-pai-man-tan/BPMN-CollectVotes.jpg" class="" title="采集投票">
+
+<h3 id="bpmn要素"><a href="#bpmn要素" class="headerlink" title="bpmn要素"></a>bpmn要素</h3><p>BPMN用很小一套图形要素做简单的图来建模,这将令业务用户与开发者一样容易理解其中的过程和流.它的四种基本要素如下：</p>
+<ol>
+<li>流对象（Flow Object）
+事件（Events）,活动（Activities）,网关（Gateways）</li>
+<li>连接对象（Connecting Objects）
+顺序流（Sequence Flow）,消息流（Message Flow）,关联（Association）</li>
+<li>泳道（Swimlanes）
+池（Pool）,道（Lane）</li>
+<li>器物（Artifacts/Artefacts）
+数据对象（Data Object）,组（Group）,注释（Annotation）</li>
+</ol>
+<h3 id="流对象与连接对象"><a href="#流对象与连接对象" class="headerlink" title="流对象与连接对象"></a>流对象与连接对象</h3><p>这些对象都是实际需要执行的对象,有真实的业务含义和代码执行</p>
+<img src="/2022/10/08/liu-cheng-bian-pai-man-tan/BPMN-Event.jpg" class="" title="事件Event">
+<img src="/2022/10/08/liu-cheng-bian-pai-man-tan/BPMN-Activity.jpg" class="" title="活动activity">
+<img src="/2022/10/08/liu-cheng-bian-pai-man-tan/BPMN-Gateway.jpg" class="" title="关口gateway">
+<img src="/2022/10/08/liu-cheng-bian-pai-man-tan/BPMN-Connecting.png" class="" title="连接Connections">
+
+<p>流对象（Flow Objects）是BPMN的主要描述对象,由三种核心要素（事件、活动、关口）组成.</p>
+<h4 id="事件（Event）"><a href="#事件（Event）" class="headerlink" title="事件（Event）"></a>事件（Event）</h4><p>“事件”（Event）以圆环表示,指发生的事情（区分于“活动”代表所做的事情）.圆环中的图标代表事件的类型（例如：信封为消息,时钟为时间）.事件也被分为“捕获”（Catching,例如捕获输入的消息而开始一个流程）或“抛出”（Throwing,例如在流程结束抛出消息）.</p>
+<ol>
+<li>开始事件（Start event）
+作为流程的触发器；以细单线标明,并且只能“捕获”（Catch）,所以它显示为空心（轮廓）的图标.</li>
+<li>结束事件（End event）
+表现流程的结果；以粗单线标明,且只能“抛出”（Throw）,所以显示为实心图标.</li>
+<li>中间事件（Intermediate event）
+表现发生在开始和结束事件之间的事；以双线标明,可以是“抛出”或“捕获”（相应采用实心或空心图标）.例如,一任务流到一事件,抛出一个消息到另一个池,然后由下一个事件守候,捕获其回应.</li>
+</ol>
+<h4 id="活动（Activity）"><a href="#活动（Activity）" class="headerlink" title="活动（Activity）"></a>活动（Activity）</h4><p>“活动”（Activity）用圆角矩形表示,并描述必需做的工作的种类.</p>
+<ol>
+<li>任务（Task）
+任务代表单一工作单元,它不会或不能被分解为更深层次上的业务流程细节,而不包含操作程序步骤的图示（此非BPMN的目的）.</li>
+<li>子流程（Sub-process）
+用于隐藏或显露深层业务流程细节——收起时,在矩形底部用加号标明子流程；展开时,在矩形内显示全部的流对象、连接对象及器物.
+子流程自含开始及结束事件,来自“父”流程的顺序流不可跨过其边框.</li>
+<li>事务（Transaction）
+子流程的一种形式,其所包含的全部活动必须作为一个整体对待,即它们必须完全结束以满足目标,其中任何一个失败就必须全部偿还（撤回）.事务作为扩展的子流程,用双线环绕.</li>
+</ol>
+<h4 id="关口（Gateway）"><a href="#关口（Gateway）" class="headerlink" title="关口（Gateway）"></a>关口（Gateway）</h4><p>“关口”（Gateway）用菱形表示,基于所示条件决定路径的分流与合并.
+“流对象”通过“连接对象”（Connecting objects）互相连接.连接对象包括三个类型（顺序、消息、关联）：</p>
+<ol>
+<li>顺序流（Sequence Flow）
+“顺序流”用实心线和箭头表示,显示活动进行的顺序.“顺序流”还可以在开始端带有符号,以小菱形标明其中一些发自活动的“条件流”（conditional flow）,同时以对角斜线标明发自活动或决定,带条件流的“默认流”（default flow）.</li>
+<li>消息流（Message Flow）
+“消息流”用虚线表示,起始端有一个空心圆圈,终端是一个空心箭头.它告诉我们哪些消息流跨过组织的边界（即介于池之间）.消息流不可用于在同一个池中连接活动或事件.</li>
+<li>关联（Association）
+“关联”（Association）用点线表示.它用于创建器物或文本到流对象的联系,并且可以用空心箭头标明某种方向性（指向器物表示结果,源自器物表示输入,同时出现则表示读和更新）.当器物或文本联系到顺序或消息流时,关联无需标明方向（那些流已经显示了方向）.</li>
+</ol>
+<h3 id="泳道与器物"><a href="#泳道与器物" class="headerlink" title="泳道与器物"></a>泳道与器物</h3><p>这些对象不可执行,可用于业务流程的可读性和分析,整体类似代码的注释<br>流程引擎框架在实现的时候,这些可读性的组件,都是选择性的实现,未必都有,比如flowable,可视化就没有实现全</p>
+<img src="/2022/10/08/liu-cheng-bian-pai-man-tan/BPMN-Swimlanes.jpg" class="" title="泳道Swimlanes">
+<img src="/2022/10/08/liu-cheng-bian-pai-man-tan/BPMN-Data.jpg" class="" title="数据对象DataObjects">
+<img src="/2022/10/08/liu-cheng-bian-pai-man-tan/BPMN-Group.jpg" class="" title="组Groups">
+<img src="/2022/10/08/liu-cheng-bian-pai-man-tan/BPMN-Annotation.png" class="" title="注释Annotation">
+
+<h4 id="泳道（Swimlanes）"><a href="#泳道（Swimlanes）" class="headerlink" title="泳道（Swimlanes）"></a>泳道（Swimlanes）</h4><p>从视觉上对活动加以组织或分类的机制.它基于交叉功能流程图基础,在BPMN中有两种类型：</p>
+<ol>
+<li>池（Pool）
+表示流程中的主要参与者,典型地,用来分开不同的组织.一个池可容纳一个或多个道（像真实的泳池一样）.当池为展开的（显示出内部细节）,绘做大的矩形；若为收起的（隐藏起内部细节）,绘做沿着图的长或宽伸展的空的矩形.</li>
+<li>道（Lane）
+在池中,用于活动按职能译注3或角色归类.绘做按池的长或宽展开的矩形.道包含流对象、连接对象和器物.</li>
+</ol>
+<h4 id="器物（Artifacts）"><a href="#器物（Artifacts）" class="headerlink" title="器物（Artifacts）"></a>器物（Artifacts）</h4><p>开发者可以带给模型／图更多的信息,通过这一方式,使模型／图更可读.预定的三种器物如下：</p>
+<ol>
+<li>数据对象（Data Objects）
+“数据对象”向读者显示在活动中需要或产生哪些数据.</li>
+<li>组（Group）
+组表现为虚线的圆角矩形.组用来将不同的活动分组,但不影响图中的流.</li>
+<li>注释（Annotation）
+注释为模型／图的读者增加可理解性.</li>
+</ol>
+<h2 id="flowable简介"><a href="#flowable简介" class="headerlink" title="flowable简介"></a>flowable简介</h2><p>flowable功能比较强大,而且国内关注的人比较多,用的人也相对比较多,出了错,还可以搜到答案,所以,这里以flowable为例,介绍bpmn的典型框架,但是Flowable从6.4.1版本开始大力发展其商业版产品,
+开源版本也不在及时维护.部分功能已经不再开源版发布,比如表单生成器（表单引擎）、历史数据同步至其他数据源、es等等.</p>
+<h3 id="概览"><a href="#概览" class="headerlink" title="概览"></a>概览</h3><p>一个简单的流程示例</p>
+<img src="/2022/10/08/liu-cheng-bian-pai-man-tan/pur1Service-bpmn.png" class="" title="flowable流程设计">
+
+<p>对应的bpmn20.xml,<code>bpmndi:BPMNDiagram</code>是原始的图形信息</p>
+<pre class="line-numbers language-xml" data-language="xml"><code class="language-xml"><span class="token prolog">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>definitions</span> <span class="token attr-name">xmlns</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>http://www.omg.org/spec/BPMN/20100524/MODEL<span class="token punctuation">"</span></span> <span class="token attr-name"><span class="token namespace">xmlns:</span>xsi</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>http://www.w3.org/2001/XMLSchema-instance<span class="token punctuation">"</span></span> <span class="token attr-name"><span class="token namespace">xmlns:</span>xsd</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>http://www.w3.org/2001/XMLSchema<span class="token punctuation">"</span></span> <span class="token attr-name"><span class="token namespace">xmlns:</span>flowable</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>http://flowable.org/bpmn<span class="token punctuation">"</span></span> <span class="token attr-name"><span class="token namespace">xmlns:</span>bpmndi</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>http://www.omg.org/spec/BPMN/20100524/DI<span class="token punctuation">"</span></span> <span class="token attr-name"><span class="token namespace">xmlns:</span>omgdc</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>http://www.omg.org/spec/DD/20100524/DC<span class="token punctuation">"</span></span> <span class="token attr-name"><span class="token namespace">xmlns:</span>omgdi</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>http://www.omg.org/spec/DD/20100524/DI<span class="token punctuation">"</span></span> <span class="token attr-name">typeLanguage</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>http://www.w3.org/2001/XMLSchema<span class="token punctuation">"</span></span> <span class="token attr-name">expressionLanguage</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>http://www.w3.org/1999/XPath<span class="token punctuation">"</span></span> <span class="token attr-name">targetNamespace</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>http://www.flowable.org/processdef<span class="token punctuation">"</span></span> <span class="token attr-name">exporter</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>Flowable Open Source Modeler<span class="token punctuation">"</span></span> <span class="token attr-name">exporterVersion</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>6.7.2<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>process</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>pure1Service<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>pure1Service<span class="token punctuation">"</span></span> <span class="token attr-name">isExecutable</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>true<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>startEvent</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>startEvent1<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>开始<span class="token punctuation">"</span></span> <span class="token attr-name"><span class="token namespace">flowable:</span>formFieldValidation</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>true<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>startEvent</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>serviceTask</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>sid-6F3577E0-2694-4732-A470-58E4074D0514<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>服务1<span class="token punctuation">"</span></span> <span class="token attr-name"><span class="token namespace">flowable:</span>async</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>true<span class="token punctuation">"</span></span> <span class="token attr-name"><span class="token namespace">flowable:</span>class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>com.vzoom.flowable.flowableservice.CommonService<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>serviceTask</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>serviceTask</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>sid-954B5B92-6338-4DBB-BA2F-A66816972875<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>服务2<span class="token punctuation">"</span></span> <span class="token attr-name"><span class="token namespace">flowable:</span>async</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>true<span class="token punctuation">"</span></span> <span class="token attr-name"><span class="token namespace">flowable:</span>class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>com.vzoom.flowable.flowableservice.CommonService<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>serviceTask</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>serviceTask</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>sid-3A06C8B5-0ED9-4945-A5F5-9E3E498474F4<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>服务3<span class="token punctuation">"</span></span> <span class="token attr-name"><span class="token namespace">flowable:</span>async</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>true<span class="token punctuation">"</span></span> <span class="token attr-name"><span class="token namespace">flowable:</span>class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>com.vzoom.flowable.flowableservice.CommonService<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>serviceTask</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>endEvent</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>sid-E70A0CBA-2FF8-4F27-A3D1-97BD51F1E526<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>结束<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>endEvent</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>sequenceFlow</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>sid-00C32123-9AA2-4420-AEBD-D21C2AE62870<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>线1<span class="token punctuation">"</span></span> <span class="token attr-name">sourceRef</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>startEvent1<span class="token punctuation">"</span></span> <span class="token attr-name">targetRef</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>sid-6F3577E0-2694-4732-A470-58E4074D0514<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>sequenceFlow</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>sequenceFlow</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>sid-65068C9A-EC24-499C-A287-CD019FF1C15D<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>线2<span class="token punctuation">"</span></span> <span class="token attr-name">sourceRef</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>sid-6F3577E0-2694-4732-A470-58E4074D0514<span class="token punctuation">"</span></span> <span class="token attr-name">targetRef</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>sid-954B5B92-6338-4DBB-BA2F-A66816972875<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>sequenceFlow</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>sequenceFlow</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>sid-582D7F57-14AE-40ED-A1C1-B6832959D4CA<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>线3<span class="token punctuation">"</span></span> <span class="token attr-name">sourceRef</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>sid-954B5B92-6338-4DBB-BA2F-A66816972875<span class="token punctuation">"</span></span> <span class="token attr-name">targetRef</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>sid-3A06C8B5-0ED9-4945-A5F5-9E3E498474F4<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>sequenceFlow</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>userTask</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>sid-40FA984E-4697-4A9B-B5D1-39F30B5EE97B<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>用户任务1<span class="token punctuation">"</span></span> <span class="token attr-name"><span class="token namespace">flowable:</span>formFieldValidation</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>true<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>userTask</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>sequenceFlow</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>sid-B338251C-C581-4916-BA5D-F7BC94563232<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>线4<span class="token punctuation">"</span></span> <span class="token attr-name">sourceRef</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>sid-3A06C8B5-0ED9-4945-A5F5-9E3E498474F4<span class="token punctuation">"</span></span> <span class="token attr-name">targetRef</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>sid-40FA984E-4697-4A9B-B5D1-39F30B5EE97B<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>sequenceFlow</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>sequenceFlow</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>sid-8E49C236-A4AE-481A-B4E7-5F430477C0B4<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>线5<span class="token punctuation">"</span></span> <span class="token attr-name">sourceRef</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>sid-40FA984E-4697-4A9B-B5D1-39F30B5EE97B<span class="token punctuation">"</span></span> <span class="token attr-name">targetRef</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>sid-E70A0CBA-2FF8-4F27-A3D1-97BD51F1E526<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>sequenceFlow</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>process</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token namespace">bpmndi:</span>BPMNDiagram</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>BPMNDiagram_pure1Service<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token namespace">bpmndi:</span>BPMNPlane</span> <span class="token attr-name">bpmnElement</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>pure1Service<span class="token punctuation">"</span></span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>BPMNPlane_pure1Service<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token namespace">bpmndi:</span>BPMNShape</span> <span class="token attr-name">bpmnElement</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>startEvent1<span class="token punctuation">"</span></span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>BPMNShape_startEvent1<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token namespace">omgdc:</span>Bounds</span> <span class="token attr-name">height</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>30.0<span class="token punctuation">"</span></span> <span class="token attr-name">width</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>30.0<span class="token punctuation">"</span></span> <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>100.0<span class="token punctuation">"</span></span> <span class="token attr-name">y</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>163.0<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token namespace">omgdc:</span>Bounds</span><span class="token punctuation">&gt;</span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token namespace">bpmndi:</span>BPMNShape</span><span class="token punctuation">&gt;</span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token namespace">bpmndi:</span>BPMNShape</span> <span class="token attr-name">bpmnElement</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>sid-6F3577E0-2694-4732-A470-58E4074D0514<span class="token punctuation">"</span></span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>BPMNShape_sid-6F3577E0-2694-4732-A470-58E4074D0514<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token namespace">omgdc:</span>Bounds</span> <span class="token attr-name">height</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>80.0<span class="token punctuation">"</span></span> <span class="token attr-name">width</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>100.0<span class="token punctuation">"</span></span> <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>240.0<span class="token punctuation">"</span></span> <span class="token attr-name">y</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>138.0<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token namespace">omgdc:</span>Bounds</span><span class="token punctuation">&gt;</span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token namespace">bpmndi:</span>BPMNShape</span><span class="token punctuation">&gt;</span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token namespace">bpmndi:</span>BPMNShape</span> <span class="token attr-name">bpmnElement</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>sid-954B5B92-6338-4DBB-BA2F-A66816972875<span class="token punctuation">"</span></span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>BPMNShape_sid-954B5B92-6338-4DBB-BA2F-A66816972875<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token namespace">omgdc:</span>Bounds</span> <span class="token attr-name">height</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>80.0<span class="token punctuation">"</span></span> <span class="token attr-name">width</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>100.0<span class="token punctuation">"</span></span> <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>405.0<span class="token punctuation">"</span></span> <span class="token attr-name">y</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>138.0<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token namespace">omgdc:</span>Bounds</span><span class="token punctuation">&gt;</span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token namespace">bpmndi:</span>BPMNShape</span><span class="token punctuation">&gt;</span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token namespace">bpmndi:</span>BPMNShape</span> <span class="token attr-name">bpmnElement</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>sid-3A06C8B5-0ED9-4945-A5F5-9E3E498474F4<span class="token punctuation">"</span></span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>BPMNShape_sid-3A06C8B5-0ED9-4945-A5F5-9E3E498474F4<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token namespace">omgdc:</span>Bounds</span> <span class="token attr-name">height</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>80.0<span class="token punctuation">"</span></span> <span class="token attr-name">width</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>100.0<span class="token punctuation">"</span></span> <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>555.0<span class="token punctuation">"</span></span> <span class="token attr-name">y</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>138.0<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token namespace">omgdc:</span>Bounds</span><span class="token punctuation">&gt;</span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token namespace">bpmndi:</span>BPMNShape</span><span class="token punctuation">&gt;</span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token namespace">bpmndi:</span>BPMNShape</span> <span class="token attr-name">bpmnElement</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>sid-E70A0CBA-2FF8-4F27-A3D1-97BD51F1E526<span class="token punctuation">"</span></span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>BPMNShape_sid-E70A0CBA-2FF8-4F27-A3D1-97BD51F1E526<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token namespace">omgdc:</span>Bounds</span> <span class="token attr-name">height</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>28.0<span class="token punctuation">"</span></span> <span class="token attr-name">width</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>28.0<span class="token punctuation">"</span></span> <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>990.0<span class="token punctuation">"</span></span> <span class="token attr-name">y</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>164.0<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token namespace">omgdc:</span>Bounds</span><span class="token punctuation">&gt;</span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token namespace">bpmndi:</span>BPMNShape</span><span class="token punctuation">&gt;</span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token namespace">bpmndi:</span>BPMNShape</span> <span class="token attr-name">bpmnElement</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>sid-40FA984E-4697-4A9B-B5D1-39F30B5EE97B<span class="token punctuation">"</span></span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>BPMNShape_sid-40FA984E-4697-4A9B-B5D1-39F30B5EE97B<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token namespace">omgdc:</span>Bounds</span> <span class="token attr-name">height</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>80.0<span class="token punctuation">"</span></span> <span class="token attr-name">width</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>100.0<span class="token punctuation">"</span></span> <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>735.0<span class="token punctuation">"</span></span> <span class="token attr-name">y</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>138.0<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token namespace">omgdc:</span>Bounds</span><span class="token punctuation">&gt;</span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token namespace">bpmndi:</span>BPMNShape</span><span class="token punctuation">&gt;</span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token namespace">bpmndi:</span>BPMNEdge</span> <span class="token attr-name">bpmnElement</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>sid-00C32123-9AA2-4420-AEBD-D21C2AE62870<span class="token punctuation">"</span></span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>BPMNEdge_sid-00C32123-9AA2-4420-AEBD-D21C2AE62870<span class="token punctuation">"</span></span> <span class="token attr-name"><span class="token namespace">flowable:</span>sourceDockerX</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>15.0<span class="token punctuation">"</span></span> <span class="token attr-name"><span class="token namespace">flowable:</span>sourceDockerY</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>15.0<span class="token punctuation">"</span></span> <span class="token attr-name"><span class="token namespace">flowable:</span>targetDockerX</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>50.0<span class="token punctuation">"</span></span> <span class="token attr-name"><span class="token namespace">flowable:</span>targetDockerY</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>40.0<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token namespace">omgdi:</span>waypoint</span> <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>129.94999940317362<span class="token punctuation">"</span></span> <span class="token attr-name">y</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>178.0<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token namespace">omgdi:</span>waypoint</span><span class="token punctuation">&gt;</span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token namespace">omgdi:</span>waypoint</span> <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>239.99999999993753<span class="token punctuation">"</span></span> <span class="token attr-name">y</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>178.0<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token namespace">omgdi:</span>waypoint</span><span class="token punctuation">&gt;</span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token namespace">bpmndi:</span>BPMNEdge</span><span class="token punctuation">&gt;</span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token namespace">bpmndi:</span>BPMNEdge</span> <span class="token attr-name">bpmnElement</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>sid-8E49C236-A4AE-481A-B4E7-5F430477C0B4<span class="token punctuation">"</span></span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>BPMNEdge_sid-8E49C236-A4AE-481A-B4E7-5F430477C0B4<span class="token punctuation">"</span></span> <span class="token attr-name"><span class="token namespace">flowable:</span>sourceDockerX</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>50.0<span class="token punctuation">"</span></span> <span class="token attr-name"><span class="token namespace">flowable:</span>sourceDockerY</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>40.0<span class="token punctuation">"</span></span> <span class="token attr-name"><span class="token namespace">flowable:</span>targetDockerX</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>14.0<span class="token punctuation">"</span></span> <span class="token attr-name"><span class="token namespace">flowable:</span>targetDockerY</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>14.0<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token namespace">omgdi:</span>waypoint</span> <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>834.9499999999925<span class="token punctuation">"</span></span> <span class="token attr-name">y</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>178.0<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token namespace">omgdi:</span>waypoint</span><span class="token punctuation">&gt;</span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token namespace">omgdi:</span>waypoint</span> <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>990.0<span class="token punctuation">"</span></span> <span class="token attr-name">y</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>178.0<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token namespace">omgdi:</span>waypoint</span><span class="token punctuation">&gt;</span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token namespace">bpmndi:</span>BPMNEdge</span><span class="token punctuation">&gt;</span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token namespace">bpmndi:</span>BPMNEdge</span> <span class="token attr-name">bpmnElement</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>sid-B338251C-C581-4916-BA5D-F7BC94563232<span class="token punctuation">"</span></span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>BPMNEdge_sid-B338251C-C581-4916-BA5D-F7BC94563232<span class="token punctuation">"</span></span> <span class="token attr-name"><span class="token namespace">flowable:</span>sourceDockerX</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>50.0<span class="token punctuation">"</span></span> <span class="token attr-name"><span class="token namespace">flowable:</span>sourceDockerY</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>40.0<span class="token punctuation">"</span></span> <span class="token attr-name"><span class="token namespace">flowable:</span>targetDockerX</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>50.0<span class="token punctuation">"</span></span> <span class="token attr-name"><span class="token namespace">flowable:</span>targetDockerY</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>40.0<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token namespace">omgdi:</span>waypoint</span> <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>654.9499999999431<span class="token punctuation">"</span></span> <span class="token attr-name">y</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>178.0<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token namespace">omgdi:</span>waypoint</span><span class="token punctuation">&gt;</span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token namespace">omgdi:</span>waypoint</span> <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>734.9999999998699<span class="token punctuation">"</span></span> <span class="token attr-name">y</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>178.0<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token namespace">omgdi:</span>waypoint</span><span class="token punctuation">&gt;</span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token namespace">bpmndi:</span>BPMNEdge</span><span class="token punctuation">&gt;</span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token namespace">bpmndi:</span>BPMNEdge</span> <span class="token attr-name">bpmnElement</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>sid-582D7F57-14AE-40ED-A1C1-B6832959D4CA<span class="token punctuation">"</span></span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>BPMNEdge_sid-582D7F57-14AE-40ED-A1C1-B6832959D4CA<span class="token punctuation">"</span></span> <span class="token attr-name"><span class="token namespace">flowable:</span>sourceDockerX</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>50.0<span class="token punctuation">"</span></span> <span class="token attr-name"><span class="token namespace">flowable:</span>sourceDockerY</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>40.0<span class="token punctuation">"</span></span> <span class="token attr-name"><span class="token namespace">flowable:</span>targetDockerX</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>50.0<span class="token punctuation">"</span></span> <span class="token attr-name"><span class="token namespace">flowable:</span>targetDockerY</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>40.0<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token namespace">omgdi:</span>waypoint</span> <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>504.9499999999581<span class="token punctuation">"</span></span> <span class="token attr-name">y</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>178.0<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token namespace">omgdi:</span>waypoint</span><span class="token punctuation">&gt;</span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token namespace">omgdi:</span>waypoint</span> <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>554.9999999999363<span class="token punctuation">"</span></span> <span class="token attr-name">y</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>178.0<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token namespace">omgdi:</span>waypoint</span><span class="token punctuation">&gt;</span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token namespace">bpmndi:</span>BPMNEdge</span><span class="token punctuation">&gt;</span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token namespace">bpmndi:</span>BPMNEdge</span> <span class="token attr-name">bpmnElement</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>sid-65068C9A-EC24-499C-A287-CD019FF1C15D<span class="token punctuation">"</span></span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>BPMNEdge_sid-65068C9A-EC24-499C-A287-CD019FF1C15D<span class="token punctuation">"</span></span> <span class="token attr-name"><span class="token namespace">flowable:</span>sourceDockerX</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>50.0<span class="token punctuation">"</span></span> <span class="token attr-name"><span class="token namespace">flowable:</span>sourceDockerY</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>40.0<span class="token punctuation">"</span></span> <span class="token attr-name"><span class="token namespace">flowable:</span>targetDockerX</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>50.0<span class="token punctuation">"</span></span> <span class="token attr-name"><span class="token namespace">flowable:</span>targetDockerY</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>40.0<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token namespace">omgdi:</span>waypoint</span> <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>339.9499999998897<span class="token punctuation">"</span></span> <span class="token attr-name">y</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>178.0<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token namespace">omgdi:</span>waypoint</span><span class="token punctuation">&gt;</span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token namespace">omgdi:</span>waypoint</span> <span class="token attr-name">x</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>404.99999999998465<span class="token punctuation">"</span></span> <span class="token attr-name">y</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>178.0<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token namespace">omgdi:</span>waypoint</span><span class="token punctuation">&gt;</span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token namespace">bpmndi:</span>BPMNEdge</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token namespace">bpmndi:</span>BPMNPlane</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token namespace">bpmndi:</span>BPMNDiagram</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>definitions</span><span class="token punctuation">&gt;</span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="api简介"><a href="#api简介" class="headerlink" title="api简介"></a>api简介</h3><ol>
+<li>执行流程<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">ProcessInstance</span> processInstance <span class="token operator">=</span> runtimeService<span class="token punctuation">.</span><span class="token function">startProcessInstanceByKey</span><span class="token punctuation">(</span><span class="token string">"callActivity"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+<li>部署流程<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">DeploymentBuilder</span> deployment <span class="token operator">=</span> repositoryService<span class="token punctuation">.</span><span class="token function">createDeployment</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">Deployment</span> deploy <span class="token operator">=</span> deployment<span class="token punctuation">.</span><span class="token function">name</span><span class="token punctuation">(</span><span class="token string">"asyncErrorService1"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">addString</span><span class="token punctuation">(</span>UUID<span class="token punctuation">.</span><span class="token function">randomUUID</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">".bpmn20.xml"</span><span class="token punctuation">,</span> <span class="token string">"xmlContext"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">deploy</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//必须以.bpmn20.xml结尾</span>
+<span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">ProcessDefinition</span><span class="token punctuation">&gt;</span></span> list <span class="token operator">=</span> repositoryService<span class="token punctuation">.</span><span class="token function">createProcessDefinitionQuery</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">deploymentId</span><span class="token punctuation">(</span>deploy<span class="token punctuation">.</span><span class="token function">getId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">list</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">BpmnModel</span> bpmnModel <span class="token operator">=</span> repositoryService<span class="token punctuation">.</span><span class="token function">getBpmnModel</span><span class="token punctuation">(</span>list<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre></li>
+<li>流程回退<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Task</span> task <span class="token operator">=</span> taskService<span class="token punctuation">.</span><span class="token function">createTaskQuery</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">taskAssignee</span><span class="token punctuation">(</span><span class="token string">"signUser"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">singleResult</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+ runtimeService<span class="token punctuation">.</span><span class="token function">createChangeActivityStateBuilder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">processInstanceId</span><span class="token punctuation">(</span>task<span class="token punctuation">.</span><span class="token function">getProcessInstanceId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">moveActivityIdTo</span><span class="token punctuation">(</span>task<span class="token punctuation">.</span><span class="token function">getTaskDefinitionKey</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token string">"task1"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">changeState</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></li>
+<li>流程重跑<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Job</span><span class="token punctuation">&gt;</span></span> list <span class="token operator">=</span> managementService<span class="token punctuation">.</span><span class="token function">createDeadLetterJobQuery</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">processInstanceId</span><span class="token punctuation">(</span>hiProcinstId<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">list</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token class-name">Job</span> job <span class="token operator">:</span> list<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    managementService<span class="token punctuation">.</span><span class="token function">moveDeadLetterJobToExecutableJob</span><span class="token punctuation">(</span>job<span class="token punctuation">.</span><span class="token function">getId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre></li>
+</ol>
+<h3 id="概括"><a href="#概括" class="headerlink" title="概括"></a>概括</h3><p>flowable的翻译文档有<a href="https://tkjohn.github.io/flowable-userguide/#uiAppInstallation" title="flowable中文翻译文档" target="">flowable中文文档</a>,
+这个不是最新版的,官网的最新文档是<a href="https://www.flowable.com/open-source/docs/bpmn/ch07a-BPMN-Introduction" title="flowable官网文档" target="">flowable官网文档</a></p>
+<ol>
+<li>用户任务,可以认为是留白,流程跑到用户任务会阻塞,然后什么也不做,自己调用api完成以后,才能执行以后的流程</li>
+<li>服务任务需要继承接口<code>org.flowable.engine.delegate.JavaDelegate</code>,和spring集成的时候,可以是spring的bean,需要这样设置<pre class="line-numbers language-java" data-language="java"><code class="language-java">serviceTask<span class="token punctuation">.</span><span class="token function">setImplementationType</span><span class="token punctuation">(</span><span class="token class-name">BpmnXMLConstants</span><span class="token punctuation">.</span>ATTRIBUTE_TASK_SERVICE_DELEGATEEXPRESSION<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//ATTRIBUTE_TASK_SERVICE_DELEGATEEXPRESSION是"delegateExpression"</span>
+serviceTask<span class="token punctuation">.</span><span class="token function">setImplementation</span><span class="token punctuation">(</span><span class="token string">"${"</span> <span class="token operator">+</span> nodeCode <span class="token operator">+</span> <span class="token char">'}'</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//nodeCode就是bean 的 name</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></li>
+<li>服务任务抛出BpmnError的时候,才能使用重跑的功能,所以,一定要有个父类,去捕获异常,重新抛出成BpmnError</li>
+<li>流程默认有spring的事务,如果不想要使用事务,需要jdbc的方法上添加<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Transactional</span><span class="token punctuation">(</span>propagation <span class="token operator">=</span> <span class="token class-name">Propagation</span><span class="token punctuation">.</span>NOT_SUPPORTED<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+<li>任务最好设置成异步,否则失败了以后,流程没有记录</li>
+<li>使用的时候,有执行监听器,类似于切面,分为前置后置等等,用户任务和服务任务的监听器不能共用,需要额外设置,可以参考 <a href="https://blog.csdn.net/mccand1234/article/details/115462870" title="执行监听器与任务监听器的基本使用" target="">监听器</a></li>
+</ol>
+<h2 id="非典型性流程编排"><a href="#非典型性流程编排" class="headerlink" title="非典型性流程编排"></a>非典型性流程编排</h2><h3 id="分布式方向"><a href="#分布式方向" class="headerlink" title="分布式方向"></a>分布式方向</h3><p>现在都是微服务时代了,集群已经是一种常见的现象,所以分布式服务编排也是一种常见的需求 <a href="https://developer.aliyun.com/article/609299" title="基于DAG的分布式任务调度平台-Maat" target="">阿里的maat</a></p>
+<h4 id="为什么要做Maat"><a href="#为什么要做Maat" class="headerlink" title="为什么要做Maat"></a>为什么要做Maat</h4><p>我们在项目的开发过程中，经常遇到一些流程化调度的需求，如上线发布流程、分析任务流程等。对于这些流程化的调度任务，我们尝试过自己开发了一套流程调度系统，也尝试过接入集团的工作流，但难免会遇到一些问题：</p>
+<ol>
+<li>业务代码和调度代码耦合严重，修改流程基本需要入侵到代码级别</li>
+<li>对于定时触发的任务流程，没有一个统一管控的系统</li>
+<li>多分支的复杂流程不能很好支持</li>
+<li>缺少可视化的UI，不能很好追踪流程进度</li>
+</ol>
+<h4 id="核心模块"><a href="#核心模块" class="headerlink" title="核心模块"></a>核心模块</h4><p>Maat核心模块完成了任务调度的整个流程。核心模块的每个节点都独立运行在机器上，启动上互相不依赖，所有消息通信通过DB（数据库）和MQ（消息队列）完成。</p>
+<h5 id="Web-Api-Service"><a href="#Web-Api-Service" class="headerlink" title="Web Api Service"></a>Web Api Service</h5><p>Web Api Service提供了丰富的与外部交互的Api，包括任务增删改、历史任务状态、任务状态修改、任务的触发、任务的重试等接口。
+另外原生airflow提供的web展示功能也是由该角色完成。</p>
+<h5 id="Scheduler"><a href="#Scheduler" class="headerlink" title="Scheduler"></a>Scheduler</h5><p>scheduler是maat关键角色，它决定了所有开启运行的流程何时可以触发一次运行，也决定一次任务运行中，哪些节点可以被执行。被判定执行的节点会被scheduler通过mq发送给worker执行。</p>
+<p>随着任务的增多，单一的scheduler负载过高导致调度周期增长，为了减轻scheduler的压力，maat将scheduler按照队列拆分。不同队列的任务有独立的scheduler负责调度，将任务分发给对应队列的worker执行。</p>
+<p>目前每个队列仅有一个scheduler负责调度，之后会改造为每个队列多scheduler的实现方式。</p>
+<h5 id="Worker"><a href="#Worker" class="headerlink" title="Worker"></a>Worker</h5><p>worker为具体执行任务的角色，worker会接受scheduler发出的任务，在worker上执行节点中描述的具体任务。worker角色有多个，任务会在任意一个对等的worker上机器，当worker资源不足时，可以动态扩容。</p>
+<p>由于不同队列任务所需的基础环境不同，如Python、Java、Hadoop、zk等，不同队列的worker角色启动参数有配置上的差异，不同队列的worker启动时会按照配置中描述的资源完成部署安装。</p>
+<p>worker上任务完成后会回写db，scheduler察觉到当前任务状态变化后会继续任务的调度。</p>
+<h5 id="Distributers"><a href="#Distributers" class="headerlink" title="Distributers"></a>Distributers</h5><p>任务分发层负责将scheduler需要调度的任务发送到指定的Worker上。</p>
+<p>MQ：原生Airflow使用MQ完成scheduler到worker的消息传递，底层由celery+Rabbitmq实现。scheduler将需要运行的任务发送到MQ中，发送到MQ中包含任务对应的队列信息。worker从MQ获取消息时，仅获取相应队列任务，拉取到对应worker上执行。MQ在maat中以rabbitmq实现，MQ和其他角色一样，也是独立部署的。</p>
+<p>FaaS：FaaS（Function as a Service）是基于搜索生态实现的ServerLess框架，Maat将其作为执行器。Maat的所有任务都抽象成function，任务执行时则调用相应的function，完成后返回任务状态。目前已完成与FaaS的初步对接，期望未来能基于FaaS做更多优化，如：多样化的任务执行方式，可以将轻量级的任务函数化，将重量级的任务服务化；任务资源动态调整，甚至某些任务可以执行时分配资源，完成后即释放。</p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>分布式场景中,Scheduler负责调度,worker负责执行,然后Distributers负责将scheduler需要调度的任务发送到指定的Worker上,然后提供web api来做任务的管理</p>
+<h3 id="DAG方向"><a href="#DAG方向" class="headerlink" title="DAG方向"></a>DAG方向</h3><p>bpmn比较全面,比较重,对于etl场景来说,就过于复杂了,对于etl场景,需要的就是一个简单的流程引擎,airflow,就很适合做etl,而且使用DAG作为定义,
+airflow的文档 <a href="https://airflow.apache.org/docs/apache-airflow/stable/concepts/dags.html#" title="airflow的DAG" target="">DAG方向</a></p>
+<img src="/2022/10/08/liu-cheng-bian-pai-man-tan/airflow-dag.png" class="" title="airflow的DAG">
+
+<h3 id="低代码方向"><a href="#低代码方向" class="headerlink" title="低代码方向"></a>低代码方向</h3><p>低代码平台中,需要一个流程引擎来动态的执行代码</p>
+<ol>
+<li>低代码平台中的oa需要动态的设置流程,其中就需要流程引擎<img src="/2022/10/08/liu-cheng-bian-pai-man-tan/oa-bpmn.png" class="" title="oa的流程引擎"></li>
+<li>低代码平台,组件化开发也需要一个流程引擎来驱动代码</li>
+<li>服务编排,微服务的服务编排,针对微服务的接口调用场景,提供专用的节点,和一些特定的功能,来满足微服务的编排,比如提供参数化节点来对应api</li>
+</ol>
+<h2 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h2><p>流程编排,是一个很好的实践,现在的世界,信息技术是基石,软件的复杂度非常高,流程编排是一个很好的方向,来面对复杂多变且易出错的需求,而且几乎所有的场景都适合流程编排</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">David.Lee.Ricardo</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://nobug.xin/2022/10/08/liu-cheng-bian-pai-man-tan/">https://nobug.xin/2022/10/08/liu-cheng-bian-pai-man-tan/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">David.Lee.Ricardo</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/%E6%9C%8D%E5%8A%A1%E7%BC%96%E6%8E%92/">
+                                    <span class="chip bg-color">服务编排</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2022/10/26/qemu-jian-jie/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/medias/featureimages/1.jpg" class="responsive-img" alt="qemu简介">
+                        
+                        <span class="card-title">qemu简介</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            qemu简要介绍,扫盲
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-10-26
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E8%99%9A%E6%8B%9F%E6%9C%BA/" class="post-category">
+                                    虚拟机
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/qemu/">
+                        <span class="chip bg-color">qemu</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2022/09/14/vmware-de-3d-xing-neng-you-duo-qiang/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/medias/featureimages/14.jpg" class="responsive-img" alt="vmware的3D性能有多强">
+                        
+                        <span class="card-title">vmware的3D性能有多强</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            vmware的3D性能有多强
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-09-14
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E5%85%B6%E5%AE%83/" class="post-category">
+                                    其它
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/vmware/">
+                        <span class="chip bg-color">vmware</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('64')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+        newdiv.innerHTML += '<br />'
+            + '来源: 李嘉图<br />'
+            + '文章作者: David.Lee.Ricardo<br />'
+            + '文章链接: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归作者所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () {bodyElement.removeChild(newdiv);}, 200);
+    });
+</script>
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/codeBlock/codeShrink.js"></script>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+    <div class="container row center-align" style="margin-bottom: 15px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2019-2022</span>
+            
+            <span id="year">2019</span>
+            <a href="/about" target="_blank">David.Lee.Ricardo</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+            &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
+                class="white-color">33.2k</span>&nbsp;字
+            
+            
+            
+            
+            
+            <br>
+            
+            <span id="sitetime">载入运行时间...</span>
+            <script>
+                function siteTime() {
+                    var seconds = 1000;
+                    var minutes = seconds * 60;
+                    var hours = minutes * 60;
+                    var days = hours * 24;
+                    var years = days * 365;
+                    var today = new Date();
+                    var startYear = "2019";
+                    var startMonth = "11";
+                    var startDate = "30";
+                    var startHour = "0";
+                    var startMinute = "0";
+                    var startSecond = "0";
+                    var todayYear = today.getFullYear();
+                    var todayMonth = today.getMonth() + 1;
+                    var todayDate = today.getDate();
+                    var todayHour = today.getHours();
+                    var todayMinute = today.getMinutes();
+                    var todaySecond = today.getSeconds();
+                    var t1 = Date.UTC(startYear, startMonth, startDate, startHour, startMinute, startSecond);
+                    var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+                    var diff = t2 - t1;
+                    var diffYears = Math.floor(diff / years);
+                    var diffDays = Math.floor((diff / days) - diffYears * 365);
+                    var diffHours = Math.floor((diff - (diffYears * 365 + diffDays) * days) / hours);
+                    var diffMinutes = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours) /
+                        minutes);
+                    var diffSeconds = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours -
+                        diffMinutes * minutes) / seconds);
+                    if (startYear == todayYear) {
+                        document.getElementById("year").innerHTML = todayYear;
+                        document.getElementById("sitetime").innerHTML = "本站已安全运行 " + diffDays + " 天 " + diffHours +
+                            " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+                    } else {
+                        document.getElementById("year").innerHTML = startYear + " - " + todayYear;
+                        document.getElementById("sitetime").innerHTML = "本站已安全运行 " + diffYears + " 年 " + diffDays +
+                            " 天 " + diffHours + " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+                    }
+                }
+                setInterval(siteTime, 1000);
+            </script>
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link ">
+    <a href="https://github.com/davidricardo1026" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:david.ricardo@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=2778333155" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 2778333155" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+    <a href="https://www.zhihu.com/people/li-jia-tu-86-11-29/activities" class="tooltipped" target="_blank" data-tooltip="关注我的知乎: https://www.zhihu.com/people/li-jia-tu-86-11-29/activities" data-position="top" data-delay="50">
+        <i class="fab fa-zhihu1">知</i>
+    </a>
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/materialize/materialize.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/aos/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/js/matery.js"></script>
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/others/clicklove.js" async="async"></script>
+    
+    
+
+    
+
+    
+
+	
+    
+
+    
+
+    
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/background/ribbon-dynamic.js" async="async"></script>
+    
+
+    
+    <script src="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

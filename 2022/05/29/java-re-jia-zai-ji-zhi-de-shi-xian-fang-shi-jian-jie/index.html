@@ -423,14 +423,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    13
+                    1.1k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    1 分
+                    3 分
                 </div>
                 
 
@@ -448,7 +448,38 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="java热加载机制的实现方式简介"><a href="#java热加载机制的实现方式简介" class="headerlink" title="java热加载机制的实现方式简介"></a>java热加载机制的实现方式简介</h1>
+                <h1 id="java热部署机制的实现方式简介"><a href="#java热部署机制的实现方式简介" class="headerlink" title="java热部署机制的实现方式简介"></a>java热部署机制的实现方式简介</h1><h2 id="热部署和热加载定义"><a href="#热部署和热加载定义" class="headerlink" title="热部署和热加载定义"></a>热部署和热加载定义</h2><p>可以看到,热部署是包含热加载的,不过,这些概念并不太重要</p>
+<img src="/2022/05/29/java-re-jia-zai-ji-zhi-de-shi-xian-fang-shi-jian-jie/airplane.jpeg" class="" title="热部署相当于给飞行中的飞机更换引擎">
+
+<h3 id="热部署-hot-deploy"><a href="#热部署-hot-deploy" class="headerlink" title="热部署 hot deploy"></a>热部署 hot deploy</h3><p>热部署针对的是容器或者是整个应用，部署了新的资源或者修改了一些代码，需要在不停机的情况下的重新加载整个应用。</p>
+<h3 id="热加载-hotswap"><a href="#热加载-hotswap" class="headerlink" title="热加载 hotswap"></a>热加载 hotswap</h3><p>热加载针对的是单个字节码文件，指的是重新编译后，不需要停机，应用程序就可以加载使用新的class文件</p>
+<h2 id="目前存在的方案"><a href="#目前存在的方案" class="headerlink" title="目前存在的方案"></a>目前存在的方案</h2><h3 id="java-hotswap"><a href="#java-hotswap" class="headerlink" title="java hotswap"></a>java hotswap</h3><p>Java Platform Debugger Architecture是java IDE 调试的基础,
+修改jvm启动参数即可打开,</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">-agentlib:jdwp=transport=dt_socket,address=8000,server=y,suspend=n<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>技术原理也是java instrument api,
+确定：仅能修改方法体，不能增加修改方法、field</p>
+<h2 id="另一种可行的思路"><a href="#另一种可行的思路" class="headerlink" title="另一种可行的思路"></a>另一种可行的思路</h2><p>实现的思路是多种多样的,比如可以定制jvm,但是这里不讨论这些,这里只是讨论其中一种相对简单的实现  </p>
+<p>因为jvm中的class是不可变的,而且同一个classloader的同一个名字的class,jvm才会当作一个class,所以,不能直接去改变class,需要变通一下,用自定义的classloader
+去加载新的class,同时业务上,需要去使用新的class,这样才可以变相的达到目的,</p>
+<h2 id="如何生成新的class"><a href="#如何生成新的class" class="headerlink" title="如何生成新的class"></a>如何生成新的class</h2><ol>
+<li>自己用字节码生成,相对硬核一些,不太友好,也不方便</li>
+<li>用源码生成,相对简单,直接,更友好</li>
+</ol>
+<h3 id="自己使用字节码生成"><a href="#自己使用字节码生成" class="headerlink" title="自己使用字节码生成"></a>自己使用字节码生成</h3><p>java的库比较丰富,字节码框架还是非常多的,无论是基础的ASM,还是javaAssist,还是byteBuddy,都是各有千秋,适用于不同的场景,可以自行选择</p>
+<h3 id="用源码生成"><a href="#用源码生成" class="headerlink" title="用源码生成"></a>用源码生成</h3><ol>
+<li>groovy编译java源码</li>
+<li>eclipse的ECJ</li>
+<li>java的JSR199的JavaCompilerAPI</li>
+</ol>
+<h4 id="groovy编译java源码"><a href="#groovy编译java源码" class="headerlink" title="groovy编译java源码"></a>groovy编译java源码</h4><p>groovy是个好东西,尤其是当你需要动态特性的时候,没错,groovy本来写的编译器是用来编译groovy源码的,但是需要交叉编译,所以,顺带也会编译java的代码,所以,没错,groovy的compiler也会编译java的代码,没有任何的问题</p>
+<h4 id="eclipse的ECJ"><a href="#eclipse的ECJ" class="headerlink" title="eclipse的ECJ"></a>eclipse的ECJ</h4><p>eclipse本来是java的IDE,为了实现增量编译之类的一些特性吧,或者是别的特性,eclipse自己也开发了一套编译器,用来编译java的代码</p>
+<h4 id="java的JSR199的JavaCompilerAPI"><a href="#java的JSR199的JavaCompilerAPI" class="headerlink" title="java的JSR199的JavaCompilerAPI"></a>java的JSR199的JavaCompilerAPI</h4><p>这个就是直接的java api,原生的,相当于包裹了一下javac,效率不错</p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>groovy和ecj的方式非常简单,java的jsr199相对繁琐,但是原生,跟着jdk版本走,最有效,相对来说,可能性能也最好,兼容性也更好,但是需要JDK,你装一个JRE是不行的</p>
+<h2 id="如何加载新的class"><a href="#如何加载新的class" class="headerlink" title="如何加载新的class"></a>如何加载新的class</h2><p>前面提到的思路,已经说明了,java的同名类,类加载其必须是不同的,所以,每次加载,都需要一个新的classLoader,不过不用担心内存泄漏,java的class也是会内存回收的,原来不用的类,你只要切断所有的引用,这个类也是可以回收的</p>
+<h2 id="真的那么简单吗"><a href="#真的那么简单吗" class="headerlink" title="真的那么简单吗"></a>真的那么简单吗</h2><p>其实讲到这里,技术的问题其实都已经解决了,但是类加载,不光光是技术上的问题,还有很多业务的问题,比如,类更改以后,如果让新的对象,全部派生自这个类,还有,尤其是对一些复杂的系统,比如spring,里面有相对复杂的初始化机制,问题就没那么简单,所以,
+一旦类改变以后,你甚至还是触发一系列刷新的动作才可以,这里想表达的是,一旦类重新以后,jvm本质上是一个静态的系统,不是为动态设计的,所以,一旦出现动态以后,业务上差不多对是要做调整和兼容的,所以,使用的时候,想要和业务相结合</p>
+<h2 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h2><p>本文,分析了一种热加载的技术,就是直接用别的classloader加载一个新的同名类,然后再使用业务上的方式让这个重新加载的类生效,同时,也顺带的分析了,如何生成一个新的类的几种方式,并做了简单的对比</p>
+
                 
             </div>
             <hr/>
@@ -831,7 +862,7 @@
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">24.4k</span>&nbsp;字
+                class="white-color">33.2k</span>&nbsp;字
             
             
             
