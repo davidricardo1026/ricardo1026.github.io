@@ -428,14 +428,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    2.2k
+                    2.4k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    8 分
+                    9 分
                 </div>
                 
 
@@ -537,7 +537,32 @@ HOOKS=(... modconf ...)<span aria-hidden="true" class="line-numbers-rows"><span>
         Kernel driver in use: vfio-pci
         Kernel modules: snd_hda_intel<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="qemu设置PCI直通"><a href="#qemu设置PCI直通" class="headerlink" title="qemu设置PCI直通"></a>qemu设置PCI直通</h3><h4 id="video-qxl-添加PCIe"><a href="#video-qxl-添加PCIe" class="headerlink" title="video qxl,添加PCIe"></a>video qxl,添加PCIe</h4><p>先使用模拟显卡</p>
+<h3 id="qemu设置PCI直通"><a href="#qemu设置PCI直通" class="headerlink" title="qemu设置PCI直通"></a>qemu设置PCI直通</h3><h4 id="amd-gpu-hyperv-检测"><a href="#amd-gpu-hyperv-检测" class="headerlink" title="amd gpu hyperv 检测"></a>amd gpu hyperv 检测</h4><p>这里需要设置允许xml编辑</p>
+<img src="/2022/11/27/qemu-xian-qia-zhi-tong-xiang-xi-jiao-cheng/enable_xml_edit.png" class="" title="virt-manager设置允许xml编辑">
+
+<p>支持hyperv检测gpu,这里是一个优化</p>
+<pre class="line-numbers language-xml" data-language="xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>features</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>acpi</span><span class="token punctuation">/&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>apic</span><span class="token punctuation">/&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>hyperv</span> <span class="token attr-name">mode</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>custom<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>relaxed</span> <span class="token attr-name">state</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>on<span class="token punctuation">"</span></span><span class="token punctuation">/&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>vapic</span> <span class="token attr-name">state</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>on<span class="token punctuation">"</span></span><span class="token punctuation">/&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>spinlocks</span> <span class="token attr-name">state</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>on<span class="token punctuation">"</span></span> <span class="token attr-name">retries</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>8191<span class="token punctuation">"</span></span><span class="token punctuation">/&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>vpindex</span> <span class="token attr-name">state</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>on<span class="token punctuation">"</span></span><span class="token punctuation">/&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>runtime</span> <span class="token attr-name">state</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>on<span class="token punctuation">"</span></span><span class="token punctuation">/&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>synic</span> <span class="token attr-name">state</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>on<span class="token punctuation">"</span></span><span class="token punctuation">/&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>stimer</span> <span class="token attr-name">state</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>on<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>direct</span> <span class="token attr-name">state</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>on<span class="token punctuation">"</span></span><span class="token punctuation">/&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>stimer</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>reset</span> <span class="token attr-name">state</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>on<span class="token punctuation">"</span></span><span class="token punctuation">/&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>vendor_id</span> <span class="token attr-name">state</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>on<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>notavm<span class="token punctuation">"</span></span><span class="token punctuation">/&gt;</span></span> <span class="token comment">&lt;!-- 就是这一句 --&gt;</span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>frequencies</span> <span class="token attr-name">state</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>on<span class="token punctuation">"</span></span><span class="token punctuation">/&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>reenlightenment</span> <span class="token attr-name">state</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>on<span class="token punctuation">"</span></span><span class="token punctuation">/&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>hyperv</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>vmport</span> <span class="token attr-name">state</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>off<span class="token punctuation">"</span></span><span class="token punctuation">/&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>features</span><span class="token punctuation">&gt;</span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="video-qxl-添加PCIe"><a href="#video-qxl-添加PCIe" class="headerlink" title="video qxl,添加PCIe"></a>video qxl,添加PCIe</h4><p>先使用模拟显卡</p>
 <img src="/2022/11/27/qemu-xian-qia-zhi-tong-xiang-xi-jiao-cheng/video_qxl.png" class="" title="先使用video_qxl设备">
 <p>添加PCI设备,把整组加上,我的组有个PCIe Controller,不用加</p>
 <img src="/2022/11/27/qemu-xian-qia-zhi-tong-xiang-xi-jiao-cheng/add_pci.png" class="" title="添加PCIe设备">
@@ -699,18 +724,17 @@ barrier鼠标没有任何延迟,文字复制粘贴没有任何问题,图片粘�
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="far fa-dot-circle"></i>&nbsp;本篇
-            </div>
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2022/11/27/qemu-xian-qia-zhi-tong-xiang-xi-jiao-cheng/">
+                <a href="/2022/11/27/manjaro-shi-yong-qemu-an-zhuang-win10-xiang-xi-jiao-cheng/">
                     <div class="card-image">
                         
                         
-                        <img src="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/medias/featureimages/17.jpg" class="responsive-img" alt="qemu显卡直通详细教程">
+                        <img src="https://cdn.jsdelivr.net/gh/davidricardo1026/ricardo1026.github.io/medias/featureimages/6.jpg" class="responsive-img" alt="manjaro使用qemu安装win10详细教程">
                         
-                        <span class="card-title">qemu显卡直通详细教程</span>
+                        <span class="card-title">manjaro使用qemu安装win10详细教程</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -720,9 +744,9 @@ barrier鼠标没有任何延迟,文字复制粘贴没有任何问题,图片粘�
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-11-27
-                            </span>
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-11-27
+                        </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -735,16 +759,11 @@ barrier鼠标没有任何延迟,文字复制粘贴没有任何问题,图片粘�
                         </span>
                     </div>
                 </div>
-
                 
                 <div class="card-action article-tags">
                     
                     <a href="/tags/qemu/">
                         <span class="chip bg-color">qemu</span>
-                    </a>
-                    
-                    <a href="/tags/%E6%98%BE%E5%8D%A1%E7%9B%B4%E9%80%9A/">
-                        <span class="chip bg-color">显卡直通</span>
                     </a>
                     
                 </div>
@@ -979,7 +998,7 @@ barrier鼠标没有任何延迟,文字复制粘贴没有任何问题,图片粘�
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">35.5k</span>&nbsp;字
+                class="white-color">36.5k</span>&nbsp;字
             
             
             
