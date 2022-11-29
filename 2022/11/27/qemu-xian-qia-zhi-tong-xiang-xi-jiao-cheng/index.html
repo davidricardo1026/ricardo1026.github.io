@@ -428,7 +428,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    2.4k
+                    2.3k
                 </div>
                 
 
@@ -516,8 +516,6 @@ options vfio-pci ids=8086:1901,1002:67ef,1002:aae0<span aria-hidden="true" class
 <p>注意一下事项</p>
 <ol>
 <li>绑定都是需要绑定整个group所有设备</li>
-<li>如果你显卡所在的group,出现<code>PCI Express Root Port</code>,那么就不可以绑定,你可以看看你的主板是否支持ACS,把分组再拆开,这样才可以,否则的话,也可以试试
-换个显卡插槽,否则的话意味着你的主板不支持</li>
 </ol>
 <h4 id="提前加载驱动"><a href="#提前加载驱动" class="headerlink" title="提前加载驱动"></a>提前加载驱动</h4><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"># /etc/mkinitcpio.conf
 MODULES=(... vfio_pci vfio vfio_iommu_type1 vfio_virqfd ...)
@@ -998,7 +996,7 @@ barrier鼠标没有任何延迟,文字复制粘贴没有任何问题,图片粘�
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">36.5k</span>&nbsp;字
+                class="white-color">36.4k</span>&nbsp;字
             
             
             
