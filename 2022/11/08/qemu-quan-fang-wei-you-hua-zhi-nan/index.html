@@ -424,7 +424,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.1k
+                    970
                 </div>
                 
 
@@ -506,16 +506,6 @@
         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>hugepages</span><span class="token punctuation">/&gt;</span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>memoryBacking</span><span class="token punctuation">&gt;</span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>domain</span><span class="token punctuation">&gt;</span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="时钟优化"><a href="#时钟优化" class="headerlink" title="时钟优化"></a>时钟优化</h3><p>可以大幅减少cpu的使用率,效果比较明显</p>
-<pre class="line-numbers language-xml" data-language="xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>clock</span> <span class="token attr-name">offset</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>localtime<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
-    <span class="token comment">&lt;!-- qemu 默认下面的两项去掉  --&gt;</span>
-    <span class="token comment">&lt;!--    &lt;timer name='rtc' tickpolicy='catchup'/&gt;--&gt;</span>
-    <span class="token comment">&lt;!--    &lt;timer name='pit' tickpolicy='delay'/&gt;--&gt;</span>
-    <span class="token comment">&lt;!--    qemu默认是no,改成yes --&gt;</span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>timer</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>hpet<span class="token punctuation">"</span></span> <span class="token attr-name">present</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>yes<span class="token punctuation">"</span></span><span class="token punctuation">/&gt;</span></span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>timer</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>hypervclock<span class="token punctuation">"</span></span> <span class="token attr-name">present</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>yes<span class="token punctuation">"</span></span><span class="token punctuation">/&gt;</span></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>clock</span><span class="token punctuation">&gt;</span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="io优化"><a href="#io优化" class="headerlink" title="io优化"></a>io优化</h3><p>存储类型选择virtIO驱动,网络类型也选择virtIO模式</p>
 <h3 id="针对windows的虚拟机优化"><a href="#针对windows的虚拟机优化" class="headerlink" title="针对windows的虚拟机优化"></a>针对windows的虚拟机优化</h3><p>这是微软为了提高windows在hyper模式下所做的优化,windows知道自己是作为虚拟机了,主动做的一些优化,qemu也支持</p>
