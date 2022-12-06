@@ -424,14 +424,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    664
+                    761
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    2 分
+                    3 分
                 </div>
                 
 
@@ -451,6 +451,10 @@
             <div id="articleContent">
                 <h1 id="mysql中tinyint-1-和tinyint-4-到底有什么区别"><a href="#mysql中tinyint-1-和tinyint-4-到底有什么区别" class="headerlink" title="mysql中tinyint(1)和tinyint(4)到底有什么区别"></a>mysql中tinyint(1)和tinyint(4)到底有什么区别</h1><h2 id="tinyint基础"><a href="#tinyint基础" class="headerlink" title="tinyint基础"></a>tinyint基础</h2><p>tinyint存储使用了1个字节,就是8位,只能存储2^8即256个数字.在mysql实现中,有符号是-128-127,无符号是0-255,tinyint后面的括号带的数字,以后暂称之为M,<strong>那么1和4到底有什么区别呢?</strong>
 接下来我们就探讨一下M的作用</p>
+<h2 id="先下结论"><a href="#先下结论" class="headerlink" title="先下结论"></a>先下结论</h2><ol>
+<li>存储上没有任何区别,都是1个字节,8位</li>
+<li>唯一的区别就是字段如何设置了zerofill零填充的时候,控制台返回的时候,会根据数字的长度自动填充成对应的位数,现在基本都是可视化操作了,这个特性,控制台,console才会用,几乎没啥作用</li>
+</ol>
 <h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>实践出真知</p>
 <h3 id="1-常规测试"><a href="#1-常规测试" class="headerlink" title="1. 常规测试"></a>1. 常规测试</h3><p>使用基本的表,插入基本的数据</p>
 <img src="/2019/11/30/mysql-zhong-tinyint-1-he-tinyint-4-dao-di-you-shi-me-qu-bie/basic_table.png" class="" title="基本表">
@@ -866,7 +870,7 @@
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">36.4k</span>&nbsp;字
+                class="white-color">36.5k</span>&nbsp;字
             
             
             
