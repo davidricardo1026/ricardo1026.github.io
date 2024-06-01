@@ -1,0 +1,183 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>开源报表平台调研 | 李嘉图</title><meta name="author" content="李嘉图"><meta name="copyright" content="李嘉图"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="开源报表平台调研目前市面上有一些流行的开源BI平台,看样子还很不错,而且功能也比较强大,在这里简单的对比一下它们,从功能到实现 接下来是几个比较出名的BIdatartdatart 是新一代数据可视化开放平台，支持各类企业数据可视化场景需求，如创建和使用报表、仪表板和大屏，进行可视化数据分析，构建可视化数据应用等。由原 davinci 主创团队出品，datart 更加开放、可塑和智能，并在数据与艺术">
+<meta property="og:type" content="article">
+<meta property="og:title" content="开源报表平台调研">
+<meta property="og:url" content="https://nobug.xin/2022/10/14/%E5%BC%80%E6%BA%90%E6%8A%A5%E8%A1%A8%E5%B9%B3%E5%8F%B0%E8%B0%83%E7%A0%94/index.html">
+<meta property="og:site_name" content="李嘉图">
+<meta property="og:description" content="开源报表平台调研目前市面上有一些流行的开源BI平台,看样子还很不错,而且功能也比较强大,在这里简单的对比一下它们,从功能到实现 接下来是几个比较出名的BIdatartdatart 是新一代数据可视化开放平台，支持各类企业数据可视化场景需求，如创建和使用报表、仪表板和大屏，进行可视化数据分析，构建可视化数据应用等。由原 davinci 主创团队出品，datart 更加开放、可塑和智能，并在数据与艺术">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://nobug.xin/asset/image/logo.svg">
+<meta property="article:published_time" content="2022-10-14T06:50:21.000Z">
+<meta property="article:modified_time" content="2023-03-21T13:06:02.614Z">
+<meta property="article:author" content="李嘉图">
+<meta property="article:tag" content="BI">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://nobug.xin/asset/image/logo.svg"><link rel="shortcut icon" href="/favicon.png"><link rel="canonical" href="https://nobug.xin/2022/10/14/%E5%BC%80%E6%BA%90%E6%8A%A5%E8%A1%A8%E5%B9%B3%E5%8F%B0%E8%B0%83%E7%A0%94/index.html"><link rel="preconnect" href="//unpkg.com"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://unpkg.com/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://unpkg.com/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"找不到您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://unpkg.com/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '开源报表平台调研',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-03-21 21:06:02'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.2.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/asset/image/logo.svg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">38</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">36</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">16</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="李嘉图"><img class="site-icon" src="/asset/image/logo.svg"/><span class="site-name">李嘉图</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">开源报表平台调研</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-10-14T06:50:21.000Z" title="发表于 2022-10-14 14:50:21">2022-10-14</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-03-21T13:06:02.614Z" title="更新于 2023-03-21 21:06:02">2023-03-21</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/BI/">BI</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">467</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>1分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="开源报表平台调研"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="post-content" id="article-container"><h1 id="开源报表平台调研"><a href="#开源报表平台调研" class="headerlink" title="开源报表平台调研"></a>开源报表平台调研</h1><p>目前市面上有一些流行的开源BI平台,看样子还很不错,而且功能也比较强大,在这里简单的对比一下它们,从功能到实现</p>
+<h2 id="接下来是几个比较出名的BI"><a href="#接下来是几个比较出名的BI" class="headerlink" title="接下来是几个比较出名的BI"></a>接下来是几个比较出名的BI</h2><h3 id="datart"><a href="#datart" class="headerlink" title="datart"></a>datart</h3><p>datart 是新一代数据可视化开放平台，支持各类企业数据可视化场景需求，如创建和使用报表、仪表板和大屏，进行可视化数据分析，构建可视化数据应用等。<br>由原 davinci 主创团队出品，datart 更加开放、可塑和智能，并在数据与艺术之间寻求最佳平衡  </p>
+<ol>
+<li>文档比较丰富</li>
+<li>设计理念完善</li>
+<li>功能非常强大</li>
+</ol>
+<h3 id="JimuReport"><a href="#JimuReport" class="headerlink" title="JimuReport"></a>JimuReport</h3><p>主要功能是那种打印的报表,然后大屏bi是收费的,pass</p>
+<h3 id="EasyReport"><a href="#EasyReport" class="headerlink" title="EasyReport"></a>EasyReport</h3><p>个人项目,功能比较弱,虽然是BI,但是好像没有BI功能 pass</p>
+<h3 id="CBoard"><a href="#CBoard" class="headerlink" title="CBoard"></a>CBoard</h3><p>企业开源,但是界面看起来比较朴素,而且功能比较弱 待定</p>
+<h3 id="SmartChart"><a href="#SmartChart" class="headerlink" title="SmartChart"></a>SmartChart</h3><p>python编写,功能抽象度比较低,偏向于代码编写,但是仍有借鉴意义,可以借鉴,但是因为技术栈不一样,所以仅供参考</p>
+<h3 id="datagear"><a href="#datagear" class="headerlink" title="datagear"></a>datagear</h3><p>功能比较强大,前端偏向于diy,可以直接自定义前端的内容,及时生效,前端比较强大</p>
+<h3 id="Davinci"><a href="#Davinci" class="headerlink" title="Davinci"></a>Davinci</h3><p>功能强大,和datart有很多相似之处,很多地方可以借鉴</p>
+<h3 id="dataease"><a href="#dataease" class="headerlink" title="dataease"></a>dataease</h3><p>可视化做得非常好,抽象非常多,数据集之间的转换非常容易,支持的组建相对比较丰富</p>
+<h2 id="进一步对比"><a href="#进一步对比" class="headerlink" title="进一步对比"></a>进一步对比</h2><p>其实国外也有很多优秀的bi,但是相比之下,并不适应国内的行情,所以,并没有参考国外的</p>
+<p>综合之下,入选的这些bi分别是</p>
+<ol>
+<li>datart</li>
+<li>Davinci</li>
+<li>datagear</li>
+<li>dataease</li>
+</ol>
+<p>只起到参考意义的组件是</p>
+<ol>
+<li>CBoard</li>
+<li>SmartChart</li>
+</ol>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://nobug.xin">李嘉图</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://nobug.xin/2022/10/14/%E5%BC%80%E6%BA%90%E6%8A%A5%E8%A1%A8%E5%B9%B3%E5%8F%B0%E8%B0%83%E7%A0%94/">https://nobug.xin/2022/10/14/%E5%BC%80%E6%BA%90%E6%8A%A5%E8%A1%A8%E5%B9%B3%E5%8F%B0%E8%B0%83%E7%A0%94/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://nobug.xin" target="_blank">李嘉图</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/BI/">BI</a></div><div class="post_share"><div class="social-share" data-image="/asset/image/logo.svg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://unpkg.com/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://unpkg.com/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/10/26/qemu%E7%AE%80%E4%BB%8B/" title="qemu简介"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">qemu简介</div></div></a></div><div class="next-post pull-right"><a href="/2022/10/08/%E6%B5%81%E7%A8%8B%E7%BC%96%E6%8E%92%E6%BC%AB%E8%B0%88/" title="流程编排漫谈"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">流程编排漫谈</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/asset/image/logo.svg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">李嘉图</div><div class="author-info__description">程序员李嘉图的博客</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">38</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">36</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">16</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/davidricardo1026"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="mailto:david.ricardo@qq.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">李嘉图的博客</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BC%80%E6%BA%90%E6%8A%A5%E8%A1%A8%E5%B9%B3%E5%8F%B0%E8%B0%83%E7%A0%94"><span class="toc-number">1.</span> <span class="toc-text">开源报表平台调研</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8E%A5%E4%B8%8B%E6%9D%A5%E6%98%AF%E5%87%A0%E4%B8%AA%E6%AF%94%E8%BE%83%E5%87%BA%E5%90%8D%E7%9A%84BI"><span class="toc-number">1.1.</span> <span class="toc-text">接下来是几个比较出名的BI</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#datart"><span class="toc-number">1.1.1.</span> <span class="toc-text">datart</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JimuReport"><span class="toc-number">1.1.2.</span> <span class="toc-text">JimuReport</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#EasyReport"><span class="toc-number">1.1.3.</span> <span class="toc-text">EasyReport</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CBoard"><span class="toc-number">1.1.4.</span> <span class="toc-text">CBoard</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SmartChart"><span class="toc-number">1.1.5.</span> <span class="toc-text">SmartChart</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#datagear"><span class="toc-number">1.1.6.</span> <span class="toc-text">datagear</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Davinci"><span class="toc-number">1.1.7.</span> <span class="toc-text">Davinci</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#dataease"><span class="toc-number">1.1.8.</span> <span class="toc-text">dataease</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9B%E4%B8%80%E6%AD%A5%E5%AF%B9%E6%AF%94"><span class="toc-number">1.2.</span> <span class="toc-text">进一步对比</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/04/14/traefik%E7%AE%80%E5%8D%95%E4%BB%8B%E7%BB%8D/" title="traefik简单介绍">traefik简单介绍</a><time datetime="2023-04-14T07:13:20.000Z" title="发表于 2023-04-14 15:13:20">2023-04-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/03/21/camunda%E5%B8%B8%E8%A7%81%E5%8A%9F%E8%83%BD%E8%A7%A3%E6%9E%90/" title="camunda常见功能解析">camunda常见功能解析</a><time datetime="2023-03-21T13:41:51.000Z" title="发表于 2023-03-21 21:41:51">2023-03-21</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2022/12/09/hazelcast-management-center%E6%8E%A7%E5%88%B6%E4%B8%AD%E5%BF%83%E7%AE%80%E4%BB%8B/" title="hazelcast-management-center控制中心简介">hazelcast-management-center控制中心简介</a><time datetime="2022-12-09T02:15:11.000Z" title="发表于 2022-12-09 10:15:11">2022-12-09</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2022/12/08/hazelcast%E5%85%A5%E9%97%A8%E4%BD%BF%E7%94%A8/" title="hazelcast入门使用">hazelcast入门使用</a><time datetime="2022-12-08T06:37:04.000Z" title="发表于 2022-12-08 14:37:04">2022-12-08</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2022/12/06/%E5%88%86%E5%B8%83%E5%BC%8F%E7%BC%93%E5%AD%98redis-hazelcast-ignite-infinispan%E7%AE%80%E4%BB%8B/" title="分布式缓存redis,hazelcast,ignite,infinispan简介">分布式缓存redis,hazelcast,ignite,infinispan简介</a><time datetime="2022-12-06T09:59:49.000Z" title="发表于 2022-12-06 17:59:49">2022-12-06</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By 李嘉图</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://unpkg.com/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.js"></script><div class="js-pjax"></div><script defer="defer" id="ribbon" src="https://unpkg.com/butterfly-extsrc@1.1.3/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="true"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=4.13.0"></script></div></div></body></html>

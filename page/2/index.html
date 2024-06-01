@@ -1,0 +1,270 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>李嘉图 - 李嘉图的博客</title><meta name="author" content="李嘉图"><meta name="copyright" content="李嘉图"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="程序员李嘉图的博客">
+<meta property="og:type" content="website">
+<meta property="og:title" content="李嘉图">
+<meta property="og:url" content="https://nobug.xin/page/2/index.html">
+<meta property="og:site_name" content="李嘉图">
+<meta property="og:description" content="程序员李嘉图的博客">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://nobug.xin/asset/image/logo.svg">
+<meta property="article:author" content="李嘉图">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://nobug.xin/asset/image/logo.svg"><link rel="shortcut icon" href="/favicon.png"><link rel="canonical" href="https://nobug.xin/page/2/index.html"><link rel="preconnect" href="//unpkg.com"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://unpkg.com/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://unpkg.com/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"找不到您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://unpkg.com/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '李嘉图',
+  isPost: false,
+  isHome: true,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2024-06-01 18:31:39'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.2.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/asset/image/logo.svg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">38</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">36</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">16</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="李嘉图"><img class="site-icon" src="/asset/image/logo.svg"/><span class="site-name">李嘉图</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div class="recent-posts" id="recent-posts"><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2022/10/26/qemu%E7%AE%80%E4%BB%8B/" title="qemu简介">qemu简介</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-10-26T05:24:19.000Z" title="发表于 2022-10-26 13:24:19">2022-10-26</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E8%99%9A%E6%8B%9F%E6%9C%BA/">虚拟机</a></span></div><div class="content">qemu简介QEMU开源,是一个托管的虚拟机，它通过动态的二进制转换，模拟CPU，并且提供一组设备模型，使它能够运行多种未修改的客户机OS，可以通过与KVM一起使用进而接近本地速度运行虚拟机（接近真实电脑的速度）。  
+QEMU还可以为user-level的进程执行CPU仿真，进而允许了为一种架构编译的程序在另外一种架构上面运行（借由VMM的形式）。
+
+
+kvm基于内核的虚拟机（英语：Kernel-based Virtual Machine，缩写为KVM）是一种用于Linux内核中的虚拟化基础设施，可将Linux内核转化为一个虚拟机监视器。KVM于2007年2月5日被导入Linux 2.6.20核心中。KVM需要支持硬件虚拟化拓展特性的处理器。
+qemu-kvmqemu负责外围设备,比如存储可以直通,然后kvm负责虚拟内核,qemu-kvm,再加上一些其它的优化,其中显卡也可以直通,可以获得几乎真机80-90%的性能,非常强大
+其它常见的面向用户的虚拟机virtualbox和vmware也是两款强大的虚拟机,并且开箱易用,一般情况下是够用的,但是和qemu-kvm,比起来,几乎没法比较 ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2022/10/14/%E5%BC%80%E6%BA%90%E6%8A%A5%E8%A1%A8%E5%B9%B3%E5%8F%B0%E8%B0%83%E7%A0%94/" title="开源报表平台调研">开源报表平台调研</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-10-14T06:50:21.000Z" title="发表于 2022-10-14 14:50:21">2022-10-14</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/BI/">BI</a></span></div><div class="content">开源报表平台调研目前市面上有一些流行的开源BI平台,看样子还很不错,而且功能也比较强大,在这里简单的对比一下它们,从功能到实现
+接下来是几个比较出名的BIdatartdatart 是新一代数据可视化开放平台，支持各类企业数据可视化场景需求，如创建和使用报表、仪表板和大屏，进行可视化数据分析，构建可视化数据应用等。由原 davinci 主创团队出品，datart 更加开放、可塑和智能，并在数据与艺术之间寻求最佳平衡  
+
+文档比较丰富
+设计理念完善
+功能非常强大
+
+JimuReport主要功能是那种打印的报表,然后大屏bi是收费的,pass
+EasyReport个人项目,功能比较弱,虽然是BI,但是好像没有BI功能 pass
+CBoard企业开源,但是界面看起来比较朴素,而且功能比较弱 待定
+SmartChartpython编写,功能抽象度比较低,偏向于代码编写,但是仍有借鉴意义,可以借鉴,但是因为技术栈不一样,所以仅供参考
+datagear功能比较强大,前端偏向于diy,可以直接自定义前端的内容,及时生效,前端比较强大
+Davinci功能强大,和datart有很多相似之处,很多地方可以 ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2022/10/08/%E6%B5%81%E7%A8%8B%E7%BC%96%E6%8E%92%E6%BC%AB%E8%B0%88/" title="流程编排漫谈">流程编排漫谈</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-10-08T09:13:12.000Z" title="发表于 2022-10-08 17:13:12">2022-10-08</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E6%B5%81%E7%A8%8B%E7%BC%96%E6%8E%92/">流程编排</a></span></div><div class="content">流程编排漫谈讲述流程编排的概念,分类,以及传统的流程引擎代表flowable
+流程编排的使用场景使用到流程编排的场景,大体都是复杂多变的,而且需要动态的执行,如果使用硬编码来开发,代码需要经常修改,而且如果代码耦合严重,代码的可维护性也非常差,那么代码修改以后,出错的概率大大增加,常见的场景如下
+
+oa,企业办公场景
+电商算促销
+etl清洗
+规则引擎
+微服务编排
+其余复杂的流程场景,适合使用责任链的设计模式的场景
+
+流程编排定义设计好的流程,在流程引擎的驱动下,按照设计,一个个组件的执行动态执行下去,可以通过上下文共享数据
+
+流程定义,定义一个流程如何执行
+流程组件,流程执行的一个个节点
+流程上下文,组件之间共享数据的机制
+
+流程编排和服务编排现在的流程编排一般分为传统的流程编排,比较学院派,以BPMN为主,典型的框架就是activity&#x2F;Camunda&#x2F;flowable,还有的就是一些比较冷门,或者没那么出名的框架,弱点的甚至是流线型的流程定义,强大的就是DAG的流程定义,DAG系的相对功能更强大  
+这面这张图展示了bpmn的三兄弟,有篇文章对三兄弟做了相对比较 ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2022/10/05/%E6%88%91%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BB%8Evz/" title="我为什么从vz">我为什么从vz</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-10-05T09:06:46.000Z" title="发表于 2022-10-05 17:06:46">2022-10-05</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E6%97%A5%E8%AE%B0/">日记</a></span></div><div class="content">我为什么从微众离职微众并不是一家适合长久发展的公司
+
+
+画虎画皮难画骨和领导同事聊过,还有自己平常也都看到了,公司人员流动很大,老员工也快走光了,最近直接上司,6年的老员工,差不多第一批,也走了,有时候能直接跑一批,来的全都是新人,公司的产品问题也很多,关键是还解决不了
+
+高层浮躁,不会想着用心打磨一个产品,主营业务,擅长的不好好做,总是想着如何去迎合市场,去投机,做了一大堆没用的东西,来的时候就火急火燎的做了一个智能贷后,忙活三个月,结果到最后,几乎没什么项目,我给同事吐槽同事给我讲,这样的东西还很多呢
+中层缺乏技术,总是想着如何糊弄过去,不会认真的考虑以后怎么办,每次都当救火队员,但是从不真正地解决问题,最近日志脱敏,也是想着先用正则糊弄过去,我当场就提了,正则效率很差,性能既有可能扛不住,结果,用正则的版本线上直接cpu爆表然后,关闭了,我这边做的非正则版本,花时间做的,全面避免了正则,效果不错
+底层更是缺乏技术和规范,混乱不堪,代码上线以后,连对应的版本都找不到,写东西,更是不讲究效率,毫无章法,写出来的东西,效率很低,稍微并发高一点,性能就出问题
+
+整个公司,2014成立,都 ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2022/09/14/vmware%E7%9A%843D%E6%80%A7%E8%83%BD%E6%9C%89%E5%A4%9A%E5%BC%BA/" title="vmware的3D性能有多强">vmware的3D性能有多强</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-09-14T09:14:20.000Z" title="发表于 2022-09-14 17:14:20">2022-09-14</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E5%85%B6%E5%AE%83/">其它</a></span></div><div class="content">vmware的3D性能有多强很强,大概70%左右吧,无论是windows平台还是linux平台,都差不多是这个结果,可能windows的72%左右,linux的68%,所以,只要你原来的显卡很强,就可以一直强
+如何测试其实测试的时候,使用鲁大师测试的,并不怎么严格,但是差不多就行了,比如rx460,本来能跑到7w分,但是虚拟机里面就能跑到5w分,1GB显存的情况,还有一些up主,也看他们的视频,也用的鲁大师,差不多就是70%左右的样子,但是他们是windows
+杂谈我是虚拟机重度用户,qemu的话,因为只有一个显卡,不能显卡直通,所以,暂时virtualBox和vmware是主力
+
+virtualBox适合跑一些后台任务,也很稳定,而且占用可能会少一些吧
+vmware适合桌面办公,它的增强工具更稳定,可以十天半个月不关机还是好好的,virtualbox就不行了,可能用个几天就会出问题
+
+vmware优化
+内存给够,这个看你需求,vmware有个所有虚拟机的内存限制,调高一些,只是max限制而已,而且一下子把内存分配好,不要让它使用交换内存,这样性能肯定有折扣的
+cpu给够,有些人害怕虚 ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2022/09/09/%E8%87%AA%E5%BB%BA%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5rustDesk/" title="自建服务器远程连接rustDesk">自建服务器远程连接rustDesk</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-09-09T04:28:13.000Z" title="发表于 2022-09-09 12:28:13">2022-09-09</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E5%B7%A5%E5%85%B7/">工具</a></span></div><div class="content">自建服务器远程连接rustDesk为什么需要自建服务器远程连接
+当你们公司封了远程连接工具的时候
+当你的远程连接工具速度不快的时候
+当你的远程连接工具不是会员的时候
+
+自建服务器的成本如何解决rustDesk对ECS要求极低,1核0.5g跑起来,就跟没跑一样
+
+选一个配置最低的还是共享的ECS
+选择按量付费
+选择费用最低的云盘(20g一个月才7元)
+不用的时候关掉服务器,随用随开,关机的时候,选择节省停机类似的模式,可以做到关机不付费,但是云盘一直会收钱,不过可以做到很低
+
+rustDesk如何自建服务器自己去官网看,就是下载两个文件,启动即可
+阿里云自建服务器指南,1小时不到1毛钱
+
+
+
+
+
+阿里云有自己的app,创建好以后,可以设置成开机自动启动,用完关掉,一定要确认是节省停机模式,这样只有20g的云盘还在用,一个月才7块钱,然后cpu和内存,带宽还有公网ip都释放了,不要掏钱,虽然带宽拉满,100Mbps,但是1G流量是0.8元,其实一个小时后用不了多少流量的,还是花不了多少钱的,折合算下来,其实一个小时不到1毛钱,而且你还随用随关,基本上非常nice
+</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2022/08/04/java%E7%BC%96%E7%A0%81%E7%BB%88%E6%9E%81%E6%8C%87%E5%8D%971/" title="java编码终极指南1">java编码终极指南1</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-08-04T02:15:33.000Z" title="发表于 2022-08-04 10:15:33">2022-08-04</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/java/">java</a></span></div><div class="content">java中的编码
+
+关于字符编码的方式很多,比如常用的有unicode系列的utf8,utf16,utf32,还有中国的gb2312,GBK,GBK18030等等,这些网上的资料很多,但都不是本集要讲的内容,本集要讲的内容只有三个
+
+java的文件编码
+java的string的外在编码
+java的string的内在编码,jvm用的编码
+
+本文所有的讨论,直接基于jdk17,不见兼顾jdk8,所以,不会讨论历史的情况
+1. java的文件编码很多时候,大家都会说,防止文件乱码,然后统一使用utf-8,这样做没问题,但是为什么呢,这样做是对的,但是这样做的原因一定是对的嘛?
+
+java对于文件的编码方式是可以支持别的,不一定是utf-8,这个javac -help可以看到
+用utf-8的确是一个很好的选择,即使你们公司都在国内,用gb2312编码也可以,但是如果,你如果使用了自动的ci,在服务器上编码代码,如果服务器是linux的,那么它的默认编码就可以是utf-8,那你代码编译的时候,就需要手动指定编码方式,而且如果你的项目是开源的,放到github上,那么世界各地都可能有committ ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2022/05/30/javaagent%E7%AE%80%E4%BB%8B/" title="javaagent简介">javaagent简介</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-05-30T12:53:07.000Z" title="发表于 2022-05-30 20:53:07">2022-05-30</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/java/">java</a></span></div><div class="content">javaagent的作用javaAgent属于java比较高级的用法,平常java开发中几乎是接触不到的,比如skywalking用到了javaAgent的启动前的premain,因为可以修改加载的类,被用来做jvm级别的AOP,然后jvm诊断工具,Arthas用到了javaAgent的agentmain,启动后,也可以修改jvm的类,然后做jvm级别的AOP,然后做监控,当然Arthas还有很多其它的功能,不过大部分功能都和agentmain相关,需要修改现成的类
+javaagent是什么javaagent是java5开始提供的一种机制,java6还增强了java启动的时候,增加了javaagent参数,参数 javaagent 可以用于指定一个 jar 包,并且对该 java 包有2个要求：
+
+这个 jar 包的 MANIFEST.MF 文件必须指定 Premain-Class 项
+Premain-Class 指定的那个类必须实现 premain() 方法.
+
+premain 方法,从字面上理解,就是运行在 main 函数之前的的类.当Java虚拟机启动时,在执行main函数之前, ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2022/05/29/java%E7%83%AD%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F%E7%AE%80%E4%BB%8B/" title="java热加载机制的实现方式简介">java热加载机制的实现方式简介</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-05-29T14:39:16.000Z" title="发表于 2022-05-29 22:39:16">2022-05-29</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/java/">java</a></span></div><div class="content">java热部署机制的实现方式简介热部署和热加载定义可以看到,热部署是包含热加载的,不过,这些概念并不太重要
+
+
+热部署 hot deploy热部署针对的是容器或者是整个应用，部署了新的资源或者修改了一些代码，需要在不停机的情况下的重新加载整个应用。
+热加载 hotswap热加载针对的是单个字节码文件，指的是重新编译后，不需要停机，应用程序就可以加载使用新的class文件
+目前存在的方案java hotswapJava Platform Debugger Architecture是java IDE 调试的基础,修改jvm启动参数即可打开,
+1-agentlib:jdwp=transport=dt_socket,address=8000,server=y,suspend=n
+技术原理也是java instrument api,确定：仅能修改方法体，不能增加修改方法、field
+另一种可行的思路实现的思路是多种多样的,比如可以定制jvm,但是这里不讨论这些,这里只是讨论其中一种相对简单的实现  
+因为jvm中的class是不可变的,而且同一个classloader的同一个名字的class,j ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2022/05/29/java%E4%B8%ADclassloader%E7%9A%84%E4%BD%9C%E7%94%A8/" title="java中classloader的作用">java中classloader的作用</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-05-29T08:41:29.000Z" title="发表于 2022-05-29 16:41:29">2022-05-29</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/java/">java</a></span></div><div class="content">classLoader的作用java的类加载机制,从9开始,已经做出了更改,本文基于java9,所以会和其它的资料不太一样
+
+jvm使用classLoader加载.class文件变成class对象
+每个class对象都有自己的ClassLoader对象,谁加载的它,它的ClassLoader就是谁,这个可能是native的defineClass逻辑中的方法决定的
+jvm使用ClassLoader+类名字来确定一个类,所以,不同ClassLoader的类无论是否一样,都不会强转成功的
+一个ClassLoader只能加载一个类一次,再次加载相同名字的类,native方法会报错(只要你用了defineClass方法,但是你也必须用)
+
+按需加载ClassLoader按照实际的需要加载需要的类,一个类如果被关联,那么它会被ClassLoader从给定的方式找到,如果找不到,就是ClassNotFoundException,对于java9来说,有一种很方便的方法可以看到到底加载了多少类
+1java &lt;app_name&gt; -Xlog:class+load=info:classloade ...</div></div></div><nav id="pagination"><div class="pagination"><a class="extend prev" rel="prev" href="/"><i class="fas fa-chevron-left fa-fw"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/#content-inner">3</a><a class="page-number" href="/page/4/#content-inner">4</a><a class="extend next" rel="next" href="/page/3/#content-inner"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/asset/image/logo.svg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">李嘉图</div><div class="author-info__description">程序员李嘉图的博客</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">38</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">36</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">16</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/davidricardo1026"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="mailto:david.ricardo@qq.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">李嘉图的博客</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/04/14/traefik%E7%AE%80%E5%8D%95%E4%BB%8B%E7%BB%8D/" title="traefik简单介绍">traefik简单介绍</a><time datetime="2023-04-14T07:13:20.000Z" title="发表于 2023-04-14 15:13:20">2023-04-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/03/21/camunda%E5%B8%B8%E8%A7%81%E5%8A%9F%E8%83%BD%E8%A7%A3%E6%9E%90/" title="camunda常见功能解析">camunda常见功能解析</a><time datetime="2023-03-21T13:41:51.000Z" title="发表于 2023-03-21 21:41:51">2023-03-21</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2022/12/09/hazelcast-management-center%E6%8E%A7%E5%88%B6%E4%B8%AD%E5%BF%83%E7%AE%80%E4%BB%8B/" title="hazelcast-management-center控制中心简介">hazelcast-management-center控制中心简介</a><time datetime="2022-12-09T02:15:11.000Z" title="发表于 2022-12-09 10:15:11">2022-12-09</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2022/12/08/hazelcast%E5%85%A5%E9%97%A8%E4%BD%BF%E7%94%A8/" title="hazelcast入门使用">hazelcast入门使用</a><time datetime="2022-12-08T06:37:04.000Z" title="发表于 2022-12-08 14:37:04">2022-12-08</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2022/12/06/%E5%88%86%E5%B8%83%E5%BC%8F%E7%BC%93%E5%AD%98redis-hazelcast-ignite-infinispan%E7%AE%80%E4%BB%8B/" title="分布式缓存redis,hazelcast,ignite,infinispan简介">分布式缓存redis,hazelcast,ignite,infinispan简介</a><time datetime="2022-12-06T09:59:49.000Z" title="发表于 2022-12-06 17:59:49">2022-12-06</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline">
+            <i class="fas fa-folder-open"></i>
+            <span>分类</span>
+            <a class="card-more-btn" href="/categories/" title="查看更多">
+    <i class="fas fa-angle-right"></i></a>
+            </div>
+            <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/BI/"><span class="card-category-list-name">BI</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/java/"><span class="card-category-list-name">java</span><span class="card-category-list-count">4</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/spring/"><span class="card-category-list-name">spring</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/"><span class="card-category-list-name">中间件</span><span class="card-category-list-count">11</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%85%B6%E5%AE%83/"><span class="card-category-list-name">其它</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%B7%A5%E4%BD%9C%E6%B5%81/"><span class="card-category-list-name">工作流</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%B7%A5%E5%85%B7/"><span class="card-category-list-name">工具</span><span class="card-category-list-count">2</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%BB%BA%E8%AE%AE/"><span class="card-category-list-name">建议</span><span class="card-category-list-count">1</span></a></li>
+            </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/rustDesk/" style="font-size: 1.1em; color: #999">rustDesk</a> <a href="/tags/windows/" style="font-size: 1.1em; color: #999">windows</a> <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E7%BC%93%E5%AD%98/" style="font-size: 1.1em; color: #999">分布式缓存</a> <a href="/tags/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90/" style="font-size: 1.1em; color: #999">性能分析</a> <a href="/tags/classLoader/" style="font-size: 1.1em; color: #999">classLoader</a> <a href="/tags/%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5/" style="font-size: 1.1em; color: #999">远程连接</a> <a href="/tags/%E6%B5%81%E7%A8%8B%E7%BC%96%E6%8E%92/" style="font-size: 1.1em; color: #999">流程编排</a> <a href="/tags/%E5%88%86%E5%BA%93%E5%88%86%E8%A1%A8/" style="font-size: 1.1em; color: #999">分库分表</a> <a href="/tags/%E9%98%85%E8%AF%BB%E6%BA%90%E7%A0%81/" style="font-size: 1.1em; color: #999">阅读源码</a> <a href="/tags/springBoot/" style="font-size: 1.1em; color: #999">springBoot</a> <a href="/tags/%E4%B8%AD%E9%97%B4%E4%BB%B6/" style="font-size: 1.23em; color: #999ea6">中间件</a> <a href="/tags/xfs/" style="font-size: 1.1em; color: #999">xfs</a> <a href="/tags/qemu/" style="font-size: 1.5em; color: #99a9bf">qemu</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6/" style="font-size: 1.1em; color: #999">数据库版本控制</a> <a href="/tags/mysql/" style="font-size: 1.1em; color: #999">mysql</a> <a href="/tags/%E7%BD%91%E7%BB%9C/" style="font-size: 1.1em; color: #999">网络</a> <a href="/tags/vmware/" style="font-size: 1.1em; color: #999">vmware</a> <a href="/tags/%E5%A4%9A%E5%BA%93%E6%94%AF%E6%8C%81/" style="font-size: 1.1em; color: #999">多库支持</a> <a href="/tags/dataease/" style="font-size: 1.1em; color: #999">dataease</a> <a href="/tags/javaagent/" style="font-size: 1.1em; color: #999">javaagent</a> <a href="/tags/%E7%BC%93%E5%AD%98/" style="font-size: 1.1em; color: #999">缓存</a> <a href="/tags/%E7%A1%AC%E4%BB%B6/" style="font-size: 1.1em; color: #999">硬件</a> <a href="/tags/%E6%84%9F%E6%83%B3/" style="font-size: 1.1em; color: #999">感想</a> <a href="/tags/java%E7%83%AD%E5%8A%A0%E8%BD%BD/" style="font-size: 1.1em; color: #999">java热加载</a> <a href="/tags/bug/" style="font-size: 1.1em; color: #999">bug</a> <a href="/tags/traefik/" style="font-size: 1.1em; color: #999">traefik</a> <a href="/tags/skyWalking/" style="font-size: 1.37em; color: #99a4b2">skyWalking</a> <a href="/tags/%E6%A6%82%E5%BF%B5%E4%BB%8B%E7%BB%8D/" style="font-size: 1.1em; color: #999">概念介绍</a> <a href="/tags/%E6%98%BE%E5%8D%A1%E7%9B%B4%E9%80%9A/" style="font-size: 1.1em; color: #999">显卡直通</a> <a href="/tags/linux/" style="font-size: 1.1em; color: #999">linux</a> <a href="/tags/ansible/" style="font-size: 1.1em; color: #999">ansible</a> <a href="/tags/shardingsphere/" style="font-size: 1.1em; color: #999">shardingsphere</a> <a href="/tags/BI/" style="font-size: 1.1em; color: #999">BI</a> <a href="/tags/camunda/" style="font-size: 1.1em; color: #999">camunda</a> <a href="/tags/java%E7%BC%96%E7%A0%81/" style="font-size: 1.1em; color: #999">java编码</a> <a href="/tags/%E7%9B%91%E6%8E%A7/" style="font-size: 1.37em; color: #99a4b2">监控</a></div></div><div class="card-widget card-archives"><div class="item-headline"><i class="fas fa-archive"></i><span>归档</span><a class="card-more-btn" href="/archives/" title="查看更多">
+    <i class="fas fa-angle-right"></i></a></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/04/"><span class="card-archive-list-date">四月 2023</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/03/"><span class="card-archive-list-date">三月 2023</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/12/"><span class="card-archive-list-date">十二月 2022</span><span class="card-archive-list-count">3</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/11/"><span class="card-archive-list-date">十一月 2022</span><span class="card-archive-list-count">4</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/10/"><span class="card-archive-list-date">十月 2022</span><span class="card-archive-list-count">5</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/09/"><span class="card-archive-list-date">九月 2022</span><span class="card-archive-list-count">2</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/08/"><span class="card-archive-list-date">八月 2022</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/05/"><span class="card-archive-list-date">五月 2022</span><span class="card-archive-list-count">3</span></a></li></ul></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站资讯</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">38</div></div><div class="webinfo-item"><div class="item-name">已运行时间 :</div><div class="item-count" id="runtimeshow" data-publishDate="2019-11-29T16:00:00.000Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">本站总字数 :</div><div class="item-count">43.6k</div></div><div class="webinfo-item"><div class="item-name">本站访客数 :</div><div class="item-count" id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">本站总访问量 :</div><div class="item-count" id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2024-06-01T10:31:39.689Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By 李嘉图</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://unpkg.com/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.js"></script><div class="js-pjax"></div><script defer="defer" id="ribbon" src="https://unpkg.com/butterfly-extsrc@1.1.3/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="true"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=4.13.0"></script></div></div></body></html>

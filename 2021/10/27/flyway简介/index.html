@@ -1,0 +1,208 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>flyway简介 | 李嘉图</title><meta name="author" content="李嘉图"><meta name="copyright" content="李嘉图"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="简介本文基于springboot2集成使用 flyway是什么flyway是一款开源的资料库版本管理工具，它更倾向于规约优于配置的方式。flyway可以独立于应用实现管理并跟踪资料库变更，支援资料库版本自动升级，并且有一套预设的规约，不需要复杂的配置。Migrations可以写成SQL指令码，也可以写在Java程式码中，不仅支援Command Line和Java API，还支援Build构建工具和">
+<meta property="og:type" content="article">
+<meta property="og:title" content="flyway简介">
+<meta property="og:url" content="https://nobug.xin/2021/10/27/flyway%E7%AE%80%E4%BB%8B/index.html">
+<meta property="og:site_name" content="李嘉图">
+<meta property="og:description" content="简介本文基于springboot2集成使用 flyway是什么flyway是一款开源的资料库版本管理工具，它更倾向于规约优于配置的方式。flyway可以独立于应用实现管理并跟踪资料库变更，支援资料库版本自动升级，并且有一套预设的规约，不需要复杂的配置。Migrations可以写成SQL指令码，也可以写在Java程式码中，不仅支援Command Line和Java API，还支援Build构建工具和">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://nobug.xin/asset/image/logo.svg">
+<meta property="article:published_time" content="2021-10-27T03:51:39.000Z">
+<meta property="article:modified_time" content="2023-03-21T13:06:02.507Z">
+<meta property="article:author" content="李嘉图">
+<meta property="article:tag" content="数据库版本控制">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://nobug.xin/asset/image/logo.svg"><link rel="shortcut icon" href="/favicon.png"><link rel="canonical" href="https://nobug.xin/2021/10/27/flyway%E7%AE%80%E4%BB%8B/index.html"><link rel="preconnect" href="//unpkg.com"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://unpkg.com/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://unpkg.com/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"找不到您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://unpkg.com/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'flyway简介',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-03-21 21:06:02'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.2.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/asset/image/logo.svg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">38</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">36</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">16</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="李嘉图"><img class="site-icon" src="/asset/image/logo.svg"/><span class="site-name">李嘉图</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">flyway简介</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-10-27T03:51:39.000Z" title="发表于 2021-10-27 11:51:39">2021-10-27</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-03-21T13:06:02.507Z" title="更新于 2023-03-21 21:06:02">2023-03-21</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/">中间件</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.7k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>5分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="flyway简介"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="post-content" id="article-container"><h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p><strong>本文基于springboot2集成使用</strong></p>
+<h3 id="flyway是什么"><a href="#flyway是什么" class="headerlink" title="flyway是什么"></a>flyway是什么</h3><p>flyway是一款开源的资料库版本管理工具，它更倾向于规约优于配置的方式。<br>flyway可以独立于应用实现管理并跟踪资料库变更，支援资料库版本自动升级，并且有一套预设的规约，<br>不需要复杂的配置。Migrations可以写成SQL指令码，也可以写在Java程式码中，不仅支援Command Line和Java API，<br>还支援Build构建工具和Spring Boot等。同时在分散式环境下能够安全可靠地升级资料库，同时也支援失败恢复等。</p>
+<h3 id="为什么要使用Flyway"><a href="#为什么要使用Flyway" class="headerlink" title="为什么要使用Flyway"></a>为什么要使用Flyway</h3><ol>
+<li>自己写的SQL忘了在所有环境执行；</li>
+<li>别人写的SQL我们不能确定是否都在所有环境执行过了；</li>
+<li>有人修改了已经执行过的SQL，期望再次执行；</li>
+<li>需要新增环境做数据迁移；</li>
+<li>每次发版需要手动控制先发DB版本，再发布应用版本；</li>
+<li>…</li>
+</ol>
+<h2 id="flyway工作原理"><a href="#flyway工作原理" class="headerlink" title="flyway工作原理"></a>flyway工作原理</h2><p>一言以蔽之：flyway通过历史记录表（flyway_schema_history）来记录版本历史。<br>每次随专案启动时将会自动扫描在resources&#x2F;db&#x2F;migration下的档案并查询flyway_schema_history判断是否为新增档案。<br>如果是新增的档案，则执行该迁移档案。如果不是，则忽略。</p>
+<ol>
+<li>当flyway在一个空资料库执行时，它将直接建立一张预设名为flyway_schema_history的资料记录为空的历史记录表，这张表将被用来跟踪或记录资料库的状态。</li>
+<li>flyway将会开始扫描文件系统或专案classpath路径下的迁移档案。flyway按版本号顺序排列迁移档案，并按序执行，并更新历史记录表中的内容</li>
+<li>当专案再次发版时，flyway会再次扫描迁移档案，然后将迁移文的版本号与历史记录表中的版本号进行对比。<br>flyway会忽略版本号小于等于表中当前最大版本的迁移档案，剩余待执行迁移档案会按版本号升序执行。</li>
+</ol>
+<p><strong>并非真正忽略，而是会校验checksum值是否一致，以此来保证历史版本档案未被篡改</strong></p>
+<img src="/2021/10/27/flyway%E7%AE%80%E4%BB%8B/database-version.png" class="" title="数据库版本记录">
+
+<h2 id="flyway实践"><a href="#flyway实践" class="headerlink" title="flyway实践"></a>flyway实践</h2><h3 id="添加引用"><a href="#添加引用" class="headerlink" title="添加引用"></a>添加引用</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span>  <span class="comment">&lt;!-- 注意,这是springboot环境中,已经有版本了,所以无需添加,其余环境需要自己看情况 --&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.flywaydb<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>flyway-core<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="添加配置"><a href="#添加配置" class="headerlink" title="添加配置"></a>添加配置</h3><p>springboot为例</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring.flyway.enabled</span>=<span class="string">true # 开启flyway,默认true</span></span><br><span class="line"><span class="attr">spring.flyway.baseline-on-migrate</span>=<span class="string">true #当迁移时发现目标schema非空，而且带有没有后设资料的表时，是否自动执行基准迁移，预设false.</span></span><br><span class="line"><span class="attr">spring.flyway.locations</span>=<span class="string">classpath:db/migration # sql文件地址,默认就是 classpath:db/migration </span></span><br><span class="line"><span class="attr">spring.flyway.table</span>=<span class="string">dataease_version # 记录数据库记录的表的名称</span></span><br><span class="line"><span class="attr">spring.flyway.baseline-version</span>=<span class="string">0 # 开始执行基准迁移时对现有的schema的版本打标签，默认值为1</span></span><br><span class="line"><span class="attr">spring.flyway.encoding</span>=<span class="string">UTF-8 # 编码,默认就是UTF-8</span></span><br><span class="line"><span class="attr">spring.flyway.validate-on-migrate</span>=<span class="string">false # 迁移是否校验,默认为true</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="添加sql"><a href="#添加sql" class="headerlink" title="添加sql"></a>添加sql</h3><p>依次执行</p>
+<img src="/2021/10/27/flyway%E7%AE%80%E4%BB%8B/dbmigration.png" class="" title="sql文件">
+
+<h2 id="进阶知识点"><a href="#进阶知识点" class="headerlink" title="进阶知识点"></a>进阶知识点</h2><h3 id="版本号规范"><a href="#版本号规范" class="headerlink" title="版本号规范"></a>版本号规范</h3><p>Flyway 是如何比较两个 SQL 文件的先后顺序呢？它采用 采用左对齐原则, 缺位用 0 代替 。举几个例子：</p>
+<p>1.0.1.1 比 1.0.1 版本高。<br>1.0.10 比 1.0.9.4 版本高。<br>1.0.10 和 1.0.010 版本号一样高, 每个版本号部分的前导 0 会被忽略。  </p>
+<p>Flyway 将 SQL 文件分为 <strong>Versioned</strong> 、<strong>Repeatable</strong> 和 <strong>Undo</strong> 三种：</p>
+<ol>
+<li>Versioned 用于版本升级, 每个版本有唯一的版本号并只能执行一次.</li>
+<li>Repeatable 可重复执行, 当 Flyway检测到 Repeatable 类型的 SQL 脚本的 checksum 有变动,<br>Flyway 就会重新应用该脚本. 它并不用于版本更新, 这类的 migration 总是在 Versioned 执行之后才被执行。</li>
+<li>Undo 用于撤销具有相同版本的版本化迁移带来的影响。但是该回滚过于粗暴，过于机械化，一般不推荐使用。一般建议使用 Versioned 模式来解决。</li>
+</ol>
+<img src="/2021/10/27/flyway%E7%AE%80%E4%BB%8B/concepts_migrations.png" class="" title="命名规则">
+
+<ol>
+<li>Prefix 可配置，前缀标识，默认值 V 表示 Versioned, R 表示 Repeatable, U 表示 Undo</li>
+<li>Version 标识版本号, 由一个或多个数字构成, 数字之间的分隔符可用点 . 或下划线 _</li>
+<li>Separator 可配置, 用于分隔版本标识与描述信息, 默认为两个下划线 __</li>
+<li>Description 描述信息, 文字之间可以用下划线 _ 或空格 分隔</li>
+<li>Suffix 可配置, 后续标识, 默认为 .sql</li>
+</ol>
+<h3 id="另一种sql文件夹风格"><a href="#另一种sql文件夹风格" class="headerlink" title="另一种sql文件夹风格"></a>另一种sql文件夹风格</h3><p>可以使用文件夹来区分,但是还是依照版本号规则来执行</p>
+<img src="/2021/10/27/flyway%E7%AE%80%E4%BB%8B/sql_directory.png" class="" title="多文件夹">
+
+
+<h2 id="最佳实践"><a href="#最佳实践" class="headerlink" title="最佳实践"></a>最佳实践</h2><h3 id="语义化sql文件名字"><a href="#语义化sql文件名字" class="headerlink" title="语义化sql文件名字"></a>语义化sql文件名字</h3><p>前面给的例子中,都是用的v1,v2,v3这样的版本号,其实是非常不友好的,因为这样的话,我不知道我的语义化版本和我的sql脚本到底怎么对应,所以,这样是非常不好的,好的方式应该是<br>使用语义化版本来命名这些sql文件,这样约定下来,就非常清晰</p>
+<img src="/2021/10/27/flyway%E7%AE%80%E4%BB%8B/semver_sqlfile.png" class="" title="语义化版本sql文件命名">
+
+<h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><h3 id="配置详解"><a href="#配置详解" class="headerlink" title="配置详解"></a>配置详解</h3><figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">flyway.baseline-description对执行迁移时基准版本的描述.</span></span><br><span class="line"><span class="attr">flyway.baseline-on-migrate当迁移时发现目标schema非空，而且带有没有元数据的表时，是否自动执行基准迁移，默认false.</span></span><br><span class="line"><span class="attr">flyway.baseline-version开始执行基准迁移时对现有的schema的版本打标签，默认值为1.</span></span><br><span class="line"><span class="attr">flyway.check-location检查迁移脚本的位置是否存在，默认false.</span></span><br><span class="line"><span class="attr">flyway.clean-on-validation-error当发现校验错误时是否自动调用clean，默认false.</span></span><br><span class="line"><span class="attr">flyway.enabled是否开启flywary，默认true.</span></span><br><span class="line"><span class="attr">flyway.encoding设置迁移时的编码，默认UTF-8.</span></span><br><span class="line"><span class="attr">flyway.ignore-failed-future-migration当读取元数据表时是否忽略错误的迁移，默认false.</span></span><br><span class="line"><span class="attr">flyway.init-sqls当初始化好连接时要执行的SQL.</span></span><br><span class="line"><span class="attr">flyway.locations迁移脚本的位置，默认db/migration.</span></span><br><span class="line"><span class="attr">flyway.out-of-order是否允许无序的迁移，默认false.</span></span><br><span class="line"><span class="attr">flyway.password目标数据库的密码.</span></span><br><span class="line"><span class="attr">flyway.placeholder-prefix设置每个placeholder的前缀，默认$&#123;.</span></span><br><span class="line"><span class="attr">flyway.placeholder-replacementplaceholders是否要被替换，默认true.</span></span><br><span class="line"><span class="attr">flyway.placeholder-suffix设置每个placeholder的后缀，默认&#125;.</span></span><br><span class="line"><span class="attr">flyway.placeholders.[placeholder</span> <span class="string">name]设置placeholder的value</span></span><br><span class="line"><span class="attr">flyway.schemas设定需要flywary迁移的schema，大小写敏感，默认为连接默认的schema.</span></span><br><span class="line"><span class="attr">flyway.sql-migration-prefix迁移文件的前缀，默认为V.</span></span><br><span class="line"><span class="attr">flyway.sql-migration-separator迁移脚本的文件名分隔符，默认__</span></span><br><span class="line"><span class="attr">flyway.sql-migration-suffix迁移脚本的后缀，默认为.sql</span></span><br><span class="line"><span class="attr">flyway.tableflyway使用的元数据表名，默认为schema_version</span></span><br><span class="line"><span class="attr">flyway.target迁移时使用的目标版本，默认为latest</span> <span class="string">version</span></span><br><span class="line"><span class="attr">flyway.url迁移时使用的JDBC</span> <span class="string">URL，如果没有指定的话，将使用配置的主数据源</span></span><br><span class="line"><span class="attr">flyway.user迁移数据库的用户名</span></span><br><span class="line"><span class="attr">flyway.validate-on-migrate迁移时是否校验，默认为true</span></span><br></pre></td></tr></table></figure>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://nobug.xin">李嘉图</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://nobug.xin/2021/10/27/flyway%E7%AE%80%E4%BB%8B/">https://nobug.xin/2021/10/27/flyway%E7%AE%80%E4%BB%8B/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://nobug.xin" target="_blank">李嘉图</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6/">数据库版本控制</a></div><div class="post_share"><div class="social-share" data-image="/asset/image/logo.svg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://unpkg.com/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://unpkg.com/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/11/15/NoSuchMethodError%E7%9A%84bug%E4%BF%AE%E5%A4%8D/" title="NoSuchMethodError的bug修复"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">NoSuchMethodError的bug修复</div></div></a></div><div class="next-post pull-right"><a href="/2021/10/26/jprofiler%E7%AE%80%E8%BF%B0/" title="jprofiler简述"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">jprofiler简述</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/asset/image/logo.svg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">李嘉图</div><div class="author-info__description">程序员李嘉图的博客</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">38</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">36</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">16</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/davidricardo1026"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="mailto:david.ricardo@qq.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">李嘉图的博客</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-number">1.</span> <span class="toc-text">简介</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#flyway%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-number">1.0.1.</span> <span class="toc-text">flyway是什么</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E4%BD%BF%E7%94%A8Flyway"><span class="toc-number">1.0.2.</span> <span class="toc-text">为什么要使用Flyway</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#flyway%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="toc-number">1.1.</span> <span class="toc-text">flyway工作原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#flyway%E5%AE%9E%E8%B7%B5"><span class="toc-number">1.2.</span> <span class="toc-text">flyway实践</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E5%BC%95%E7%94%A8"><span class="toc-number">1.2.1.</span> <span class="toc-text">添加引用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E9%85%8D%E7%BD%AE"><span class="toc-number">1.2.2.</span> <span class="toc-text">添加配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0sql"><span class="toc-number">1.2.3.</span> <span class="toc-text">添加sql</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9B%E9%98%B6%E7%9F%A5%E8%AF%86%E7%82%B9"><span class="toc-number">1.3.</span> <span class="toc-text">进阶知识点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%89%88%E6%9C%AC%E5%8F%B7%E8%A7%84%E8%8C%83"><span class="toc-number">1.3.1.</span> <span class="toc-text">版本号规范</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%A6%E4%B8%80%E7%A7%8Dsql%E6%96%87%E4%BB%B6%E5%A4%B9%E9%A3%8E%E6%A0%BC"><span class="toc-number">1.3.2.</span> <span class="toc-text">另一种sql文件夹风格</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5"><span class="toc-number">1.4.</span> <span class="toc-text">最佳实践</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%AD%E4%B9%89%E5%8C%96sql%E6%96%87%E4%BB%B6%E5%90%8D%E5%AD%97"><span class="toc-number">1.4.1.</span> <span class="toc-text">语义化sql文件名字</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A1%A5%E5%85%85"><span class="toc-number">1.5.</span> <span class="toc-text">补充</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3"><span class="toc-number">1.5.1.</span> <span class="toc-text">配置详解</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/04/14/traefik%E7%AE%80%E5%8D%95%E4%BB%8B%E7%BB%8D/" title="traefik简单介绍">traefik简单介绍</a><time datetime="2023-04-14T07:13:20.000Z" title="发表于 2023-04-14 15:13:20">2023-04-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/03/21/camunda%E5%B8%B8%E8%A7%81%E5%8A%9F%E8%83%BD%E8%A7%A3%E6%9E%90/" title="camunda常见功能解析">camunda常见功能解析</a><time datetime="2023-03-21T13:41:51.000Z" title="发表于 2023-03-21 21:41:51">2023-03-21</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2022/12/09/hazelcast-management-center%E6%8E%A7%E5%88%B6%E4%B8%AD%E5%BF%83%E7%AE%80%E4%BB%8B/" title="hazelcast-management-center控制中心简介">hazelcast-management-center控制中心简介</a><time datetime="2022-12-09T02:15:11.000Z" title="发表于 2022-12-09 10:15:11">2022-12-09</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2022/12/08/hazelcast%E5%85%A5%E9%97%A8%E4%BD%BF%E7%94%A8/" title="hazelcast入门使用">hazelcast入门使用</a><time datetime="2022-12-08T06:37:04.000Z" title="发表于 2022-12-08 14:37:04">2022-12-08</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2022/12/06/%E5%88%86%E5%B8%83%E5%BC%8F%E7%BC%93%E5%AD%98redis-hazelcast-ignite-infinispan%E7%AE%80%E4%BB%8B/" title="分布式缓存redis,hazelcast,ignite,infinispan简介">分布式缓存redis,hazelcast,ignite,infinispan简介</a><time datetime="2022-12-06T09:59:49.000Z" title="发表于 2022-12-06 17:59:49">2022-12-06</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By 李嘉图</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://unpkg.com/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.js"></script><div class="js-pjax"></div><script defer="defer" id="ribbon" src="https://unpkg.com/butterfly-extsrc@1.1.3/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="true"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=4.13.0"></script></div></div></body></html>

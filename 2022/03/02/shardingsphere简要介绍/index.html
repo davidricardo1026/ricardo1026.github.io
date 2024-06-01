@@ -1,0 +1,282 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>shardingsphere简要介绍 | 李嘉图</title><meta name="author" content="李嘉图"><meta name="copyright" content="李嘉图"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="shardingsphere简要介绍可以做什么    分布式数据库 数据安全 数据库网关 全链路压测    数据分片 数据加密 异构数据库支持 影子库   读写分离 行级权限（TODO） SQL 方言转换（TODO） 可观测性   分布式事务 SQL 审计（TODO）     弹性伸缩 SQL 防火墙（TODO）     高可用      ShardingSphere-JDBC本文基于当时最新版本">
+<meta property="og:type" content="article">
+<meta property="og:title" content="shardingsphere简要介绍">
+<meta property="og:url" content="https://nobug.xin/2022/03/02/shardingsphere%E7%AE%80%E8%A6%81%E4%BB%8B%E7%BB%8D/index.html">
+<meta property="og:site_name" content="李嘉图">
+<meta property="og:description" content="shardingsphere简要介绍可以做什么    分布式数据库 数据安全 数据库网关 全链路压测    数据分片 数据加密 异构数据库支持 影子库   读写分离 行级权限（TODO） SQL 方言转换（TODO） 可观测性   分布式事务 SQL 审计（TODO）     弹性伸缩 SQL 防火墙（TODO）     高可用      ShardingSphere-JDBC本文基于当时最新版本">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://nobug.xin/asset/image/logo.svg">
+<meta property="article:published_time" content="2022-03-02T06:41:40.000Z">
+<meta property="article:modified_time" content="2023-03-21T13:06:02.590Z">
+<meta property="article:author" content="李嘉图">
+<meta property="article:tag" content="shardingsphere">
+<meta property="article:tag" content="分库分表">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://nobug.xin/asset/image/logo.svg"><link rel="shortcut icon" href="/favicon.png"><link rel="canonical" href="https://nobug.xin/2022/03/02/shardingsphere%E7%AE%80%E8%A6%81%E4%BB%8B%E7%BB%8D/index.html"><link rel="preconnect" href="//unpkg.com"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://unpkg.com/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://unpkg.com/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"找不到您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://unpkg.com/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'shardingsphere简要介绍',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-03-21 21:06:02'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.2.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/asset/image/logo.svg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">38</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">36</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">16</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="李嘉图"><img class="site-icon" src="/asset/image/logo.svg"/><span class="site-name">李嘉图</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">shardingsphere简要介绍</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-03-02T06:41:40.000Z" title="发表于 2022-03-02 14:41:40">2022-03-02</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-03-21T13:06:02.590Z" title="更新于 2023-03-21 21:06:02">2023-03-21</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/">中间件</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">2.5k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>7分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="shardingsphere简要介绍"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="post-content" id="article-container"><h1 id="shardingsphere简要介绍"><a href="#shardingsphere简要介绍" class="headerlink" title="shardingsphere简要介绍"></a>shardingsphere简要介绍</h1><p>可以做什么</p>
+<table>
+<thead>
+<tr>
+<th>分布式数据库</th>
+<th>数据安全</th>
+<th>数据库网关</th>
+<th>全链路压测</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>数据分片</td>
+<td>数据加密</td>
+<td>异构数据库支持</td>
+<td>影子库</td>
+</tr>
+<tr>
+<td>读写分离</td>
+<td>行级权限（TODO）</td>
+<td>SQL 方言转换（TODO）</td>
+<td>可观测性</td>
+</tr>
+<tr>
+<td>分布式事务</td>
+<td>SQL 审计（TODO）</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>弹性伸缩</td>
+<td>SQL 防火墙（TODO）</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>高可用</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h3 id="ShardingSphere-JDBC"><a href="#ShardingSphere-JDBC" class="headerlink" title="ShardingSphere-JDBC"></a>ShardingSphere-JDBC</h3><p><strong>本文基于当时最新版本5.1.0</strong></p>
+<p>定位为轻量级 Java 框架，在 Java 的 JDBC 层提供的额外服务。 它使用客户端直连数据库，以 jar 包形式提供服务，无需额外部署和依赖，可理解为增强版的 JDBC 驱动，完全兼容 JDBC 和各种 ORM 框架。</p>
+<ol>
+<li>适用于任何基于 JDBC 的 ORM 框架，如：JPA, Hibernate, Mybatis, Spring JDBC Template 或直接使用 JDBC；</li>
+<li>支持任何第三方的数据库连接池，如：DBCP, C3P0, BoneCP, HikariCP 等；</li>
+<li>支持任意实现 JDBC 规范的数据库，目前支持 MySQL，PostgreSQL，Oracle，SQLServer 以及任何可使用 JDBC 访问的数据库。</li>
+</ol>
+<img style="background-color: aqua" src="./logo_v2.png" alt="shardingsphere logo" title="shardingsphere logo">
+
+<h3 id="分布式数据库漫谈"><a href="#分布式数据库漫谈" class="headerlink" title="分布式数据库漫谈"></a>分布式数据库漫谈</h3><p>现在是互联网的时代,网络乘几何增长,随之而来的数据更是如此.铺天盖地的请求到来的是时候,首先是应用抗压,应用抗压以后,压力马上会到数据库,所以,<strong>对于数据库来说,<br>无论如何都是承受压力的点</strong>  </p>
+<p>所以,诞生了以下需求</p>
+<ol>
+<li>高可用</li>
+<li>高并发</li>
+<li>海量数据</li>
+</ol>
+<p>诞生了以下概念</p>
+<ol>
+<li>olap</li>
+<li>oltp</li>
+<li>htap(Hybrid transaction&#x2F;analytical processing),上面两种混合,就是全能的意思</li>
+</ol>
+<p>OLTP（on-line transaction processing）翻译为联机事务处理， OLAP（On-Line Analytical Processing）翻译为联机分析处理，从字面上来看OLTP是做事务处理，<br>OLAP是做分析处理。从对数据库操作来看，OLTP主要是对数据的增删改，OLAP是对数据的查询,olap的解决方案之一就是大数据</p>
+<ol>
+<li>传统的关系型数据库都是单机的,当数据量大的时候,使用分库分表既可以简单的满足需求,这是其中的一种方案,典型的就是shardingsphere</li>
+<li>Greenplum把传统的关系型数据库集合到一起,提供统一的接口,自动形成分布式数据库</li>
+<li>tidb等,架构上就是分布式数据库,而不是传统的单机数据库通过调度实现分布式数据库</li>
+</ol>
+<p>上面三种,第一种,实在应用层实现分布式数据库,具体的实现由中间件实现,剩下的两种都是本身就是分布式数据库,但是实现的方式不太一样,</p>
+<p>我们了解到了,我们需要一个强大的数据库,来支撑应用,支撑业务</p>
+<p>ShardingSphere-jdbc在应用层,以中间件的方式,让大家将几个数据库当成一个用,实现了分布式数据库,不过,一般称之为分库分表</p>
+<h3 id="快速入门"><a href="#快速入门" class="headerlink" title="快速入门"></a>快速入门</h3><h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><p>项目我已经发布到gitee了 <a target="_blank" rel="noopener" href="https://gitee.com/david0624/shardingsphere-test">shardingsphere-demo</a></p>
+<ol>
+<li>maven添加依赖<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.shardingsphere<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>shardingsphere-jdbc-core<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>5.1.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li>规则配置,使用yaml配置<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">props:</span></span><br><span class="line">  <span class="attr">sql-show:</span> <span class="literal">true</span> <span class="comment"># 可以显示sql,显示的格式很不错</span></span><br></pre></td></tr></table></figure></li>
+<li>创建数据源,注入数据源</li>
+<li>接下来就是使用jdbc框架,如mybatis-plus</li>
+<li>构造一些简单查询,就可以开始了</li>
+</ol>
+<h4 id="初探"><a href="#初探" class="headerlink" title="初探"></a>初探</h4><p>简单分库查询</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">INFO  ShardingSphere-SQL - Logic SQL: SELECT id,teacherId,name FROM student WHERE id=? </span><br><span class="line">INFO  ShardingSphere-SQL - SQLStatement: MySQLSelectStatement(table=Optional.empty, limit=Optional.empty, lock=Optional.empty, window=Optional.empty)</span><br><span class="line">INFO  ShardingSphere-SQL - Actual SQL: ds0 ::: SELECT id,teacherId,name FROM student WHERE id=?  ::: [706168069961023488]</span><br><span class="line">INFO  ShardingSphere-SQL - Actual SQL: ds1 ::: SELECT id,teacherId,name FROM student WHERE id=?  ::: [706168069961023488]</span><br></pre></td></tr></table></figure>
+
+<p>可以看到,一条sql自动分成了两个真实的sql,没错,该框架,就是通过改写sql实现了分库分表,这是它的基本思路</p>
+<h3 id="数据分片"><a href="#数据分片" class="headerlink" title="数据分片"></a>数据分片</h3><p>虽然ShardingSphere支持很多功能,但是最重要的功能就是数据分片.</p>
+<p><strong>尽量透明化分库分表所带来的影响，让使用方尽量像使用一个数据库一样使用水平分片之后的数据库集群，是 Apache ShardingSphere 数据分片模块的主要设计目标。</strong></p>
+<h4 id="表"><a href="#表" class="headerlink" title="表"></a>表</h4><h5 id="逻辑表"><a href="#逻辑表" class="headerlink" title="逻辑表"></a>逻辑表</h5><p>相同结构的水平拆分数据库（表）的逻辑名称，是 SQL 中表的逻辑标识。 例：订单数据根据主键尾数拆分为 10 张表，分别是 t_order_0 到 t_order_9，他们的逻辑表名为 t_order。</p>
+<h5 id="真实表"><a href="#真实表" class="headerlink" title="真实表"></a>真实表</h5><p>在水平拆分的数据库中真实存在的物理表。 即上个示例中的 t_order_0 到 t_order_9。</p>
+<h5 id="绑定表"><a href="#绑定表" class="headerlink" title="绑定表"></a>绑定表</h5><p>指分片规则一致的主表和子表。 使用绑定表进行多表关联查询时，必须使用分片键进行关联，否则会出现笛卡尔积关联或跨库关联，从而影响查询效率。</p>
+<h5 id="广播表"><a href="#广播表" class="headerlink" title="广播表"></a>广播表</h5><p>指所有的分片数据源中都存在的表，表结构及其数据在每个数据库中均完全一致。 适用于数据量不大且需要与海量数据的表进行关联查询的场景，例如：字典表。</p>
+<h5 id="单表"><a href="#单表" class="headerlink" title="单表"></a>单表</h5><p>指所有的分片数据源中仅唯一存在的表。 适用于数据量不大且无需分片的表。</p>
+<h4 id="分片"><a href="#分片" class="headerlink" title="分片"></a>分片</h4><p>分片算法</p>
+<ol>
+<li>自动化分片算法</li>
+<li>自定义分片算法</li>
+</ol>
+<p>分片策略<br>包含分片键和分片算法，由于分片算法的独立性，将其独立抽离。 真正可用于分片操作的是分片键 + 分片算法，也就是分片策略。</p>
+<p>强制分片路由<br>对于分片字段并非由 SQL 而是其他外置条件决定的场景，可使用 SQL Hint 注入分片值。</p>
+<h4 id="内置分片算法"><a href="#内置分片算法" class="headerlink" title="内置分片算法"></a>内置分片算法</h4><p>其实分片,就是尽量把数据均匀的分散开来,越平均越好</p>
+<h5 id="自动分片算法"><a href="#自动分片算法" class="headerlink" title="自动分片算法"></a>自动分片算法</h5><ol>
+<li>取模分片算法 针对整形</li>
+<li>哈希取模分片算法 针对字符串类型</li>
+<li>基于分片容量的范围分片算法 需要针对一个个真实表设置,比较麻烦,暂时没有想到场景</li>
+<li>基于分片边界的范围分片算法 没看懂</li>
+<li>自动时间段分片算法 特别适合对时间敏感的业务,比如当前月的数据经常使用,但是除了当月的以前的数据,基本就是存档,然后所有的查询都加上分片,相当于数据自动归档了,非常方便</li>
+</ol>
+<h5 id="标准分片算法"><a href="#标准分片算法" class="headerlink" title="标准分片算法"></a>标准分片算法</h5><ol>
+<li>行表达式分片算法 如t_user_$-&gt;{u_id % 8}</li>
+<li>时间范围分片算法 适合时间敏感的业务</li>
+</ol>
+<h5 id="复合分片算法"><a href="#复合分片算法" class="headerlink" title="复合分片算法"></a>复合分片算法</h5><p>多个列一起分片,功能强大,但是尽量少用,越简单满足业务一般越好</p>
+<h5 id="Hint-分片算法"><a href="#Hint-分片算法" class="headerlink" title="Hint 分片算法"></a>Hint 分片算法</h5><p>使用行表达式进行分片</p>
+<h5 id="自定义类分片算法"><a href="#自定义类分片算法" class="headerlink" title="自定义类分片算法"></a>自定义类分片算法</h5><p>自己写代码定义,然后配置</p>
+<h3 id="较佳实践"><a href="#较佳实践" class="headerlink" title="较佳实践"></a>较佳实践</h3><h4 id="垂直还是水平"><a href="#垂直还是水平" class="headerlink" title="垂直还是水平"></a>垂直还是水平</h4><p>shardingsphere,功能非常强大,垂直和水平直接都支持,而且还非常方便,所以,我们使用的时候,直接使用即可,<br>比如,需要两个库,一个库放系统数据,比如用户表,权限表之类的,一个库放业务数据,比如订单,商品等等,就可以垂直分库,<br>如果一个表比较大,那么水平拆分成多个小表即可</p>
+<h4 id="分库还是分表"><a href="#分库还是分表" class="headerlink" title="分库还是分表"></a>分库还是分表</h4><p>分库<br>数据库应用应该是io和计算都很密集,一方面,需要io查找数据,另一方面需要在内存中计算数据,所以,相对来说,很吃cpu,<br>所以,一般,数据库应用本身,再高并发场景下,都是一台机器部署一个数据库,所以,分库可以吃多个机器的资源,可以更好的支持并发<br>分表<br>因为数据库本身的设计原因和机器资源的原因,单表数据量大到一定程度以后,性能会不断下降,数据量越大,越不可忍受,所以,<br>出现了分表的需求,分表就是在资源不变的情况下,通过减少单表的数据量,增加数据库的查询性能<br>总结<br>如果你的并发要求不是很高,而且你的业务对时间敏感,老的数据放到老的表,不影响新的数据查询,那么分表就是很好的选择,<br>如果你的并发要求很高,分表以后,一个机器的计算资源还是不能满足你的业务,那么就妥妥的需要分库,所以,分库比分表更能提高并发,但是<br>分表也能更好的发挥单机的价值,不是冲突的,而是相辅相成的,不是意味着,我分库了,就不需要分表了,而是分库以后,也需要分表,相辅相成</p>
+<h4 id="数据分片的选择"><a href="#数据分片的选择" class="headerlink" title="数据分片的选择"></a>数据分片的选择</h4><p>分片选择原则</p>
+<ol>
+<li>简单性,能一个列分片,就一个列分片,用最简单的方式满足业务,差不多就是最好的方式</li>
+<li>内置性,尽量使用shardingsphere内置的算法,或许有优化吧,不过,这得看代码了</li>
+</ol>
+<p>对于大多应用来说,使用时间分片都是一个非常不错的选择,大多数系统只关心最近的数据,以往的数据只是存档使用,这样的话,非常适合时间分片,<br>如果一个库不够的话,数字类型就用取模分片分库,字符串类型就用hash分片分库</p>
+<h4 id="分页优化"><a href="#分页优化" class="headerlink" title="分页优化"></a>分页优化</h4><p>众所周知,数据量大的时候分页,性能非常差,主要原因就是查1一亿条,排序完,最后只用10条,显然很慢,所以说,不能把那一亿条查出来,<br>理想的方案是记录上次的id,然后只查10条数据,如下所示</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> t_order <span class="keyword">WHERE</span> id <span class="operator">&gt;</span> <span class="number">100000</span> LIMIT <span class="number">10</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>shardingSphere最重要的功能是数据分片,数据分片最重要的功能是分片算法,只要这两个吃透,差不多shardingSphere你就掌握了60%了</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://nobug.xin">李嘉图</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://nobug.xin/2022/03/02/shardingsphere%E7%AE%80%E8%A6%81%E4%BB%8B%E7%BB%8D/">https://nobug.xin/2022/03/02/shardingsphere%E7%AE%80%E8%A6%81%E4%BB%8B%E7%BB%8D/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://nobug.xin" target="_blank">李嘉图</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/shardingsphere/">shardingsphere</a><a class="post-meta__tags" href="/tags/%E5%88%86%E5%BA%93%E5%88%86%E8%A1%A8/">分库分表</a></div><div class="post_share"><div class="social-share" data-image="/asset/image/logo.svg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://unpkg.com/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://unpkg.com/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/04/22/%E5%9F%BA%E4%BA%8EmybatisPlus%E7%9A%84%E5%A4%9A%E5%BA%93%E6%94%AF%E6%8C%81%E5%AE%9E%E8%B7%B5/" title="基于mybatisPlus的多库支持实践"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">基于mybatisPlus的多库支持实践</div></div></a></div><div class="next-post pull-right"><a href="/2022/02/28/springBoot%E4%BC%A0%E5%8F%82%E8%A7%A3%E6%9E%90/" title="springBoot传参解析"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">springBoot传参解析</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/asset/image/logo.svg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">李嘉图</div><div class="author-info__description">程序员李嘉图的博客</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">38</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">36</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">16</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/davidricardo1026"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="mailto:david.ricardo@qq.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">李嘉图的博客</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#shardingsphere%E7%AE%80%E8%A6%81%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.</span> <span class="toc-text">shardingsphere简要介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ShardingSphere-JDBC"><span class="toc-number">1.0.1.</span> <span class="toc-text">ShardingSphere-JDBC</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E6%95%B0%E6%8D%AE%E5%BA%93%E6%BC%AB%E8%B0%88"><span class="toc-number">1.0.2.</span> <span class="toc-text">分布式数据库漫谈</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8"><span class="toc-number">1.0.3.</span> <span class="toc-text">快速入门</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-number">1.0.3.1.</span> <span class="toc-text">安装</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%9D%E6%8E%A2"><span class="toc-number">1.0.3.2.</span> <span class="toc-text">初探</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%88%86%E7%89%87"><span class="toc-number">1.0.4.</span> <span class="toc-text">数据分片</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A1%A8"><span class="toc-number">1.0.4.1.</span> <span class="toc-text">表</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%80%BB%E8%BE%91%E8%A1%A8"><span class="toc-number">1.0.4.1.1.</span> <span class="toc-text">逻辑表</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%9C%9F%E5%AE%9E%E8%A1%A8"><span class="toc-number">1.0.4.1.2.</span> <span class="toc-text">真实表</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%BB%91%E5%AE%9A%E8%A1%A8"><span class="toc-number">1.0.4.1.3.</span> <span class="toc-text">绑定表</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%B9%BF%E6%92%AD%E8%A1%A8"><span class="toc-number">1.0.4.1.4.</span> <span class="toc-text">广播表</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%8D%95%E8%A1%A8"><span class="toc-number">1.0.4.1.5.</span> <span class="toc-text">单表</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%86%E7%89%87"><span class="toc-number">1.0.4.2.</span> <span class="toc-text">分片</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%86%85%E7%BD%AE%E5%88%86%E7%89%87%E7%AE%97%E6%B3%95"><span class="toc-number">1.0.4.3.</span> <span class="toc-text">内置分片算法</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%87%AA%E5%8A%A8%E5%88%86%E7%89%87%E7%AE%97%E6%B3%95"><span class="toc-number">1.0.4.3.1.</span> <span class="toc-text">自动分片算法</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%A0%87%E5%87%86%E5%88%86%E7%89%87%E7%AE%97%E6%B3%95"><span class="toc-number">1.0.4.3.2.</span> <span class="toc-text">标准分片算法</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%A4%8D%E5%90%88%E5%88%86%E7%89%87%E7%AE%97%E6%B3%95"><span class="toc-number">1.0.4.3.3.</span> <span class="toc-text">复合分片算法</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Hint-%E5%88%86%E7%89%87%E7%AE%97%E6%B3%95"><span class="toc-number">1.0.4.3.4.</span> <span class="toc-text">Hint 分片算法</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E7%B1%BB%E5%88%86%E7%89%87%E7%AE%97%E6%B3%95"><span class="toc-number">1.0.4.3.5.</span> <span class="toc-text">自定义类分片算法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BE%83%E4%BD%B3%E5%AE%9E%E8%B7%B5"><span class="toc-number">1.0.5.</span> <span class="toc-text">较佳实践</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9E%82%E7%9B%B4%E8%BF%98%E6%98%AF%E6%B0%B4%E5%B9%B3"><span class="toc-number">1.0.5.1.</span> <span class="toc-text">垂直还是水平</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%86%E5%BA%93%E8%BF%98%E6%98%AF%E5%88%86%E8%A1%A8"><span class="toc-number">1.0.5.2.</span> <span class="toc-text">分库还是分表</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%88%86%E7%89%87%E7%9A%84%E9%80%89%E6%8B%A9"><span class="toc-number">1.0.5.3.</span> <span class="toc-text">数据分片的选择</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%86%E9%A1%B5%E4%BC%98%E5%8C%96"><span class="toc-number">1.0.5.4.</span> <span class="toc-text">分页优化</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">1.0.6.</span> <span class="toc-text">总结</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/04/14/traefik%E7%AE%80%E5%8D%95%E4%BB%8B%E7%BB%8D/" title="traefik简单介绍">traefik简单介绍</a><time datetime="2023-04-14T07:13:20.000Z" title="发表于 2023-04-14 15:13:20">2023-04-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/03/21/camunda%E5%B8%B8%E8%A7%81%E5%8A%9F%E8%83%BD%E8%A7%A3%E6%9E%90/" title="camunda常见功能解析">camunda常见功能解析</a><time datetime="2023-03-21T13:41:51.000Z" title="发表于 2023-03-21 21:41:51">2023-03-21</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2022/12/09/hazelcast-management-center%E6%8E%A7%E5%88%B6%E4%B8%AD%E5%BF%83%E7%AE%80%E4%BB%8B/" title="hazelcast-management-center控制中心简介">hazelcast-management-center控制中心简介</a><time datetime="2022-12-09T02:15:11.000Z" title="发表于 2022-12-09 10:15:11">2022-12-09</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2022/12/08/hazelcast%E5%85%A5%E9%97%A8%E4%BD%BF%E7%94%A8/" title="hazelcast入门使用">hazelcast入门使用</a><time datetime="2022-12-08T06:37:04.000Z" title="发表于 2022-12-08 14:37:04">2022-12-08</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2022/12/06/%E5%88%86%E5%B8%83%E5%BC%8F%E7%BC%93%E5%AD%98redis-hazelcast-ignite-infinispan%E7%AE%80%E4%BB%8B/" title="分布式缓存redis,hazelcast,ignite,infinispan简介">分布式缓存redis,hazelcast,ignite,infinispan简介</a><time datetime="2022-12-06T09:59:49.000Z" title="发表于 2022-12-06 17:59:49">2022-12-06</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By 李嘉图</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://unpkg.com/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.js"></script><div class="js-pjax"></div><script defer="defer" id="ribbon" src="https://unpkg.com/butterfly-extsrc@1.1.3/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="true"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=4.13.0"></script></div></div></body></html>
