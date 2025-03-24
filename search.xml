@@ -1,6 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>ansible简介</title>
+    <url>/2021/10/15/ansible%E7%AE%80%E4%BB%8B/</url>
+    <content><![CDATA[<h1 id="ansible简介"><a href="#ansible简介" class="headerlink" title="ansible简介"></a>ansible简介</h1><img src="/2021/10/15/ansible%E7%AE%80%E4%BB%8B/ansible-logo.png" class="" title="ansible-logo">
+<p><code>ansible</code>,<code>[ˈæn.sɪ.bəl]</code>发音,Ansible 是一个开源的基于 OpenSSH 的自动化配置管理工具。可以用它来配置系统、部署软件和编排更高级的IT任务，比如持续部署或零停机更新。<code>ansible</code>的主要目标是简单和易用，并且它还高度关注安全性和可靠性。基于这样的目标，Ansible 适用于开发人员、系统管理员、发布工程师、IT 经理，以及介于两者之间的所有人。Ansible 适合管理几乎所有的环境，从拥有少数实例的小型环境到有数千个实例的企业环境。<br>使用<code>ansible</code>无须在被管理的机器上安装代理，所以不存在如何升级远程守护进程的问题，也不存在由于卸载了守护进程而无法管理系统的问题。</p>
+<h3 id="ansible工作方式"><a href="#ansible工作方式" class="headerlink" title="ansible工作方式"></a>ansible工作方式</h3><p>使用<code>ansible</code>无须在被管理的客户端电脑上安装代理之类的组件。它通过普通的 SSH 进行通信，以便从远程计算机检索信息、发出命令和复制文件。这是 Ansible 简化服务器管理的一种方式。任何公开 SSH 端口的服务器都可以通过 Ansible 进行配置和管理。</p>
+<p><code>ansible</code>采用模块化的设计，所以非常容易扩展到各种特定的使用场景。模块可以用任何语言编写，并使用标准 JSON 进行通信。Ansible 的配置文件是用 YAML 格式编写的，因为它使用起来非常简单，并且与主流的标记语言很相似。除了通过命令行工具 Ansible 还可以通过配置脚本(Playbooks)与客户端交互。</p>
+<h3 id="ansible总结"><a href="#ansible总结" class="headerlink" title="ansible总结"></a><code>ansible</code>总结</h3><p>现在云原生比较流行,k8s来管理容器,达到大规模集群的自动化运维,虽然不在一个维度,但是相比起来效率更高,<code>ansible</code>基于ssh,基于linux本身机器,相比k8s来说,更偏向于底层,所以,还是有用武之地的,如果需要自动化操作linux机器,<br><code>ansible</code>本质上来说,就是ssh的加强版,把ssh连接的机器分类,把执行的命令模块化,可编排,做抽象和封装,实现便捷的自动化运维</p>
+<h2 id="ansible安装"><a href="#ansible安装" class="headerlink" title="ansible安装"></a><code>ansible</code>安装</h2><p><code>ansible</code>管理机器分为两种,一种是管理的机器,相当于跳板机,另一种是被管理的机器,因为linux服务器都安装了ssh,所以,可以认为被管理的机器是不需要什么以来的,但是管理的机器,需要安装<code>ansible</code></p>
+<h3 id="安装ansible"><a href="#安装ansible" class="headerlink" title="安装ansible"></a>安装<code>ansible</code></h3><p><code>ansible</code>安装,分为两种,一种是用linux发行版的pkg安装,这个基本上都有,直接安装就好了,例如<code>ubuntu</code>就是下面的命令</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line">sudo apt install software-properties-common</span><br><span class="line">sudo add-apt-repository --yes --update ppa:ansible/ansible</span><br><span class="line">sudo apt install ansible</span><br></pre></td></tr></table></figure>
+<p>还有一种方式是pip安装, 因为本身<code>ansible</code>是python写的,可以用python的包管理安装,但是这种安装以后,需要一些额外的配置,所以,不推荐在服务器上安装的时候使用这种方式,<br>但是这种方式依赖少,自己电脑上装得时候,可以尝试这种方式</p>
+<h2 id="ansible的hello-world"><a href="#ansible的hello-world" class="headerlink" title="ansible的hello world"></a><code>ansible</code>的hello world</h2><p><code>ansible</code>是ssh连接客户机器的,ssh连接分为两种,一种是密码,比较麻烦,也不适合自动化运维,不建议使用,一种是使用公钥登陆,而且这种安全性也高,不过需要一些额外的配置</p>
+<ol>
+<li>生成公钥<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ssh-keygen -t ed25519 # rsa已经被废弃了,如果使用rsa,还需要使用额外的配置,非常不推荐</span><br></pre></td></tr></table></figure></li>
+<li>发送到客户机器<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ssh-copy-id -i $&#123;your pub file&#125; root@192.168.85.35 #使用什么用户,以及该机器的地址</span><br></pre></td></tr></table></figure></li>
+<li>配置ssh,一般来说,不应该使用默认的名字,而且管理的机器一定会有很多的私钥存放,所以,必须要额外的配置<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Host 192.168.85.35</span><br><span class="line">	Hostname 192.168.85.35</span><br><span class="line">	User root</span><br><span class="line">	PreferredAuthentications publickey</span><br><span class="line">	# 如果出现 no mutual signature algorithm 错误,ssh 连接不上的时候,使用 -vvv,查看详细信息</span><br><span class="line">#   PubkeyAcceptedKeyTypes +ssh-rsa</span><br><span class="line">    IdentityFile ~/.ssh/ssh8535</span><br></pre></td></tr></table></figure></li>
+<li>配置inventory文件,<code>/etc/ansible/hosts</code><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">vm8535 ansible_ssh_user=root ansible_ssh_host=192.168.85.35 ansible_ssh_port=22</span><br></pre></td></tr></table></figure></li>
+<li><code>ansible</code>的hello world,看到输出如下,就表示成功<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">ansible vm8535 -m ping</span></span><br><span class="line">vm8535 | SUCCESS =&gt; &#123;</span><br><span class="line">    &quot;ansible_facts&quot;: &#123;</span><br><span class="line">        &quot;discovered_interpreter_python&quot;: &quot;/usr/bin/python&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;changed&quot;: false,</span><br><span class="line">    &quot;ping&quot;: &quot;pong&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="ansible相关概念"><a href="#ansible相关概念" class="headerlink" title="ansible相关概念"></a><code>ansible</code>相关概念</h2><p><code>ansible</code>的主要概念分为 <code>inventory</code>,即管理那些机器,需要提前配置,<code>Playbooks</code>,是一组IT程序运行的命令集合</p>
+<h3 id="inventory文件"><a href="#inventory文件" class="headerlink" title="inventory文件"></a><code>inventory</code>文件</h3><p>配置操作的主机,主机的配置,如果集合一样,可以有多个集合,集合之间还可以有并集的概念</p>
+<h4 id="简单配置"><a href="#简单配置" class="headerlink" title="简单配置"></a>简单配置</h4><p>默认的文件地址是<code>/etc/ansible/hosts</code>,可以通过<code>/etc/ansible/ansible.cfg</code>配置,类似windows<br>的ini文件</p>
+<figure class="highlight ini"><table><tr><td class="code"><pre><span class="line">mail.example.com</span><br><span class="line"></span><br><span class="line"><span class="section">[webservers]</span></span><br><span class="line">foo.example.com</span><br><span class="line">bar.example.com</span><br><span class="line"></span><br><span class="line"><span class="section">[dbservers]</span></span><br><span class="line">one.example.com</span><br><span class="line">two.example.com</span><br><span class="line">three.example.com</span><br></pre></td></tr></table></figure>
+
+<p>其中还可以配置主机变量,组变量,合并组,功能比较强大,详细的官方文档在这里<br><a href="https://ansible-tran.readthedocs.io/en/latest/docs/intro_inventory.html#id7">ansible中文权威指南-inventory文件</a></p>
+<p>这里在配置的时候,可以使用别名,非常方便</p>
+<figure class="highlight ini"><table><tr><td class="code"><pre><span class="line">vm8535 <span class="attr">ansible_ssh_user</span>=root ansible_ssh_host=<span class="number">192.168</span>.<span class="number">85.35</span> ansible_ssh_port=<span class="number">22</span></span><br></pre></td></tr></table></figure>
+<ol>
+<li>这里的<code>vm8535</code>就是主机的名字,以后可以使用这个名字,而不用使用域名或者ip</li>
+<li><code>ansible_ssh_user</code>默认就是你当前的用户,如果你是<code>root</code>,那就是<code>root</code>,这里沿用的是ssh的逻辑,所以,建议显式的配置</li>
+<li><code>ansible_ssh_host</code>就是主机地址,也可以是域名**(&#x2F;etc&#x2F;hosts里面的配置,或者公网的域名)**</li>
+<li><code>ansible_ssh_port</code>如果ssh的端口不是默认的,那么这里必须显式的配置</li>
+</ol>
+<p>常用的参数如下</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ansible_ssh_host</span><br><span class="line">      将要连接的远程主机名.与你想要设定的主机的别名不同的话,可通过此变量设置.</span><br><span class="line"></span><br><span class="line">ansible_ssh_port</span><br><span class="line">      ssh端口号.如果不是默认的端口号,通过此变量设置.</span><br><span class="line"></span><br><span class="line">ansible_ssh_user</span><br><span class="line">      默认的 ssh 用户名</span><br><span class="line"></span><br><span class="line">ansible_ssh_pass</span><br><span class="line">      ssh 密码(这种方式并不安全,我们强烈建议使用 --ask-pass 或 SSH 密钥)</span><br><span class="line"></span><br><span class="line">ansible_sudo_pass</span><br><span class="line">      sudo 密码(这种方式并不安全,我们强烈建议使用 --ask-sudo-pass)</span><br><span class="line"></span><br><span class="line">ansible_sudo_exe (new in version 1.8)</span><br><span class="line">      sudo 命令路径(适用于1.8及以上版本)</span><br><span class="line"></span><br><span class="line">ansible_connection</span><br><span class="line">      与主机的连接类型.比如:local, ssh 或者 paramiko. Ansible 1.2 以前默认使用 paramiko.1.2 以后默认使用 &#x27;smart&#x27;,&#x27;smart&#x27; 方式会根据是否支持 ControlPersist, 来判断&#x27;ssh&#x27; 方式是否可行.</span><br><span class="line"></span><br><span class="line">ansible_ssh_private_key_file</span><br><span class="line">      ssh 使用的私钥文件.适用于有多个密钥,而你不想使用 SSH 代理的情况.</span><br><span class="line"></span><br><span class="line">ansible_shell_type</span><br><span class="line">      目标系统的shell类型.默认情况下,命令的执行使用 &#x27;sh&#x27; 语法,可设置为 &#x27;csh&#x27; 或 &#x27;fish&#x27;.</span><br><span class="line"></span><br><span class="line">ansible_python_interpreter</span><br><span class="line">      目标主机的 python 路径.适用于的情况: 系统中有多个 Python, 或者命令路径不是&quot;/usr/bin/python&quot;,比如  \*BSD, 或者 /usr/bin/python</span><br><span class="line">      不是 2.X 版本的 Python.我们不使用 &quot;/usr/bin/env&quot; 机制,因为这要求远程用户的路径设置正确,且要求 &quot;python&quot; 可执行程序名不可为 python以外的名字(实际有可能名为python26).</span><br><span class="line"></span><br><span class="line">      与 ansible_python_interpreter 的工作方式相同,可设定如 ruby 或 perl 的路径....</span><br></pre></td></tr></table></figure>
+
+<p>注意,如果不是root用户的话,会使用<code>sudo</code>命令,这里建议去服务器,把你使用的用户的<code>sudo</code>配置成,不需要密码,<br>否则的话,就失去了自动化配置的意义,每次手动输入<code>sudo</code>密码也是一件不可忍受的事情,在这里<code>/etc/sudoers</code>添加如下配置即可,无需重新启动</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$&#123;your_user_name&#125; ALL=(ALL) NOPASSWD: ALL</span><br></pre></td></tr></table></figure>
+
+<h4 id="patterns"><a href="#patterns" class="headerlink" title="patterns"></a><code>patterns</code></h4><p><code>patterns</code>就是根据<code>inventory</code>选取特定的主机,详情文档<br><a href="https://ansible-tran.readthedocs.io/en/latest/docs/intro_patterns.html#id1">Ansible中文权威指南-patterns</a></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ansible &lt;pattern_goes_here&gt; -m &lt;module_name&gt; -a &lt;arguments&gt;</span><br><span class="line">ansible webservers -m service -a &quot;name=httpd state=restarted&quot;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">all # 全部</span><br><span class="line"></span><br><span class="line">one.example.com # 域名</span><br><span class="line">one.example.com:two.example.com # 多个域名</span><br><span class="line">192.168.1.50 # ip</span><br><span class="line">192.168.1.* # 多个ip,类似ant风格</span><br><span class="line"></span><br><span class="line">webservers #一个组</span><br><span class="line">webservers:dbservers # 多个组</span><br><span class="line"></span><br><span class="line">webservers:!phoenix # 一个组,排除</span><br><span class="line"></span><br><span class="line">webservers:dbservers:&amp;staging:!phoenix #多个组交集并排除,注意这里仅仅dbservers:&amp;staging是交集</span><br><span class="line"></span><br><span class="line">*.example.com # 多个域名</span><br><span class="line">*.com # 多个域名</span><br><span class="line"></span><br><span class="line">one*.com:dbservers # 域名和组 组合</span><br><span class="line"></span><br><span class="line">webservers[0] # 下标0,即该组第一个</span><br><span class="line">webservers[0-25] # 下标 0-25,即该组 0-25,总共26个</span><br><span class="line"></span><br><span class="line">~(web|db).*\.example\.com # 使用正则表达式的域名</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="Playbooks编排"><a href="#Playbooks编排" class="headerlink" title="Playbooks编排"></a><code>Playbooks</code>编排</h3><p>Playbooks 是 Ansible的配置,部署,编排语言.他们可以被描述为一个需要希望远程主机执行命令的方案,或者一组IT程序运行的命令集合.</p>
+<p><a href="https://github.com/ansible/ansible-examples">playbooks配置实例</a><br>这里面有一些的例子,比如tomcat的,可以参考一下,稍微修改就能符合我们自己的需求</p>
+<h4 id="playbooks基础"><a href="#playbooks基础" class="headerlink" title="playbooks基础"></a><code>playbooks</code>基础</h4><figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">hosts:</span> <span class="string">webservers</span> <span class="comment">#主机</span></span><br><span class="line">  <span class="attr">vars:</span> <span class="comment"># 环境变量</span></span><br><span class="line">    <span class="attr">http_port:</span> <span class="number">80</span></span><br><span class="line">    <span class="attr">max_clients:</span> <span class="number">200</span></span><br><span class="line">  <span class="attr">remote_user:</span> <span class="string">root</span> <span class="comment"># 执行用户</span></span><br><span class="line">  <span class="attr">tasks:</span> <span class="comment"># 任务</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">ensure</span> <span class="string">apache</span> <span class="string">is</span> <span class="string">at</span> <span class="string">the</span> <span class="string">latest</span> <span class="string">version</span> <span class="comment">#名字</span></span><br><span class="line">    <span class="attr">yum:</span> <span class="string">pkg=httpd</span> <span class="string">state=latest</span> <span class="comment"># action的模块名字 命令参数</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">write</span> <span class="string">the</span> <span class="string">apache</span> <span class="string">config</span> <span class="string">file</span></span><br><span class="line">    <span class="attr">template:</span> <span class="string">src=/srv/httpd.j2</span> <span class="string">dest=/etc/httpd.conf</span></span><br><span class="line">    <span class="attr">notify:</span> <span class="comment"># 通知</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">restart</span> <span class="string">apache</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">ensure</span> <span class="string">apache</span> <span class="string">is</span> <span class="string">running</span></span><br><span class="line">    <span class="attr">service:</span> <span class="string">name=httpd</span> <span class="string">state=started</span></span><br><span class="line">  <span class="attr">handlers:</span> <span class="comment"># 通知处理</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">restart</span> <span class="string">apache</span></span><br><span class="line">      <span class="attr">service:</span> <span class="string">name=httpd</span> <span class="string">state=restarted</span></span><br></pre></td></tr></table></figure>
+<p>完整的结构</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">hosts:</span> <span class="string">webservers</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">pre_tasks:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">shell:</span> <span class="string">echo</span> <span class="string">&#x27;hello&#x27;</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">roles:</span></span><br><span class="line">    <span class="bullet">-</span> &#123; <span class="attr">role:</span> <span class="string">some_role</span> &#125;</span><br><span class="line"></span><br><span class="line">  <span class="attr">tasks:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">shell:</span> <span class="string">echo</span> <span class="string">&#x27;still busy&#x27;</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">post_tasks:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">shell:</span> <span class="string">echo</span> <span class="string">&#x27;goodbye&#x27;</span></span><br></pre></td></tr></table></figure>
+
+
+<h4 id="playbooks-task-幂等性"><a href="#playbooks-task-幂等性" class="headerlink" title="playbooks task 幂等性"></a><code>playbooks</code> <code>task</code> 幂等性</h4><p>在运行 playbook 时（从上到下执行）,如果一个 host 执行 task 失败,这个 host 将会从整个 playbook 的 rotation 中移除. 如果发生执行失败的情况,请修正 playbook 中的错误,然后重新执行即可.</p>
+<p>每个 task 的目标在于执行一个 moudle, 通常是带有特定的参数来执行.在参数中可以使用变量（variables）.</p>
+<p>modules 具有”幂等”性,意思是如果你再一次地执行 moudle（译者注:比如遇到远端系统被意外改动,需要恢复原状）,moudle 只会执行必要的改动,只会改变需要改变的地方.所以重复多次执行 playbook 也很安全.</p>
+<p>对于 command module 和 shell module,重复执行 playbook,实际上是重复运行同样的命令.如果执行的命令类似于 ‘chmod’ 或者 ‘setsebool’ 这种命令,这没有任何问题.也可以使用一个叫做 ‘creates’ 的 flag 使得这两个 module 变得具有”幂等”特性 （不是必要的）.</p>
+<h4 id="jinja2-模板"><a href="#jinja2-模板" class="headerlink" title="jinja2 模板"></a><code>jinja2</code> 模板</h4><p><code>ansible</code>几乎所有的地方都可以引用变量,使用<code>jinja2</code>的语法</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">My</span> <span class="string">amp</span> <span class="string">goes</span> <span class="string">to</span> &#123;&#123; <span class="string">max_amp_value</span> &#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">template:</span> <span class="string">src=foo.cfg.j2</span> <span class="string">dest=&#123;&#123;</span> <span class="string">remote_install_path</span> <span class="string">&#125;&#125;/foo.cfg</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="include-语句"><a href="#include-语句" class="headerlink" title="include 语句"></a><code>include</code> 语句</h4><figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">this</span> <span class="string">is</span> <span class="string">a</span> <span class="string">play</span> <span class="string">at</span> <span class="string">the</span> <span class="string">top</span> <span class="string">level</span> <span class="string">of</span> <span class="string">a</span> <span class="string">file</span></span><br><span class="line">  <span class="attr">hosts:</span> <span class="string">all</span></span><br><span class="line">  <span class="attr">remote_user:</span> <span class="string">root</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">tasks:</span></span><br><span class="line"></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">say</span> <span class="string">hi</span></span><br><span class="line">    <span class="attr">tags:</span> <span class="string">foo</span></span><br><span class="line">    <span class="attr">shell:</span> <span class="string">echo</span> <span class="string">&quot;hi...&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> <span class="attr">include:</span> <span class="string">load_balancers.yml</span> <span class="comment"># 包含其它task</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">include:</span> <span class="string">webservers.yml</span> <span class="comment"># 包含其它task</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">include:</span> <span class="string">dbservers.yml</span> <span class="comment"># 包含其它task</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="roles-定义结构"><a href="#roles-定义结构" class="headerlink" title="roles 定义结构"></a><code>roles</code> 定义结构</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">site.yml</span><br><span class="line">webservers.yml</span><br><span class="line">fooservers.yml</span><br><span class="line">roles/</span><br><span class="line">   common/</span><br><span class="line">     files/</span><br><span class="line">     templates/</span><br><span class="line">     tasks/</span><br><span class="line">     handlers/</span><br><span class="line">     vars/</span><br><span class="line">     defaults/</span><br><span class="line">     meta/</span><br><span class="line">   webservers/</span><br><span class="line">     files/</span><br><span class="line">     templates/</span><br><span class="line">     tasks/</span><br><span class="line">     handlers/</span><br><span class="line">     vars/</span><br><span class="line">     defaults/</span><br><span class="line">     meta/</span><br></pre></td></tr></table></figure>
+
+<p>这是playbook</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">hosts:</span> <span class="string">webservers</span></span><br><span class="line">  <span class="attr">roles:</span></span><br><span class="line">     <span class="bullet">-</span> <span class="string">common</span></span><br><span class="line">     <span class="bullet">-</span> <span class="string">webservers</span></span><br></pre></td></tr></table></figure>
+
+<p>这个 playbook 为一个角色 ‘x’ 指定了如下的行为：</p>
+<ol>
+<li>如果 roles&#x2F;x&#x2F;tasks&#x2F;main.yml 存在, 其中列出的 tasks 将被添加到 play 中</li>
+<li>如果 roles&#x2F;x&#x2F;handlers&#x2F;main.yml 存在, 其中列出的 handlers 将被添加到 play 中</li>
+<li>如果 roles&#x2F;x&#x2F;vars&#x2F;main.yml 存在, 其中列出的 variables 将被添加到 play 中</li>
+<li>如果 roles&#x2F;x&#x2F;meta&#x2F;main.yml 存在, 其中列出的 “角色依赖” 将被添加到 roles 列表中 (1.3 and later)</li>
+<li>所有 copy tasks 可以引用 roles&#x2F;x&#x2F;files&#x2F; 中的文件，不需要指明文件的路径。</li>
+<li>所有 script tasks 可以引用 roles&#x2F;x&#x2F;files&#x2F; 中的脚本，不需要指明文件的路径。</li>
+<li>所有 template tasks 可以引用 roles&#x2F;x&#x2F;templates&#x2F; 中的文件，不需要指明文件的路径。</li>
+<li>所有 include tasks 可以引用 roles&#x2F;x&#x2F;tasks&#x2F; 中的文件，不需要指明文件的路径。</li>
+</ol>
+<h5 id="参数化引用-role"><a href="#参数化引用-role" class="headerlink" title="参数化引用 role"></a>参数化引用 <code>role</code></h5><figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">hosts:</span> <span class="string">webservers</span></span><br><span class="line">  <span class="attr">roles:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">common</span></span><br><span class="line">    <span class="bullet">-</span> &#123; <span class="attr">role:</span> <span class="string">foo_app_instance</span>, <span class="attr">dir:</span> <span class="string">&#x27;/opt/a&#x27;</span>,  <span class="attr">port:</span> <span class="number">5000</span> &#125; <span class="comment">#两个相同的role,但是参数不一样</span></span><br><span class="line">    <span class="bullet">-</span> &#123; <span class="attr">role:</span> <span class="string">foo_app_instance</span>, <span class="attr">dir:</span> <span class="string">&#x27;/opt/b&#x27;</span>,  <span class="attr">port:</span> <span class="number">5001</span> &#125; <span class="comment">#</span></span><br></pre></td></tr></table></figure>
+<p>等价于以下的写法</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">hosts:</span> <span class="string">webservers</span></span><br><span class="line">  <span class="attr">roles:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">common</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">role:</span> <span class="string">foo_app_instance</span></span><br><span class="line">      <span class="attr">vars:</span></span><br><span class="line">        <span class="attr">dir:</span> <span class="string">&#x27;/opt/a&#x27;</span></span><br><span class="line">        <span class="attr">app_port:</span> <span class="number">5000</span></span><br><span class="line">      <span class="attr">tags:</span> <span class="string">typeA</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">role:</span> <span class="string">foo_app_instance</span></span><br><span class="line">      <span class="attr">vars:</span></span><br><span class="line">        <span class="attr">dir:</span> <span class="string">&#x27;/opt/b&#x27;</span></span><br><span class="line">        <span class="attr">app_port:</span> <span class="number">5001</span></span><br><span class="line">      <span class="attr">tags:</span> <span class="string">typeB</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="ansible实践"><a href="#ansible实践" class="headerlink" title="ansible实践"></a><code>ansible</code>实践</h2><p>这里假设要部署一个java的项目,安装jdk,copy jar文件,copy 脚本來实践</p>
+<p>项目结构如下,完全按照<code>roles</code>的规范来</p>
+<img src="/2021/10/15/ansible%E7%AE%80%E4%BB%8B/project_structure.png" class="" title="project_structure">
+
+<p><code>site.yml</code>内容</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">hosts:</span> <span class="string">plb_servers</span></span><br><span class="line">  <span class="attr">remote_user:</span> <span class="string">root</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">roles:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">deploy</span></span><br></pre></td></tr></table></figure>
+
+<p><code>main.yml</code>内容</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Make</span> <span class="string">home</span> <span class="string">dir</span></span><br><span class="line">  <span class="attr">file:</span></span><br><span class="line">    <span class="attr">path:</span> <span class="string">&quot;<span class="template-variable">&#123;&#123;home_dir&#125;&#125;</span>&quot;</span></span><br><span class="line">    <span class="attr">state:</span> <span class="string">directory</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Copy</span> <span class="string">jdk</span></span><br><span class="line">  <span class="attr">copy:</span></span><br><span class="line">    <span class="attr">src:</span> <span class="string">jdk-8u291-linux-x64.tar.gz</span></span><br><span class="line">    <span class="attr">dest:</span> <span class="string">&quot;<span class="template-variable">&#123;&#123;home_dir&#125;&#125;</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Extract</span> <span class="string">jdk</span></span><br><span class="line">  <span class="attr">command:</span> <span class="string">chdir=&#123;&#123;home_dir&#125;&#125;</span> <span class="string">/bin/tar</span> <span class="string">xvf</span> <span class="string">jdk-8u291-linux-x64.tar.gz</span> <span class="string">-C</span> <span class="string">.</span> <span class="string">creates=jdk1.8.0_291</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Copy</span> <span class="string">fat</span> <span class="string">jar</span></span><br><span class="line">  <span class="attr">copy:</span></span><br><span class="line">    <span class="attr">src:</span> <span class="string">&quot;<span class="template-variable">&#123;&#123;exec_jar_name&#125;&#125;</span>&quot;</span></span><br><span class="line">    <span class="attr">dest:</span> <span class="string">&quot;<span class="template-variable">&#123;&#123;home_dir&#125;&#125;</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Copy</span> <span class="string">start</span> <span class="string">script</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">src:</span> <span class="string">start.sh</span></span><br><span class="line">    <span class="attr">dest:</span> <span class="string">&quot;<span class="template-variable">&#123;&#123;home_dir&#125;&#125;</span>&quot;</span></span><br><span class="line">    <span class="attr">mode:</span> <span class="number">0755</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Copy</span> <span class="string">stop</span> <span class="string">script</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">src:</span> <span class="string">stop.sh</span></span><br><span class="line">    <span class="attr">dest:</span> <span class="string">&quot;<span class="template-variable">&#123;&#123;home_dir&#125;&#125;</span>&quot;</span></span><br><span class="line">    <span class="attr">mode:</span> <span class="number">0755</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Copy</span> <span class="string">ehcache</span> <span class="string">config</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">src:</span> <span class="string">ehcache.xml</span></span><br><span class="line">    <span class="attr">dest:</span> <span class="string">&quot;<span class="template-variable">&#123;&#123;home_dir&#125;&#125;</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Make</span> <span class="string">ehcache</span> <span class="string">dir</span></span><br><span class="line">  <span class="attr">file:</span></span><br><span class="line">    <span class="attr">path:</span> <span class="string">&quot;<span class="template-variable">&#123;&#123;home_dir&#125;&#125;</span>/ehcache&quot;</span></span><br><span class="line">    <span class="attr">state:</span> <span class="string">directory</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">start</span> <span class="string">app</span></span><br><span class="line">  <span class="attr">command:</span></span><br><span class="line">    <span class="attr">cmd:</span> <span class="string">&quot;<span class="template-variable">&#123;&#123;home_dir&#125;&#125;</span>/start.sh&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#- name: wait for app to start</span></span><br><span class="line"><span class="comment">#  wait_for:</span></span><br><span class="line"><span class="comment">#    port: &quot;&#123;&#123;http_port&#125;&#125;&quot;</span></span><br><span class="line"><span class="comment">#    timeout: 12</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="aisible注意事项"><a href="#aisible注意事项" class="headerlink" title="aisible注意事项"></a><code>aisible</code>注意事项</h2><h3 id="yaml的jinja2陷阱"><a href="#yaml的jinja2陷阱" class="headerlink" title="yaml的jinja2陷阱"></a><code>yaml</code>的<code>jinja2</code>陷阱</h3><p>yaml语法不能<code>&#123;</code>开头,所以如果开头使用<code>jinja2</code>语法,应该要注意</p>
+<p>错误</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="bullet">-</span> <span class="attr">hosts:</span> <span class="string">app_servers</span></span><br><span class="line">  <span class="attr">vars:</span></span><br><span class="line">      <span class="attr">app_path:</span> &#123;&#123; <span class="string">base_path</span> &#125;&#125;<span class="string">/22</span></span><br></pre></td></tr></table></figure>
+<p>正确</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="bullet">-</span> <span class="attr">hosts:</span> <span class="string">app_servers</span></span><br><span class="line">  <span class="attr">vars:</span></span><br><span class="line">       <span class="attr">app_path:</span> <span class="string">&quot;<span class="template-variable">&#123;&#123; base_path &#125;&#125;</span>/22&quot;</span></span><br></pre></td></tr></table></figure>
+
+<div style="display: none">
+### db操作
+
+<p><code>ansible</code>执行db操作,这里要区分,不同的数据库,如mysql还是oracle,还是postgresql,每个都需要使用不同的插件,而且需要不同的依赖,所以,要求还是比较高的,尤其是<br>oracle,因为不是开源的,所以,没有社区支持,比较麻烦</p>
+<p>所以,如果使用<code>ansible</code>来执行db操作,相对于来说麻烦一些,这里可以考虑在应用中,执行操作,可选的方案有<code>flyway</code></p>
+</div>
+
+<h3 id="幂等性"><a href="#幂等性" class="headerlink" title="幂等性"></a>幂等性</h3><p>脚本应该按照幂等性的原则来说,前面也提到过,也就是,中间任意一个步骤失败,不用去服务器删除文件之类的,直接重新执行即可,如果你使用<code>ansible</code>本身的模块,那么大部分<br>情况下,你是不用考虑幂等性的,但是如果你执行的是自己的脚本,如shell命令,这里你可能需要额外的使用<code>creates</code>来完成幂等性</p>
+<div style="display: none">
+### shell后台任务陷阱
+
+<p><code>ansible</code>本身通过包装ssh命令来执行<code>shell</code>脚本,所以,执行完以后,便会退出,所以,如果你需要执行后台任务,你需要使用<code>setsid</code>或者<code>nohup</code>来确保你的任务<br>不会被中断,这个你需要写在脚本里面,否则,基本就是刚执行,就中断,几乎就像没执行一样</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/bin/bash</span></span><br><span class="line">export LANG=zh_CN.UTF-8</span><br><span class="line">setsid &#123;&#123;home_dir&#125;&#125;/jdk1.8.0_291/bin/java -jar &#123;&#123;home_dir&#125;&#125;/&#123;&#123;exec_jar_name&#125;&#125; &gt; all.log 2 &gt;&amp; 1</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">如果不加setsid,那么java启动以后,立马被<span class="built_in">kill</span>,只会看到一个空的all.log文件</span></span><br></pre></td></tr></table></figure>
+</div>
+]]></content>
+      <categories>
+        <category>运维工具</category>
+      </categories>
+      <tags>
+        <tag>ansible</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>NoSuchMethodError的bug修复</title>
     <url>/2021/11/15/NoSuchMethodError%E7%9A%84bug%E4%BF%AE%E5%A4%8D/</url>
     <content><![CDATA[<h1 id="记一次NoSuchMethodError"><a href="#记一次NoSuchMethodError" class="headerlink" title="记一次NoSuchMethodError"></a>记一次<code>NoSuchMethodError</code></h1><p><code>NoSuchMethodError</code>的就有类找到了,但是方法没有,所以,思路主要有两个</p>
@@ -186,191 +308,6 @@
       </tags>
   </entry>
   <entry>
-    <title>ansible简介</title>
-    <url>/2021/10/15/ansible%E7%AE%80%E4%BB%8B/</url>
-    <content><![CDATA[<h1 id="ansible简介"><a href="#ansible简介" class="headerlink" title="ansible简介"></a>ansible简介</h1><img src="/2021/10/15/ansible%E7%AE%80%E4%BB%8B/ansible-logo.png" class="" title="ansible-logo">
-<p><code>ansible</code>,<code>[ˈæn.sɪ.bəl]</code>发音,Ansible 是一个开源的基于 OpenSSH 的自动化配置管理工具。可以用它来配置系统、部署软件和编排更高级的IT任务，比如持续部署或零停机更新。<code>ansible</code>的主要目标是简单和易用，并且它还高度关注安全性和可靠性。基于这样的目标，Ansible 适用于开发人员、系统管理员、发布工程师、IT 经理，以及介于两者之间的所有人。Ansible 适合管理几乎所有的环境，从拥有少数实例的小型环境到有数千个实例的企业环境。<br>使用<code>ansible</code>无须在被管理的机器上安装代理，所以不存在如何升级远程守护进程的问题，也不存在由于卸载了守护进程而无法管理系统的问题。</p>
-<h3 id="ansible工作方式"><a href="#ansible工作方式" class="headerlink" title="ansible工作方式"></a>ansible工作方式</h3><p>使用<code>ansible</code>无须在被管理的客户端电脑上安装代理之类的组件。它通过普通的 SSH 进行通信，以便从远程计算机检索信息、发出命令和复制文件。这是 Ansible 简化服务器管理的一种方式。任何公开 SSH 端口的服务器都可以通过 Ansible 进行配置和管理。</p>
-<p><code>ansible</code>采用模块化的设计，所以非常容易扩展到各种特定的使用场景。模块可以用任何语言编写，并使用标准 JSON 进行通信。Ansible 的配置文件是用 YAML 格式编写的，因为它使用起来非常简单，并且与主流的标记语言很相似。除了通过命令行工具 Ansible 还可以通过配置脚本(Playbooks)与客户端交互。</p>
-<h3 id="ansible总结"><a href="#ansible总结" class="headerlink" title="ansible总结"></a><code>ansible</code>总结</h3><p>现在云原生比较流行,k8s来管理容器,达到大规模集群的自动化运维,虽然不在一个维度,但是相比起来效率更高,<code>ansible</code>基于ssh,基于linux本身机器,相比k8s来说,更偏向于底层,所以,还是有用武之地的,如果需要自动化操作linux机器,<br><code>ansible</code>本质上来说,就是ssh的加强版,把ssh连接的机器分类,把执行的命令模块化,可编排,做抽象和封装,实现便捷的自动化运维</p>
-<h2 id="ansible安装"><a href="#ansible安装" class="headerlink" title="ansible安装"></a><code>ansible</code>安装</h2><p><code>ansible</code>管理机器分为两种,一种是管理的机器,相当于跳板机,另一种是被管理的机器,因为linux服务器都安装了ssh,所以,可以认为被管理的机器是不需要什么以来的,但是管理的机器,需要安装<code>ansible</code></p>
-<h3 id="安装ansible"><a href="#安装ansible" class="headerlink" title="安装ansible"></a>安装<code>ansible</code></h3><p><code>ansible</code>安装,分为两种,一种是用linux发行版的pkg安装,这个基本上都有,直接安装就好了,例如<code>ubuntu</code>就是下面的命令</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line">sudo apt install software-properties-common</span><br><span class="line">sudo add-apt-repository --yes --update ppa:ansible/ansible</span><br><span class="line">sudo apt install ansible</span><br></pre></td></tr></table></figure>
-<p>还有一种方式是pip安装, 因为本身<code>ansible</code>是python写的,可以用python的包管理安装,但是这种安装以后,需要一些额外的配置,所以,不推荐在服务器上安装的时候使用这种方式,<br>但是这种方式依赖少,自己电脑上装得时候,可以尝试这种方式</p>
-<h2 id="ansible的hello-world"><a href="#ansible的hello-world" class="headerlink" title="ansible的hello world"></a><code>ansible</code>的hello world</h2><p><code>ansible</code>是ssh连接客户机器的,ssh连接分为两种,一种是密码,比较麻烦,也不适合自动化运维,不建议使用,一种是使用公钥登陆,而且这种安全性也高,不过需要一些额外的配置</p>
-<ol>
-<li>生成公钥<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ssh-keygen -t ed25519 # rsa已经被废弃了,如果使用rsa,还需要使用额外的配置,非常不推荐</span><br></pre></td></tr></table></figure></li>
-<li>发送到客户机器<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ssh-copy-id -i $&#123;your pub file&#125; root@192.168.85.35 #使用什么用户,以及该机器的地址</span><br></pre></td></tr></table></figure></li>
-<li>配置ssh,一般来说,不应该使用默认的名字,而且管理的机器一定会有很多的私钥存放,所以,必须要额外的配置<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Host 192.168.85.35</span><br><span class="line">	Hostname 192.168.85.35</span><br><span class="line">	User root</span><br><span class="line">	PreferredAuthentications publickey</span><br><span class="line">	# 如果出现 no mutual signature algorithm 错误,ssh 连接不上的时候,使用 -vvv,查看详细信息</span><br><span class="line">#   PubkeyAcceptedKeyTypes +ssh-rsa</span><br><span class="line">    IdentityFile ~/.ssh/ssh8535</span><br></pre></td></tr></table></figure></li>
-<li>配置inventory文件,<code>/etc/ansible/hosts</code><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">vm8535 ansible_ssh_user=root ansible_ssh_host=192.168.85.35 ansible_ssh_port=22</span><br></pre></td></tr></table></figure></li>
-<li><code>ansible</code>的hello world,看到输出如下,就表示成功<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">ansible vm8535 -m ping</span></span><br><span class="line">vm8535 | SUCCESS =&gt; &#123;</span><br><span class="line">    &quot;ansible_facts&quot;: &#123;</span><br><span class="line">        &quot;discovered_interpreter_python&quot;: &quot;/usr/bin/python&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;changed&quot;: false,</span><br><span class="line">    &quot;ping&quot;: &quot;pong&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ol>
-<h2 id="ansible相关概念"><a href="#ansible相关概念" class="headerlink" title="ansible相关概念"></a><code>ansible</code>相关概念</h2><p><code>ansible</code>的主要概念分为 <code>inventory</code>,即管理那些机器,需要提前配置,<code>Playbooks</code>,是一组IT程序运行的命令集合</p>
-<h3 id="inventory文件"><a href="#inventory文件" class="headerlink" title="inventory文件"></a><code>inventory</code>文件</h3><p>配置操作的主机,主机的配置,如果集合一样,可以有多个集合,集合之间还可以有并集的概念</p>
-<h4 id="简单配置"><a href="#简单配置" class="headerlink" title="简单配置"></a>简单配置</h4><p>默认的文件地址是<code>/etc/ansible/hosts</code>,可以通过<code>/etc/ansible/ansible.cfg</code>配置,类似windows<br>的ini文件</p>
-<figure class="highlight ini"><table><tr><td class="code"><pre><span class="line">mail.example.com</span><br><span class="line"></span><br><span class="line"><span class="section">[webservers]</span></span><br><span class="line">foo.example.com</span><br><span class="line">bar.example.com</span><br><span class="line"></span><br><span class="line"><span class="section">[dbservers]</span></span><br><span class="line">one.example.com</span><br><span class="line">two.example.com</span><br><span class="line">three.example.com</span><br></pre></td></tr></table></figure>
-
-<p>其中还可以配置主机变量,组变量,合并组,功能比较强大,详细的官方文档在这里<br><a href="https://ansible-tran.readthedocs.io/en/latest/docs/intro_inventory.html#id7">ansible中文权威指南-inventory文件</a></p>
-<p>这里在配置的时候,可以使用别名,非常方便</p>
-<figure class="highlight ini"><table><tr><td class="code"><pre><span class="line">vm8535 <span class="attr">ansible_ssh_user</span>=root ansible_ssh_host=<span class="number">192.168</span>.<span class="number">85.35</span> ansible_ssh_port=<span class="number">22</span></span><br></pre></td></tr></table></figure>
-<ol>
-<li>这里的<code>vm8535</code>就是主机的名字,以后可以使用这个名字,而不用使用域名或者ip</li>
-<li><code>ansible_ssh_user</code>默认就是你当前的用户,如果你是<code>root</code>,那就是<code>root</code>,这里沿用的是ssh的逻辑,所以,建议显式的配置</li>
-<li><code>ansible_ssh_host</code>就是主机地址,也可以是域名**(&#x2F;etc&#x2F;hosts里面的配置,或者公网的域名)**</li>
-<li><code>ansible_ssh_port</code>如果ssh的端口不是默认的,那么这里必须显式的配置</li>
-</ol>
-<p>常用的参数如下</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ansible_ssh_host</span><br><span class="line">      将要连接的远程主机名.与你想要设定的主机的别名不同的话,可通过此变量设置.</span><br><span class="line"></span><br><span class="line">ansible_ssh_port</span><br><span class="line">      ssh端口号.如果不是默认的端口号,通过此变量设置.</span><br><span class="line"></span><br><span class="line">ansible_ssh_user</span><br><span class="line">      默认的 ssh 用户名</span><br><span class="line"></span><br><span class="line">ansible_ssh_pass</span><br><span class="line">      ssh 密码(这种方式并不安全,我们强烈建议使用 --ask-pass 或 SSH 密钥)</span><br><span class="line"></span><br><span class="line">ansible_sudo_pass</span><br><span class="line">      sudo 密码(这种方式并不安全,我们强烈建议使用 --ask-sudo-pass)</span><br><span class="line"></span><br><span class="line">ansible_sudo_exe (new in version 1.8)</span><br><span class="line">      sudo 命令路径(适用于1.8及以上版本)</span><br><span class="line"></span><br><span class="line">ansible_connection</span><br><span class="line">      与主机的连接类型.比如:local, ssh 或者 paramiko. Ansible 1.2 以前默认使用 paramiko.1.2 以后默认使用 &#x27;smart&#x27;,&#x27;smart&#x27; 方式会根据是否支持 ControlPersist, 来判断&#x27;ssh&#x27; 方式是否可行.</span><br><span class="line"></span><br><span class="line">ansible_ssh_private_key_file</span><br><span class="line">      ssh 使用的私钥文件.适用于有多个密钥,而你不想使用 SSH 代理的情况.</span><br><span class="line"></span><br><span class="line">ansible_shell_type</span><br><span class="line">      目标系统的shell类型.默认情况下,命令的执行使用 &#x27;sh&#x27; 语法,可设置为 &#x27;csh&#x27; 或 &#x27;fish&#x27;.</span><br><span class="line"></span><br><span class="line">ansible_python_interpreter</span><br><span class="line">      目标主机的 python 路径.适用于的情况: 系统中有多个 Python, 或者命令路径不是&quot;/usr/bin/python&quot;,比如  \*BSD, 或者 /usr/bin/python</span><br><span class="line">      不是 2.X 版本的 Python.我们不使用 &quot;/usr/bin/env&quot; 机制,因为这要求远程用户的路径设置正确,且要求 &quot;python&quot; 可执行程序名不可为 python以外的名字(实际有可能名为python26).</span><br><span class="line"></span><br><span class="line">      与 ansible_python_interpreter 的工作方式相同,可设定如 ruby 或 perl 的路径....</span><br></pre></td></tr></table></figure>
-
-<p>注意,如果不是root用户的话,会使用<code>sudo</code>命令,这里建议去服务器,把你使用的用户的<code>sudo</code>配置成,不需要密码,<br>否则的话,就失去了自动化配置的意义,每次手动输入<code>sudo</code>密码也是一件不可忍受的事情,在这里<code>/etc/sudoers</code>添加如下配置即可,无需重新启动</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$&#123;your_user_name&#125; ALL=(ALL) NOPASSWD: ALL</span><br></pre></td></tr></table></figure>
-
-<h4 id="patterns"><a href="#patterns" class="headerlink" title="patterns"></a><code>patterns</code></h4><p><code>patterns</code>就是根据<code>inventory</code>选取特定的主机,详情文档<br><a href="https://ansible-tran.readthedocs.io/en/latest/docs/intro_patterns.html#id1">Ansible中文权威指南-patterns</a></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ansible &lt;pattern_goes_here&gt; -m &lt;module_name&gt; -a &lt;arguments&gt;</span><br><span class="line">ansible webservers -m service -a &quot;name=httpd state=restarted&quot;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">all # 全部</span><br><span class="line"></span><br><span class="line">one.example.com # 域名</span><br><span class="line">one.example.com:two.example.com # 多个域名</span><br><span class="line">192.168.1.50 # ip</span><br><span class="line">192.168.1.* # 多个ip,类似ant风格</span><br><span class="line"></span><br><span class="line">webservers #一个组</span><br><span class="line">webservers:dbservers # 多个组</span><br><span class="line"></span><br><span class="line">webservers:!phoenix # 一个组,排除</span><br><span class="line"></span><br><span class="line">webservers:dbservers:&amp;staging:!phoenix #多个组交集并排除,注意这里仅仅dbservers:&amp;staging是交集</span><br><span class="line"></span><br><span class="line">*.example.com # 多个域名</span><br><span class="line">*.com # 多个域名</span><br><span class="line"></span><br><span class="line">one*.com:dbservers # 域名和组 组合</span><br><span class="line"></span><br><span class="line">webservers[0] # 下标0,即该组第一个</span><br><span class="line">webservers[0-25] # 下标 0-25,即该组 0-25,总共26个</span><br><span class="line"></span><br><span class="line">~(web|db).*\.example\.com # 使用正则表达式的域名</span><br></pre></td></tr></table></figure>
-
-
-<h3 id="Playbooks编排"><a href="#Playbooks编排" class="headerlink" title="Playbooks编排"></a><code>Playbooks</code>编排</h3><p>Playbooks 是 Ansible的配置,部署,编排语言.他们可以被描述为一个需要希望远程主机执行命令的方案,或者一组IT程序运行的命令集合.</p>
-<p><a href="https://github.com/ansible/ansible-examples">playbooks配置实例</a><br>这里面有一些的例子,比如tomcat的,可以参考一下,稍微修改就能符合我们自己的需求</p>
-<h4 id="playbooks基础"><a href="#playbooks基础" class="headerlink" title="playbooks基础"></a><code>playbooks</code>基础</h4><figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">hosts:</span> <span class="string">webservers</span> <span class="comment">#主机</span></span><br><span class="line">  <span class="attr">vars:</span> <span class="comment"># 环境变量</span></span><br><span class="line">    <span class="attr">http_port:</span> <span class="number">80</span></span><br><span class="line">    <span class="attr">max_clients:</span> <span class="number">200</span></span><br><span class="line">  <span class="attr">remote_user:</span> <span class="string">root</span> <span class="comment"># 执行用户</span></span><br><span class="line">  <span class="attr">tasks:</span> <span class="comment"># 任务</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">ensure</span> <span class="string">apache</span> <span class="string">is</span> <span class="string">at</span> <span class="string">the</span> <span class="string">latest</span> <span class="string">version</span> <span class="comment">#名字</span></span><br><span class="line">    <span class="attr">yum:</span> <span class="string">pkg=httpd</span> <span class="string">state=latest</span> <span class="comment"># action的模块名字 命令参数</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">write</span> <span class="string">the</span> <span class="string">apache</span> <span class="string">config</span> <span class="string">file</span></span><br><span class="line">    <span class="attr">template:</span> <span class="string">src=/srv/httpd.j2</span> <span class="string">dest=/etc/httpd.conf</span></span><br><span class="line">    <span class="attr">notify:</span> <span class="comment"># 通知</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">restart</span> <span class="string">apache</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">ensure</span> <span class="string">apache</span> <span class="string">is</span> <span class="string">running</span></span><br><span class="line">    <span class="attr">service:</span> <span class="string">name=httpd</span> <span class="string">state=started</span></span><br><span class="line">  <span class="attr">handlers:</span> <span class="comment"># 通知处理</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">restart</span> <span class="string">apache</span></span><br><span class="line">      <span class="attr">service:</span> <span class="string">name=httpd</span> <span class="string">state=restarted</span></span><br></pre></td></tr></table></figure>
-<p>完整的结构</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">hosts:</span> <span class="string">webservers</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">pre_tasks:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">shell:</span> <span class="string">echo</span> <span class="string">&#x27;hello&#x27;</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">roles:</span></span><br><span class="line">    <span class="bullet">-</span> &#123; <span class="attr">role:</span> <span class="string">some_role</span> &#125;</span><br><span class="line"></span><br><span class="line">  <span class="attr">tasks:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">shell:</span> <span class="string">echo</span> <span class="string">&#x27;still busy&#x27;</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">post_tasks:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">shell:</span> <span class="string">echo</span> <span class="string">&#x27;goodbye&#x27;</span></span><br></pre></td></tr></table></figure>
-
-
-<h4 id="playbooks-task-幂等性"><a href="#playbooks-task-幂等性" class="headerlink" title="playbooks task 幂等性"></a><code>playbooks</code> <code>task</code> 幂等性</h4><p>在运行 playbook 时（从上到下执行）,如果一个 host 执行 task 失败,这个 host 将会从整个 playbook 的 rotation 中移除. 如果发生执行失败的情况,请修正 playbook 中的错误,然后重新执行即可.</p>
-<p>每个 task 的目标在于执行一个 moudle, 通常是带有特定的参数来执行.在参数中可以使用变量（variables）.</p>
-<p>modules 具有”幂等”性,意思是如果你再一次地执行 moudle（译者注:比如遇到远端系统被意外改动,需要恢复原状）,moudle 只会执行必要的改动,只会改变需要改变的地方.所以重复多次执行 playbook 也很安全.</p>
-<p>对于 command module 和 shell module,重复执行 playbook,实际上是重复运行同样的命令.如果执行的命令类似于 ‘chmod’ 或者 ‘setsebool’ 这种命令,这没有任何问题.也可以使用一个叫做 ‘creates’ 的 flag 使得这两个 module 变得具有”幂等”特性 （不是必要的）.</p>
-<h4 id="jinja2-模板"><a href="#jinja2-模板" class="headerlink" title="jinja2 模板"></a><code>jinja2</code> 模板</h4><p><code>ansible</code>几乎所有的地方都可以引用变量,使用<code>jinja2</code>的语法</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">My</span> <span class="string">amp</span> <span class="string">goes</span> <span class="string">to</span> &#123;&#123; <span class="string">max_amp_value</span> &#125;&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">template:</span> <span class="string">src=foo.cfg.j2</span> <span class="string">dest=&#123;&#123;</span> <span class="string">remote_install_path</span> <span class="string">&#125;&#125;/foo.cfg</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="include-语句"><a href="#include-语句" class="headerlink" title="include 语句"></a><code>include</code> 语句</h4><figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">this</span> <span class="string">is</span> <span class="string">a</span> <span class="string">play</span> <span class="string">at</span> <span class="string">the</span> <span class="string">top</span> <span class="string">level</span> <span class="string">of</span> <span class="string">a</span> <span class="string">file</span></span><br><span class="line">  <span class="attr">hosts:</span> <span class="string">all</span></span><br><span class="line">  <span class="attr">remote_user:</span> <span class="string">root</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">tasks:</span></span><br><span class="line"></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">say</span> <span class="string">hi</span></span><br><span class="line">    <span class="attr">tags:</span> <span class="string">foo</span></span><br><span class="line">    <span class="attr">shell:</span> <span class="string">echo</span> <span class="string">&quot;hi...&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> <span class="attr">include:</span> <span class="string">load_balancers.yml</span> <span class="comment"># 包含其它task</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">include:</span> <span class="string">webservers.yml</span> <span class="comment"># 包含其它task</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">include:</span> <span class="string">dbservers.yml</span> <span class="comment"># 包含其它task</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="roles-定义结构"><a href="#roles-定义结构" class="headerlink" title="roles 定义结构"></a><code>roles</code> 定义结构</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">site.yml</span><br><span class="line">webservers.yml</span><br><span class="line">fooservers.yml</span><br><span class="line">roles/</span><br><span class="line">   common/</span><br><span class="line">     files/</span><br><span class="line">     templates/</span><br><span class="line">     tasks/</span><br><span class="line">     handlers/</span><br><span class="line">     vars/</span><br><span class="line">     defaults/</span><br><span class="line">     meta/</span><br><span class="line">   webservers/</span><br><span class="line">     files/</span><br><span class="line">     templates/</span><br><span class="line">     tasks/</span><br><span class="line">     handlers/</span><br><span class="line">     vars/</span><br><span class="line">     defaults/</span><br><span class="line">     meta/</span><br></pre></td></tr></table></figure>
-
-<p>这是playbook</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">hosts:</span> <span class="string">webservers</span></span><br><span class="line">  <span class="attr">roles:</span></span><br><span class="line">     <span class="bullet">-</span> <span class="string">common</span></span><br><span class="line">     <span class="bullet">-</span> <span class="string">webservers</span></span><br></pre></td></tr></table></figure>
-
-<p>这个 playbook 为一个角色 ‘x’ 指定了如下的行为：</p>
-<ol>
-<li>如果 roles&#x2F;x&#x2F;tasks&#x2F;main.yml 存在, 其中列出的 tasks 将被添加到 play 中</li>
-<li>如果 roles&#x2F;x&#x2F;handlers&#x2F;main.yml 存在, 其中列出的 handlers 将被添加到 play 中</li>
-<li>如果 roles&#x2F;x&#x2F;vars&#x2F;main.yml 存在, 其中列出的 variables 将被添加到 play 中</li>
-<li>如果 roles&#x2F;x&#x2F;meta&#x2F;main.yml 存在, 其中列出的 “角色依赖” 将被添加到 roles 列表中 (1.3 and later)</li>
-<li>所有 copy tasks 可以引用 roles&#x2F;x&#x2F;files&#x2F; 中的文件，不需要指明文件的路径。</li>
-<li>所有 script tasks 可以引用 roles&#x2F;x&#x2F;files&#x2F; 中的脚本，不需要指明文件的路径。</li>
-<li>所有 template tasks 可以引用 roles&#x2F;x&#x2F;templates&#x2F; 中的文件，不需要指明文件的路径。</li>
-<li>所有 include tasks 可以引用 roles&#x2F;x&#x2F;tasks&#x2F; 中的文件，不需要指明文件的路径。</li>
-</ol>
-<h5 id="参数化引用-role"><a href="#参数化引用-role" class="headerlink" title="参数化引用 role"></a>参数化引用 <code>role</code></h5><figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">hosts:</span> <span class="string">webservers</span></span><br><span class="line">  <span class="attr">roles:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">common</span></span><br><span class="line">    <span class="bullet">-</span> &#123; <span class="attr">role:</span> <span class="string">foo_app_instance</span>, <span class="attr">dir:</span> <span class="string">&#x27;/opt/a&#x27;</span>,  <span class="attr">port:</span> <span class="number">5000</span> &#125; <span class="comment">#两个相同的role,但是参数不一样</span></span><br><span class="line">    <span class="bullet">-</span> &#123; <span class="attr">role:</span> <span class="string">foo_app_instance</span>, <span class="attr">dir:</span> <span class="string">&#x27;/opt/b&#x27;</span>,  <span class="attr">port:</span> <span class="number">5001</span> &#125; <span class="comment">#</span></span><br></pre></td></tr></table></figure>
-<p>等价于以下的写法</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">hosts:</span> <span class="string">webservers</span></span><br><span class="line">  <span class="attr">roles:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">common</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">role:</span> <span class="string">foo_app_instance</span></span><br><span class="line">      <span class="attr">vars:</span></span><br><span class="line">        <span class="attr">dir:</span> <span class="string">&#x27;/opt/a&#x27;</span></span><br><span class="line">        <span class="attr">app_port:</span> <span class="number">5000</span></span><br><span class="line">      <span class="attr">tags:</span> <span class="string">typeA</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">role:</span> <span class="string">foo_app_instance</span></span><br><span class="line">      <span class="attr">vars:</span></span><br><span class="line">        <span class="attr">dir:</span> <span class="string">&#x27;/opt/b&#x27;</span></span><br><span class="line">        <span class="attr">app_port:</span> <span class="number">5001</span></span><br><span class="line">      <span class="attr">tags:</span> <span class="string">typeB</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="ansible实践"><a href="#ansible实践" class="headerlink" title="ansible实践"></a><code>ansible</code>实践</h2><p>这里假设要部署一个java的项目,安装jdk,copy jar文件,copy 脚本來实践</p>
-<p>项目结构如下,完全按照<code>roles</code>的规范来</p>
-<img src="/2021/10/15/ansible%E7%AE%80%E4%BB%8B/project_structure.png" class="" title="project_structure">
-
-<p><code>site.yml</code>内容</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">hosts:</span> <span class="string">plb_servers</span></span><br><span class="line">  <span class="attr">remote_user:</span> <span class="string">root</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">roles:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">deploy</span></span><br></pre></td></tr></table></figure>
-
-<p><code>main.yml</code>内容</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Make</span> <span class="string">home</span> <span class="string">dir</span></span><br><span class="line">  <span class="attr">file:</span></span><br><span class="line">    <span class="attr">path:</span> <span class="string">&quot;<span class="template-variable">&#123;&#123;home_dir&#125;&#125;</span>&quot;</span></span><br><span class="line">    <span class="attr">state:</span> <span class="string">directory</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Copy</span> <span class="string">jdk</span></span><br><span class="line">  <span class="attr">copy:</span></span><br><span class="line">    <span class="attr">src:</span> <span class="string">jdk-8u291-linux-x64.tar.gz</span></span><br><span class="line">    <span class="attr">dest:</span> <span class="string">&quot;<span class="template-variable">&#123;&#123;home_dir&#125;&#125;</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Extract</span> <span class="string">jdk</span></span><br><span class="line">  <span class="attr">command:</span> <span class="string">chdir=&#123;&#123;home_dir&#125;&#125;</span> <span class="string">/bin/tar</span> <span class="string">xvf</span> <span class="string">jdk-8u291-linux-x64.tar.gz</span> <span class="string">-C</span> <span class="string">.</span> <span class="string">creates=jdk1.8.0_291</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Copy</span> <span class="string">fat</span> <span class="string">jar</span></span><br><span class="line">  <span class="attr">copy:</span></span><br><span class="line">    <span class="attr">src:</span> <span class="string">&quot;<span class="template-variable">&#123;&#123;exec_jar_name&#125;&#125;</span>&quot;</span></span><br><span class="line">    <span class="attr">dest:</span> <span class="string">&quot;<span class="template-variable">&#123;&#123;home_dir&#125;&#125;</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Copy</span> <span class="string">start</span> <span class="string">script</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">src:</span> <span class="string">start.sh</span></span><br><span class="line">    <span class="attr">dest:</span> <span class="string">&quot;<span class="template-variable">&#123;&#123;home_dir&#125;&#125;</span>&quot;</span></span><br><span class="line">    <span class="attr">mode:</span> <span class="number">0755</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Copy</span> <span class="string">stop</span> <span class="string">script</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">src:</span> <span class="string">stop.sh</span></span><br><span class="line">    <span class="attr">dest:</span> <span class="string">&quot;<span class="template-variable">&#123;&#123;home_dir&#125;&#125;</span>&quot;</span></span><br><span class="line">    <span class="attr">mode:</span> <span class="number">0755</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Copy</span> <span class="string">ehcache</span> <span class="string">config</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">src:</span> <span class="string">ehcache.xml</span></span><br><span class="line">    <span class="attr">dest:</span> <span class="string">&quot;<span class="template-variable">&#123;&#123;home_dir&#125;&#125;</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Make</span> <span class="string">ehcache</span> <span class="string">dir</span></span><br><span class="line">  <span class="attr">file:</span></span><br><span class="line">    <span class="attr">path:</span> <span class="string">&quot;<span class="template-variable">&#123;&#123;home_dir&#125;&#125;</span>/ehcache&quot;</span></span><br><span class="line">    <span class="attr">state:</span> <span class="string">directory</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">start</span> <span class="string">app</span></span><br><span class="line">  <span class="attr">command:</span></span><br><span class="line">    <span class="attr">cmd:</span> <span class="string">&quot;<span class="template-variable">&#123;&#123;home_dir&#125;&#125;</span>/start.sh&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#- name: wait for app to start</span></span><br><span class="line"><span class="comment">#  wait_for:</span></span><br><span class="line"><span class="comment">#    port: &quot;&#123;&#123;http_port&#125;&#125;&quot;</span></span><br><span class="line"><span class="comment">#    timeout: 12</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="aisible注意事项"><a href="#aisible注意事项" class="headerlink" title="aisible注意事项"></a><code>aisible</code>注意事项</h2><h3 id="yaml的jinja2陷阱"><a href="#yaml的jinja2陷阱" class="headerlink" title="yaml的jinja2陷阱"></a><code>yaml</code>的<code>jinja2</code>陷阱</h3><p>yaml语法不能<code>&#123;</code>开头,所以如果开头使用<code>jinja2</code>语法,应该要注意</p>
-<p>错误</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="bullet">-</span> <span class="attr">hosts:</span> <span class="string">app_servers</span></span><br><span class="line">  <span class="attr">vars:</span></span><br><span class="line">      <span class="attr">app_path:</span> &#123;&#123; <span class="string">base_path</span> &#125;&#125;<span class="string">/22</span></span><br></pre></td></tr></table></figure>
-<p>正确</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="bullet">-</span> <span class="attr">hosts:</span> <span class="string">app_servers</span></span><br><span class="line">  <span class="attr">vars:</span></span><br><span class="line">       <span class="attr">app_path:</span> <span class="string">&quot;<span class="template-variable">&#123;&#123; base_path &#125;&#125;</span>/22&quot;</span></span><br></pre></td></tr></table></figure>
-
-<div style="display: none">
-### db操作
-
-<p><code>ansible</code>执行db操作,这里要区分,不同的数据库,如mysql还是oracle,还是postgresql,每个都需要使用不同的插件,而且需要不同的依赖,所以,要求还是比较高的,尤其是<br>oracle,因为不是开源的,所以,没有社区支持,比较麻烦</p>
-<p>所以,如果使用<code>ansible</code>来执行db操作,相对于来说麻烦一些,这里可以考虑在应用中,执行操作,可选的方案有<code>flyway</code></p>
-</div>
-
-<h3 id="幂等性"><a href="#幂等性" class="headerlink" title="幂等性"></a>幂等性</h3><p>脚本应该按照幂等性的原则来说,前面也提到过,也就是,中间任意一个步骤失败,不用去服务器删除文件之类的,直接重新执行即可,如果你使用<code>ansible</code>本身的模块,那么大部分<br>情况下,你是不用考虑幂等性的,但是如果你执行的是自己的脚本,如shell命令,这里你可能需要额外的使用<code>creates</code>来完成幂等性</p>
-<div style="display: none">
-### shell后台任务陷阱
-
-<p><code>ansible</code>本身通过包装ssh命令来执行<code>shell</code>脚本,所以,执行完以后,便会退出,所以,如果你需要执行后台任务,你需要使用<code>setsid</code>或者<code>nohup</code>来确保你的任务<br>不会被中断,这个你需要写在脚本里面,否则,基本就是刚执行,就中断,几乎就像没执行一样</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/bin/bash</span></span><br><span class="line">export LANG=zh_CN.UTF-8</span><br><span class="line">setsid &#123;&#123;home_dir&#125;&#125;/jdk1.8.0_291/bin/java -jar &#123;&#123;home_dir&#125;&#125;/&#123;&#123;exec_jar_name&#125;&#125; &gt; all.log 2 &gt;&amp; 1</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">如果不加setsid,那么java启动以后,立马被<span class="built_in">kill</span>,只会看到一个空的all.log文件</span></span><br></pre></td></tr></table></figure>
-</div>
-]]></content>
-      <categories>
-        <category>运维工具</category>
-      </categories>
-      <tags>
-        <tag>ansible</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>flyway简介</title>
-    <url>/2021/10/27/flyway%E7%AE%80%E4%BB%8B/</url>
-    <content><![CDATA[<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p><strong>本文基于springboot2集成使用</strong></p>
-<h3 id="flyway是什么"><a href="#flyway是什么" class="headerlink" title="flyway是什么"></a>flyway是什么</h3><p>flyway是一款开源的资料库版本管理工具，它更倾向于规约优于配置的方式。<br>flyway可以独立于应用实现管理并跟踪资料库变更，支援资料库版本自动升级，并且有一套预设的规约，<br>不需要复杂的配置。Migrations可以写成SQL指令码，也可以写在Java程式码中，不仅支援Command Line和Java API，<br>还支援Build构建工具和Spring Boot等。同时在分散式环境下能够安全可靠地升级资料库，同时也支援失败恢复等。</p>
-<h3 id="为什么要使用Flyway"><a href="#为什么要使用Flyway" class="headerlink" title="为什么要使用Flyway"></a>为什么要使用Flyway</h3><ol>
-<li>自己写的SQL忘了在所有环境执行；</li>
-<li>别人写的SQL我们不能确定是否都在所有环境执行过了；</li>
-<li>有人修改了已经执行过的SQL，期望再次执行；</li>
-<li>需要新增环境做数据迁移；</li>
-<li>每次发版需要手动控制先发DB版本，再发布应用版本；</li>
-<li>…</li>
-</ol>
-<h2 id="flyway工作原理"><a href="#flyway工作原理" class="headerlink" title="flyway工作原理"></a>flyway工作原理</h2><p>一言以蔽之：flyway通过历史记录表（flyway_schema_history）来记录版本历史。<br>每次随专案启动时将会自动扫描在resources&#x2F;db&#x2F;migration下的档案并查询flyway_schema_history判断是否为新增档案。<br>如果是新增的档案，则执行该迁移档案。如果不是，则忽略。</p>
-<ol>
-<li>当flyway在一个空资料库执行时，它将直接建立一张预设名为flyway_schema_history的资料记录为空的历史记录表，这张表将被用来跟踪或记录资料库的状态。</li>
-<li>flyway将会开始扫描文件系统或专案classpath路径下的迁移档案。flyway按版本号顺序排列迁移档案，并按序执行，并更新历史记录表中的内容</li>
-<li>当专案再次发版时，flyway会再次扫描迁移档案，然后将迁移文的版本号与历史记录表中的版本号进行对比。<br>flyway会忽略版本号小于等于表中当前最大版本的迁移档案，剩余待执行迁移档案会按版本号升序执行。</li>
-</ol>
-<p><strong>并非真正忽略，而是会校验checksum值是否一致，以此来保证历史版本档案未被篡改</strong></p>
-<img src="/2021/10/27/flyway%E7%AE%80%E4%BB%8B/database-version.png" class="" title="数据库版本记录">
-
-<h2 id="flyway实践"><a href="#flyway实践" class="headerlink" title="flyway实践"></a>flyway实践</h2><h3 id="添加引用"><a href="#添加引用" class="headerlink" title="添加引用"></a>添加引用</h3><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span>  <span class="comment">&lt;!-- 注意,这是springboot环境中,已经有版本了,所以无需添加,其余环境需要自己看情况 --&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.flywaydb<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>flyway-core<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="添加配置"><a href="#添加配置" class="headerlink" title="添加配置"></a>添加配置</h3><p>springboot为例</p>
-<figure class="highlight properties"><table><tr><td class="code"><pre><span class="line"><span class="attr">spring.flyway.enabled</span>=<span class="string">true # 开启flyway,默认true</span></span><br><span class="line"><span class="attr">spring.flyway.baseline-on-migrate</span>=<span class="string">true #当迁移时发现目标schema非空，而且带有没有后设资料的表时，是否自动执行基准迁移，预设false.</span></span><br><span class="line"><span class="attr">spring.flyway.locations</span>=<span class="string">classpath:db/migration # sql文件地址,默认就是 classpath:db/migration </span></span><br><span class="line"><span class="attr">spring.flyway.table</span>=<span class="string">dataease_version # 记录数据库记录的表的名称</span></span><br><span class="line"><span class="attr">spring.flyway.baseline-version</span>=<span class="string">0 # 开始执行基准迁移时对现有的schema的版本打标签，默认值为1</span></span><br><span class="line"><span class="attr">spring.flyway.encoding</span>=<span class="string">UTF-8 # 编码,默认就是UTF-8</span></span><br><span class="line"><span class="attr">spring.flyway.validate-on-migrate</span>=<span class="string">false # 迁移是否校验,默认为true</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="添加sql"><a href="#添加sql" class="headerlink" title="添加sql"></a>添加sql</h3><p>依次执行</p>
-<img src="/2021/10/27/flyway%E7%AE%80%E4%BB%8B/dbmigration.png" class="" title="sql文件">
-
-<h2 id="进阶知识点"><a href="#进阶知识点" class="headerlink" title="进阶知识点"></a>进阶知识点</h2><h3 id="版本号规范"><a href="#版本号规范" class="headerlink" title="版本号规范"></a>版本号规范</h3><p>Flyway 是如何比较两个 SQL 文件的先后顺序呢？它采用 采用左对齐原则, 缺位用 0 代替 。举几个例子：</p>
-<p>1.0.1.1 比 1.0.1 版本高。<br>1.0.10 比 1.0.9.4 版本高。<br>1.0.10 和 1.0.010 版本号一样高, 每个版本号部分的前导 0 会被忽略。  </p>
-<p>Flyway 将 SQL 文件分为 <strong>Versioned</strong> 、<strong>Repeatable</strong> 和 <strong>Undo</strong> 三种：</p>
-<ol>
-<li>Versioned 用于版本升级, 每个版本有唯一的版本号并只能执行一次.</li>
-<li>Repeatable 可重复执行, 当 Flyway检测到 Repeatable 类型的 SQL 脚本的 checksum 有变动,<br>Flyway 就会重新应用该脚本. 它并不用于版本更新, 这类的 migration 总是在 Versioned 执行之后才被执行。</li>
-<li>Undo 用于撤销具有相同版本的版本化迁移带来的影响。但是该回滚过于粗暴，过于机械化，一般不推荐使用。一般建议使用 Versioned 模式来解决。</li>
-</ol>
-<img src="/2021/10/27/flyway%E7%AE%80%E4%BB%8B/concepts_migrations.png" class="" title="命名规则">
-
-<ol>
-<li>Prefix 可配置，前缀标识，默认值 V 表示 Versioned, R 表示 Repeatable, U 表示 Undo</li>
-<li>Version 标识版本号, 由一个或多个数字构成, 数字之间的分隔符可用点 . 或下划线 _</li>
-<li>Separator 可配置, 用于分隔版本标识与描述信息, 默认为两个下划线 __</li>
-<li>Description 描述信息, 文字之间可以用下划线 _ 或空格 分隔</li>
-<li>Suffix 可配置, 后续标识, 默认为 .sql</li>
-</ol>
-<h3 id="另一种sql文件夹风格"><a href="#另一种sql文件夹风格" class="headerlink" title="另一种sql文件夹风格"></a>另一种sql文件夹风格</h3><p>可以使用文件夹来区分,但是还是依照版本号规则来执行</p>
-<img src="/2021/10/27/flyway%E7%AE%80%E4%BB%8B/sql_directory.png" class="" title="多文件夹">
-
-
-<h2 id="最佳实践"><a href="#最佳实践" class="headerlink" title="最佳实践"></a>最佳实践</h2><h3 id="语义化sql文件名字"><a href="#语义化sql文件名字" class="headerlink" title="语义化sql文件名字"></a>语义化sql文件名字</h3><p>前面给的例子中,都是用的v1,v2,v3这样的版本号,其实是非常不友好的,因为这样的话,我不知道我的语义化版本和我的sql脚本到底怎么对应,所以,这样是非常不好的,好的方式应该是<br>使用语义化版本来命名这些sql文件,这样约定下来,就非常清晰</p>
-<img src="/2021/10/27/flyway%E7%AE%80%E4%BB%8B/semver_sqlfile.png" class="" title="语义化版本sql文件命名">
-
-<h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><h3 id="配置详解"><a href="#配置详解" class="headerlink" title="配置详解"></a>配置详解</h3><figure class="highlight properties"><table><tr><td class="code"><pre><span class="line"><span class="attr">flyway.baseline-description对执行迁移时基准版本的描述.</span></span><br><span class="line"><span class="attr">flyway.baseline-on-migrate当迁移时发现目标schema非空，而且带有没有元数据的表时，是否自动执行基准迁移，默认false.</span></span><br><span class="line"><span class="attr">flyway.baseline-version开始执行基准迁移时对现有的schema的版本打标签，默认值为1.</span></span><br><span class="line"><span class="attr">flyway.check-location检查迁移脚本的位置是否存在，默认false.</span></span><br><span class="line"><span class="attr">flyway.clean-on-validation-error当发现校验错误时是否自动调用clean，默认false.</span></span><br><span class="line"><span class="attr">flyway.enabled是否开启flywary，默认true.</span></span><br><span class="line"><span class="attr">flyway.encoding设置迁移时的编码，默认UTF-8.</span></span><br><span class="line"><span class="attr">flyway.ignore-failed-future-migration当读取元数据表时是否忽略错误的迁移，默认false.</span></span><br><span class="line"><span class="attr">flyway.init-sqls当初始化好连接时要执行的SQL.</span></span><br><span class="line"><span class="attr">flyway.locations迁移脚本的位置，默认db/migration.</span></span><br><span class="line"><span class="attr">flyway.out-of-order是否允许无序的迁移，默认false.</span></span><br><span class="line"><span class="attr">flyway.password目标数据库的密码.</span></span><br><span class="line"><span class="attr">flyway.placeholder-prefix设置每个placeholder的前缀，默认$&#123;.</span></span><br><span class="line"><span class="attr">flyway.placeholder-replacementplaceholders是否要被替换，默认true.</span></span><br><span class="line"><span class="attr">flyway.placeholder-suffix设置每个placeholder的后缀，默认&#125;.</span></span><br><span class="line"><span class="attr">flyway.placeholders.[placeholder</span> <span class="string">name]设置placeholder的value</span></span><br><span class="line"><span class="attr">flyway.schemas设定需要flywary迁移的schema，大小写敏感，默认为连接默认的schema.</span></span><br><span class="line"><span class="attr">flyway.sql-migration-prefix迁移文件的前缀，默认为V.</span></span><br><span class="line"><span class="attr">flyway.sql-migration-separator迁移脚本的文件名分隔符，默认__</span></span><br><span class="line"><span class="attr">flyway.sql-migration-suffix迁移脚本的后缀，默认为.sql</span></span><br><span class="line"><span class="attr">flyway.tableflyway使用的元数据表名，默认为schema_version</span></span><br><span class="line"><span class="attr">flyway.target迁移时使用的目标版本，默认为latest</span> <span class="string">version</span></span><br><span class="line"><span class="attr">flyway.url迁移时使用的JDBC</span> <span class="string">URL，如果没有指定的话，将使用配置的主数据源</span></span><br><span class="line"><span class="attr">flyway.user迁移数据库的用户名</span></span><br><span class="line"><span class="attr">flyway.validate-on-migrate迁移时是否校验，默认为true</span></span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>中间件</category>
-      </categories>
-      <tags>
-        <tag>数据库版本控制</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>hazelcast-management-center控制中心简介</title>
     <url>/2022/12/09/hazelcast-management-center%E6%8E%A7%E5%88%B6%E4%B8%AD%E5%BF%83%E7%AE%80%E4%BB%8B/</url>
     <content><![CDATA[<h1 id="hazelcast-management-center控制中心简介"><a href="#hazelcast-management-center控制中心简介" class="headerlink" title="hazelcast-management-center控制中心简介"></a>hazelcast-management-center控制中心简介</h1><p>hazelcast和ignite一样,为了可视化操作,都自带了控制中心一样的东西</p>
@@ -481,41 +418,66 @@
       </tags>
   </entry>
   <entry>
-    <title>java热加载机制的实现方式简介</title>
-    <url>/2022/05/29/java%E7%83%AD%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F%E7%AE%80%E4%BB%8B/</url>
-    <content><![CDATA[<h1 id="java热部署机制的实现方式简介"><a href="#java热部署机制的实现方式简介" class="headerlink" title="java热部署机制的实现方式简介"></a>java热部署机制的实现方式简介</h1><h2 id="热部署和热加载定义"><a href="#热部署和热加载定义" class="headerlink" title="热部署和热加载定义"></a>热部署和热加载定义</h2><p>可以看到,热部署是包含热加载的,不过,这些概念并不太重要</p>
-<img src="/2022/05/29/java%E7%83%AD%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F%E7%AE%80%E4%BB%8B/airplane.jpeg" class="" title="热部署相当于给飞行中的飞机更换引擎">
+    <title>flyway简介</title>
+    <url>/2021/10/27/flyway%E7%AE%80%E4%BB%8B/</url>
+    <content><![CDATA[<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p><strong>本文基于springboot2集成使用</strong></p>
+<h3 id="flyway是什么"><a href="#flyway是什么" class="headerlink" title="flyway是什么"></a>flyway是什么</h3><p>flyway是一款开源的资料库版本管理工具，它更倾向于规约优于配置的方式。<br>flyway可以独立于应用实现管理并跟踪资料库变更，支援资料库版本自动升级，并且有一套预设的规约，<br>不需要复杂的配置。Migrations可以写成SQL指令码，也可以写在Java程式码中，不仅支援Command Line和Java API，<br>还支援Build构建工具和Spring Boot等。同时在分散式环境下能够安全可靠地升级资料库，同时也支援失败恢复等。</p>
+<h3 id="为什么要使用Flyway"><a href="#为什么要使用Flyway" class="headerlink" title="为什么要使用Flyway"></a>为什么要使用Flyway</h3><ol>
+<li>自己写的SQL忘了在所有环境执行；</li>
+<li>别人写的SQL我们不能确定是否都在所有环境执行过了；</li>
+<li>有人修改了已经执行过的SQL，期望再次执行；</li>
+<li>需要新增环境做数据迁移；</li>
+<li>每次发版需要手动控制先发DB版本，再发布应用版本；</li>
+<li>…</li>
+</ol>
+<h2 id="flyway工作原理"><a href="#flyway工作原理" class="headerlink" title="flyway工作原理"></a>flyway工作原理</h2><p>一言以蔽之：flyway通过历史记录表（flyway_schema_history）来记录版本历史。<br>每次随专案启动时将会自动扫描在resources&#x2F;db&#x2F;migration下的档案并查询flyway_schema_history判断是否为新增档案。<br>如果是新增的档案，则执行该迁移档案。如果不是，则忽略。</p>
+<ol>
+<li>当flyway在一个空资料库执行时，它将直接建立一张预设名为flyway_schema_history的资料记录为空的历史记录表，这张表将被用来跟踪或记录资料库的状态。</li>
+<li>flyway将会开始扫描文件系统或专案classpath路径下的迁移档案。flyway按版本号顺序排列迁移档案，并按序执行，并更新历史记录表中的内容</li>
+<li>当专案再次发版时，flyway会再次扫描迁移档案，然后将迁移文的版本号与历史记录表中的版本号进行对比。<br>flyway会忽略版本号小于等于表中当前最大版本的迁移档案，剩余待执行迁移档案会按版本号升序执行。</li>
+</ol>
+<p><strong>并非真正忽略，而是会校验checksum值是否一致，以此来保证历史版本档案未被篡改</strong></p>
+<img src="/2021/10/27/flyway%E7%AE%80%E4%BB%8B/database-version.png" class="" title="数据库版本记录">
 
-<h3 id="热部署-hot-deploy"><a href="#热部署-hot-deploy" class="headerlink" title="热部署 hot deploy"></a>热部署 hot deploy</h3><p>热部署针对的是容器或者是整个应用，部署了新的资源或者修改了一些代码，需要在不停机的情况下的重新加载整个应用。</p>
-<h3 id="热加载-hotswap"><a href="#热加载-hotswap" class="headerlink" title="热加载 hotswap"></a>热加载 hotswap</h3><p>热加载针对的是单个字节码文件，指的是重新编译后，不需要停机，应用程序就可以加载使用新的class文件</p>
-<h2 id="目前存在的方案"><a href="#目前存在的方案" class="headerlink" title="目前存在的方案"></a>目前存在的方案</h2><h3 id="java-hotswap"><a href="#java-hotswap" class="headerlink" title="java hotswap"></a>java hotswap</h3><p>Java Platform Debugger Architecture是java IDE 调试的基础,<br>修改jvm启动参数即可打开,</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">-agentlib:jdwp=transport=dt_socket,address=8000,server=y,suspend=n</span><br></pre></td></tr></table></figure>
-<p>技术原理也是java instrument api,<br>确定：仅能修改方法体，不能增加修改方法、field</p>
-<h2 id="另一种可行的思路"><a href="#另一种可行的思路" class="headerlink" title="另一种可行的思路"></a>另一种可行的思路</h2><p>实现的思路是多种多样的,比如可以定制jvm,但是这里不讨论这些,这里只是讨论其中一种相对简单的实现  </p>
-<p>因为jvm中的class是不可变的,而且同一个classloader的同一个名字的class,jvm才会当作一个class,所以,不能直接去改变class,需要变通一下,用自定义的classloader<br>去加载新的class,同时业务上,需要去使用新的class,这样才可以变相的达到目的,</p>
-<h2 id="如何生成新的class"><a href="#如何生成新的class" class="headerlink" title="如何生成新的class"></a>如何生成新的class</h2><ol>
-<li>自己用字节码生成,相对硬核一些,不太友好,也不方便</li>
-<li>用源码生成,相对简单,直接,更友好</li>
+<h2 id="flyway实践"><a href="#flyway实践" class="headerlink" title="flyway实践"></a>flyway实践</h2><h3 id="添加引用"><a href="#添加引用" class="headerlink" title="添加引用"></a>添加引用</h3><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span>  <span class="comment">&lt;!-- 注意,这是springboot环境中,已经有版本了,所以无需添加,其余环境需要自己看情况 --&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.flywaydb<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>flyway-core<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="添加配置"><a href="#添加配置" class="headerlink" title="添加配置"></a>添加配置</h3><p>springboot为例</p>
+<figure class="highlight properties"><table><tr><td class="code"><pre><span class="line"><span class="attr">spring.flyway.enabled</span>=<span class="string">true # 开启flyway,默认true</span></span><br><span class="line"><span class="attr">spring.flyway.baseline-on-migrate</span>=<span class="string">true #当迁移时发现目标schema非空，而且带有没有后设资料的表时，是否自动执行基准迁移，预设false.</span></span><br><span class="line"><span class="attr">spring.flyway.locations</span>=<span class="string">classpath:db/migration # sql文件地址,默认就是 classpath:db/migration </span></span><br><span class="line"><span class="attr">spring.flyway.table</span>=<span class="string">dataease_version # 记录数据库记录的表的名称</span></span><br><span class="line"><span class="attr">spring.flyway.baseline-version</span>=<span class="string">0 # 开始执行基准迁移时对现有的schema的版本打标签，默认值为1</span></span><br><span class="line"><span class="attr">spring.flyway.encoding</span>=<span class="string">UTF-8 # 编码,默认就是UTF-8</span></span><br><span class="line"><span class="attr">spring.flyway.validate-on-migrate</span>=<span class="string">false # 迁移是否校验,默认为true</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="添加sql"><a href="#添加sql" class="headerlink" title="添加sql"></a>添加sql</h3><p>依次执行</p>
+<img src="/2021/10/27/flyway%E7%AE%80%E4%BB%8B/dbmigration.png" class="" title="sql文件">
+
+<h2 id="进阶知识点"><a href="#进阶知识点" class="headerlink" title="进阶知识点"></a>进阶知识点</h2><h3 id="版本号规范"><a href="#版本号规范" class="headerlink" title="版本号规范"></a>版本号规范</h3><p>Flyway 是如何比较两个 SQL 文件的先后顺序呢？它采用 采用左对齐原则, 缺位用 0 代替 。举几个例子：</p>
+<p>1.0.1.1 比 1.0.1 版本高。<br>1.0.10 比 1.0.9.4 版本高。<br>1.0.10 和 1.0.010 版本号一样高, 每个版本号部分的前导 0 会被忽略。  </p>
+<p>Flyway 将 SQL 文件分为 <strong>Versioned</strong> 、<strong>Repeatable</strong> 和 <strong>Undo</strong> 三种：</p>
+<ol>
+<li>Versioned 用于版本升级, 每个版本有唯一的版本号并只能执行一次.</li>
+<li>Repeatable 可重复执行, 当 Flyway检测到 Repeatable 类型的 SQL 脚本的 checksum 有变动,<br>Flyway 就会重新应用该脚本. 它并不用于版本更新, 这类的 migration 总是在 Versioned 执行之后才被执行。</li>
+<li>Undo 用于撤销具有相同版本的版本化迁移带来的影响。但是该回滚过于粗暴，过于机械化，一般不推荐使用。一般建议使用 Versioned 模式来解决。</li>
 </ol>
-<h3 id="自己使用字节码生成"><a href="#自己使用字节码生成" class="headerlink" title="自己使用字节码生成"></a>自己使用字节码生成</h3><p>java的库比较丰富,字节码框架还是非常多的,无论是基础的ASM,还是javaAssist,还是byteBuddy,都是各有千秋,适用于不同的场景,可以自行选择</p>
-<h3 id="用源码生成"><a href="#用源码生成" class="headerlink" title="用源码生成"></a>用源码生成</h3><ol>
-<li>groovy编译java源码</li>
-<li>eclipse的ECJ</li>
-<li>java的JSR199的JavaCompilerAPI</li>
+<img src="/2021/10/27/flyway%E7%AE%80%E4%BB%8B/concepts_migrations.png" class="" title="命名规则">
+
+<ol>
+<li>Prefix 可配置，前缀标识，默认值 V 表示 Versioned, R 表示 Repeatable, U 表示 Undo</li>
+<li>Version 标识版本号, 由一个或多个数字构成, 数字之间的分隔符可用点 . 或下划线 _</li>
+<li>Separator 可配置, 用于分隔版本标识与描述信息, 默认为两个下划线 __</li>
+<li>Description 描述信息, 文字之间可以用下划线 _ 或空格 分隔</li>
+<li>Suffix 可配置, 后续标识, 默认为 .sql</li>
 </ol>
-<h4 id="groovy编译java源码"><a href="#groovy编译java源码" class="headerlink" title="groovy编译java源码"></a>groovy编译java源码</h4><p>groovy是个好东西,尤其是当你需要动态特性的时候,没错,groovy本来写的编译器是用来编译groovy源码的,但是需要交叉编译,所以,顺带也会编译java的代码,所以,没错,groovy的compiler也会编译java的代码,没有任何的问题</p>
-<h4 id="eclipse的ECJ"><a href="#eclipse的ECJ" class="headerlink" title="eclipse的ECJ"></a>eclipse的ECJ</h4><p>eclipse本来是java的IDE,为了实现增量编译之类的一些特性吧,或者是别的特性,eclipse自己也开发了一套编译器,用来编译java的代码</p>
-<h4 id="java的JSR199的JavaCompilerAPI"><a href="#java的JSR199的JavaCompilerAPI" class="headerlink" title="java的JSR199的JavaCompilerAPI"></a>java的JSR199的JavaCompilerAPI</h4><p>这个就是直接的java api,原生的,相当于包裹了一下javac,效率不错</p>
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>groovy和ecj的方式非常简单,java的jsr199相对繁琐,但是原生,跟着jdk版本走,最有效,相对来说,可能性能也最好,兼容性也更好,但是需要JDK,你装一个JRE是不行的</p>
-<h2 id="如何加载新的class"><a href="#如何加载新的class" class="headerlink" title="如何加载新的class"></a>如何加载新的class</h2><p>前面提到的思路,已经说明了,java的同名类,类加载其必须是不同的,所以,每次加载,都需要一个新的classLoader,不过不用担心内存泄漏,java的class也是会内存回收的,原来不用的类,你只要切断所有的引用,这个类也是可以回收的</p>
-<h2 id="真的那么简单吗"><a href="#真的那么简单吗" class="headerlink" title="真的那么简单吗"></a>真的那么简单吗</h2><p>其实讲到这里,技术的问题其实都已经解决了,但是类加载,不光光是技术上的问题,还有很多业务的问题,比如,类更改以后,如果让新的对象,全部派生自这个类,还有,尤其是对一些复杂的系统,比如spring,里面有相对复杂的初始化机制,问题就没那么简单,所以,<br>一旦类改变以后,你甚至还是触发一系列刷新的动作才可以,这里想表达的是,一旦类重新以后,jvm本质上是一个静态的系统,不是为动态设计的,所以,一旦出现动态以后,业务上差不多对是要做调整和兼容的,所以,使用的时候,想要和业务相结合</p>
-<h2 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h2><p>本文,分析了一种热加载的技术,就是直接用别的classloader加载一个新的同名类,然后再使用业务上的方式让这个重新加载的类生效,同时,也顺带的分析了,如何生成一个新的类的几种方式,并做了简单的对比</p>
+<h3 id="另一种sql文件夹风格"><a href="#另一种sql文件夹风格" class="headerlink" title="另一种sql文件夹风格"></a>另一种sql文件夹风格</h3><p>可以使用文件夹来区分,但是还是依照版本号规则来执行</p>
+<img src="/2021/10/27/flyway%E7%AE%80%E4%BB%8B/sql_directory.png" class="" title="多文件夹">
+
+
+<h2 id="最佳实践"><a href="#最佳实践" class="headerlink" title="最佳实践"></a>最佳实践</h2><h3 id="语义化sql文件名字"><a href="#语义化sql文件名字" class="headerlink" title="语义化sql文件名字"></a>语义化sql文件名字</h3><p>前面给的例子中,都是用的v1,v2,v3这样的版本号,其实是非常不友好的,因为这样的话,我不知道我的语义化版本和我的sql脚本到底怎么对应,所以,这样是非常不好的,好的方式应该是<br>使用语义化版本来命名这些sql文件,这样约定下来,就非常清晰</p>
+<img src="/2021/10/27/flyway%E7%AE%80%E4%BB%8B/semver_sqlfile.png" class="" title="语义化版本sql文件命名">
+
+<h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><h3 id="配置详解"><a href="#配置详解" class="headerlink" title="配置详解"></a>配置详解</h3><figure class="highlight properties"><table><tr><td class="code"><pre><span class="line"><span class="attr">flyway.baseline-description对执行迁移时基准版本的描述.</span></span><br><span class="line"><span class="attr">flyway.baseline-on-migrate当迁移时发现目标schema非空，而且带有没有元数据的表时，是否自动执行基准迁移，默认false.</span></span><br><span class="line"><span class="attr">flyway.baseline-version开始执行基准迁移时对现有的schema的版本打标签，默认值为1.</span></span><br><span class="line"><span class="attr">flyway.check-location检查迁移脚本的位置是否存在，默认false.</span></span><br><span class="line"><span class="attr">flyway.clean-on-validation-error当发现校验错误时是否自动调用clean，默认false.</span></span><br><span class="line"><span class="attr">flyway.enabled是否开启flywary，默认true.</span></span><br><span class="line"><span class="attr">flyway.encoding设置迁移时的编码，默认UTF-8.</span></span><br><span class="line"><span class="attr">flyway.ignore-failed-future-migration当读取元数据表时是否忽略错误的迁移，默认false.</span></span><br><span class="line"><span class="attr">flyway.init-sqls当初始化好连接时要执行的SQL.</span></span><br><span class="line"><span class="attr">flyway.locations迁移脚本的位置，默认db/migration.</span></span><br><span class="line"><span class="attr">flyway.out-of-order是否允许无序的迁移，默认false.</span></span><br><span class="line"><span class="attr">flyway.password目标数据库的密码.</span></span><br><span class="line"><span class="attr">flyway.placeholder-prefix设置每个placeholder的前缀，默认$&#123;.</span></span><br><span class="line"><span class="attr">flyway.placeholder-replacementplaceholders是否要被替换，默认true.</span></span><br><span class="line"><span class="attr">flyway.placeholder-suffix设置每个placeholder的后缀，默认&#125;.</span></span><br><span class="line"><span class="attr">flyway.placeholders.[placeholder</span> <span class="string">name]设置placeholder的value</span></span><br><span class="line"><span class="attr">flyway.schemas设定需要flywary迁移的schema，大小写敏感，默认为连接默认的schema.</span></span><br><span class="line"><span class="attr">flyway.sql-migration-prefix迁移文件的前缀，默认为V.</span></span><br><span class="line"><span class="attr">flyway.sql-migration-separator迁移脚本的文件名分隔符，默认__</span></span><br><span class="line"><span class="attr">flyway.sql-migration-suffix迁移脚本的后缀，默认为.sql</span></span><br><span class="line"><span class="attr">flyway.tableflyway使用的元数据表名，默认为schema_version</span></span><br><span class="line"><span class="attr">flyway.target迁移时使用的目标版本，默认为latest</span> <span class="string">version</span></span><br><span class="line"><span class="attr">flyway.url迁移时使用的JDBC</span> <span class="string">URL，如果没有指定的话，将使用配置的主数据源</span></span><br><span class="line"><span class="attr">flyway.user迁移数据库的用户名</span></span><br><span class="line"><span class="attr">flyway.validate-on-migrate迁移时是否校验，默认为true</span></span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
-        <category>java</category>
+        <category>中间件</category>
       </categories>
       <tags>
-        <tag>java热加载</tag>
+        <tag>数据库版本控制</tag>
       </tags>
   </entry>
   <entry>
@@ -544,6 +506,42 @@
       </categories>
       <tags>
         <tag>javaagent</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>java反射到底有多慢</title>
+    <url>/2025/03/22/java%E5%8F%8D%E5%B0%84%E5%88%B0%E5%BA%95%E6%9C%89%E5%A4%9A%E6%85%A2/</url>
+    <content><![CDATA[<h1 id="java反射到底有多慢"><a href="#java反射到底有多慢" class="headerlink" title="java反射到底有多慢"></a>java反射到底有多慢</h1><h2 id="java反射慢吗"><a href="#java反射慢吗" class="headerlink" title="java反射慢吗"></a>java反射慢吗</h2><p>java反射慢,我想这个现象大家都知道,但是为什么慢,到底慢多少,这个好像还真没有人深究过,今天就来探索一下</p>
+<h2 id="先写benchmark"><a href="#先写benchmark" class="headerlink" title="先写benchmark"></a>先写benchmark</h2><p>这是git仓库的地址<br><a href="https://gitee.com/david0624/java-reflect-benchmark">java-reflect-benchmark</a></p>
+<h2 id="影响反射快慢的方式有哪些"><a href="#影响反射快慢的方式有哪些" class="headerlink" title="影响反射快慢的方式有哪些"></a>影响反射快慢的方式有哪些</h2><ol>
+<li>调用方式,使用Method还是MethodHandle</li>
+<li>是否使用多态,即是使用接口调用,还是使用类调用</li>
+<li>形参的数量,因为动态需要做检查,所以数量多了,就表现出来了</li>
+<li>形参是对象还是primitive类型,因为涉及到装箱,拆箱</li>
+<li>jdk版本的差异,比如8 11 17 21等等</li>
+</ol>
+<h2 id="测试结果"><a href="#测试结果" class="headerlink" title="测试结果"></a>测试结果</h2><p>我在自己机器上跑的,只是简要测试,并不太严谨,严谨的测试,应该专门找一个没有任何负载的物理机器,专门跑这个测试,才能排除一切的干扰,<br>不过最后的结果也很有参考价值,先上jdk8的</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">Benchmark                                                Mode  Cnt  Score   Error  Units</span><br><span class="line">ReflectTest.genericDirectCall                            avgt    3  0.239 ± 0.023  ns/op</span><br><span class="line">ReflectTest.genericMethodHandleCall                      avgt    3  1.815 ± 0.236  ns/op</span><br><span class="line">ReflectTest.genericReflectionCall                        avgt    3  2.139 ± 0.754  ns/op</span><br><span class="line">ReflectTest.noParameterDirectCall                        avgt    3  0.237 ± 0.015  ns/op</span><br><span class="line">ReflectTest.noParameterMethodHandleCall                  avgt    3  1.823 ± 0.198  ns/op</span><br><span class="line">ReflectTest.noParameterTestReflectionCall                avgt    3  1.672 ± 0.452  ns/op</span><br><span class="line">ReflectTest.oneObjectParameterDirectCall                 avgt    3  0.241 ± 0.022  ns/op</span><br><span class="line">ReflectTest.oneObjectParameterMethodHandleCall           avgt    3  1.818 ± 0.304  ns/op</span><br><span class="line">ReflectTest.oneObjectParameterReflectionCall             avgt    3  2.120 ± 1.026  ns/op</span><br><span class="line">ReflectTest.oneParameterInterfaceMethodDirectCall        avgt    3  0.329 ± 0.052  ns/op</span><br><span class="line">ReflectTest.oneParameterInterfaceMethodMethodHandleCall  avgt    3  1.839 ± 0.328  ns/op</span><br><span class="line">ReflectTest.oneParameterInterfaceMethodReflectionCall    avgt    3  2.140 ± 0.625  ns/op</span><br><span class="line">ReflectTest.onePrimateParameterDirectCall                avgt    3  0.246 ± 0.061  ns/op</span><br><span class="line">ReflectTest.onePrimateParameterMethodHandleCall          avgt    3  1.786 ± 0.190  ns/op</span><br><span class="line">ReflectTest.onePrimateParameterReflectionCall            avgt    3  2.275 ± 0.519  ns/op</span><br><span class="line">ReflectTest.override1DirectCall1                         avgt    3  0.241 ± 0.028  ns/op</span><br><span class="line">ReflectTest.override1DirectCall2                         avgt    3  0.249 ± 0.043  ns/op</span><br><span class="line">ReflectTest.override1DirectCall3                         avgt    3  0.250 ± 0.020  ns/op</span><br><span class="line">ReflectTest.override1MethodHandleCall1                   avgt    3  1.848 ± 0.648  ns/op</span><br><span class="line">ReflectTest.override1MethodHandleCall2                   avgt    3  1.795 ± 0.229  ns/op</span><br><span class="line">ReflectTest.override1MethodHandleCall3                   avgt    3  1.810 ± 0.086  ns/op</span><br><span class="line">ReflectTest.override1ReflectionCall1                     avgt    3  2.049 ± 0.461  ns/op</span><br><span class="line">ReflectTest.override1ReflectionCall2                     avgt    3  2.087 ± 0.063  ns/op</span><br><span class="line">ReflectTest.override1ReflectionCall3                     avgt    3  2.549 ± 0.369  ns/op</span><br><span class="line">ReflectTest.threeObjectParameterDirectCall               avgt    3  0.245 ± 0.023  ns/op</span><br><span class="line">ReflectTest.threeObjectParameterMethodHandleCall         avgt    3  1.822 ± 0.097  ns/op</span><br><span class="line">ReflectTest.threeObjectParameterReflectionCall           avgt    3  2.553 ± 0.175  ns/op</span><br><span class="line">ReflectTest.threePrimateParameterDirectCall              avgt    3  0.246 ± 0.120  ns/op</span><br><span class="line">ReflectTest.threePrimateParameterMethodHandleCall        avgt    3  1.820 ± 0.363  ns/op</span><br><span class="line">ReflectTest.threePrimateParameterReflectionCall          avgt    3  4.038 ± 0.640  ns/op</span><br><span class="line">ReflectTest.twoObjectParameterDirectCall                 avgt    3  0.253 ± 0.019  ns/op</span><br><span class="line">ReflectTest.twoObjectParameterMethodHandleCall           avgt    3  1.797 ± 0.232  ns/op</span><br><span class="line">ReflectTest.twoObjectParameterReflectionCall             avgt    3  2.175 ± 0.405  ns/op</span><br><span class="line">ReflectTest.twoPrimateParameterDirectCall                avgt    3  0.249 ± 0.031  ns/op</span><br><span class="line">ReflectTest.twoPrimateParameterMethodHandleCall          avgt    3  1.799 ± 0.207  ns/op</span><br><span class="line">ReflectTest.twoPrimateParameterReflectionCall            avgt    3  2.980 ± 0.725  ns/op</span><br></pre></td></tr></table></figure>
+
+<p>这是jdk21的</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">Benchmark                                                Mode  Cnt  Score   Error  Units</span><br><span class="line">ReflectTest.genericDirectCall                            avgt    3  0.259 ± 0.111  ns/op</span><br><span class="line">ReflectTest.genericMethodHandleCall                      avgt    3  2.092 ± 0.183  ns/op</span><br><span class="line">ReflectTest.genericReflectionCall                        avgt    3  3.778 ± 0.286  ns/op</span><br><span class="line">ReflectTest.noParameterDirectCall                        avgt    3  0.264 ± 0.095  ns/op</span><br><span class="line">ReflectTest.noParameterMethodHandleCall                  avgt    3  1.936 ± 0.251  ns/op</span><br><span class="line">ReflectTest.noParameterTestReflectionCall                avgt    3  3.522 ± 0.401  ns/op</span><br><span class="line">ReflectTest.oneObjectParameterDirectCall                 avgt    3  0.258 ± 0.134  ns/op</span><br><span class="line">ReflectTest.oneObjectParameterMethodHandleCall           avgt    3  1.997 ± 0.286  ns/op</span><br><span class="line">ReflectTest.oneObjectParameterReflectionCall             avgt    3  3.738 ± 0.169  ns/op</span><br><span class="line">ReflectTest.oneParameterInterfaceMethodDirectCall        avgt    3  0.400 ± 0.029  ns/op</span><br><span class="line">ReflectTest.oneParameterInterfaceMethodMethodHandleCall  avgt    3  2.037 ± 0.350  ns/op</span><br><span class="line">ReflectTest.oneParameterInterfaceMethodReflectionCall    avgt    3  4.038 ± 0.027  ns/op</span><br><span class="line">ReflectTest.onePrimateParameterDirectCall                avgt    3  0.256 ± 0.020  ns/op</span><br><span class="line">ReflectTest.onePrimateParameterMethodHandleCall          avgt    3  1.955 ± 0.053  ns/op</span><br><span class="line">ReflectTest.onePrimateParameterReflectionCall            avgt    3  4.077 ± 0.326  ns/op</span><br><span class="line">ReflectTest.override1DirectCall1                         avgt    3  0.265 ± 0.139  ns/op</span><br><span class="line">ReflectTest.override1DirectCall2                         avgt    3  0.256 ± 0.028  ns/op</span><br><span class="line">ReflectTest.override1DirectCall3                         avgt    3  0.256 ± 0.023  ns/op</span><br><span class="line">ReflectTest.override1MethodHandleCall1                   avgt    3  1.993 ± 0.303  ns/op</span><br><span class="line">ReflectTest.override1MethodHandleCall2                   avgt    3  2.086 ± 0.172  ns/op</span><br><span class="line">ReflectTest.override1MethodHandleCall3                   avgt    3  2.085 ± 0.174  ns/op</span><br><span class="line">ReflectTest.override1ReflectionCall1                     avgt    3  3.706 ± 0.149  ns/op</span><br><span class="line">ReflectTest.override1ReflectionCall2                     avgt    3  3.830 ± 0.201  ns/op</span><br><span class="line">ReflectTest.override1ReflectionCall3                     avgt    3  4.042 ± 0.418  ns/op</span><br><span class="line">ReflectTest.threeObjectParameterDirectCall               avgt    3  0.272 ± 0.025  ns/op</span><br><span class="line">ReflectTest.threeObjectParameterMethodHandleCall         avgt    3  2.095 ± 0.212  ns/op</span><br><span class="line">ReflectTest.threeObjectParameterReflectionCall           avgt    3  4.038 ± 0.442  ns/op</span><br><span class="line">ReflectTest.threePrimateParameterDirectCall              avgt    3  0.262 ± 0.067  ns/op</span><br><span class="line">ReflectTest.threePrimateParameterMethodHandleCall        avgt    3  2.076 ± 0.121  ns/op</span><br><span class="line">ReflectTest.threePrimateParameterReflectionCall          avgt    3  4.546 ± 2.780  ns/op</span><br><span class="line">ReflectTest.twoObjectParameterDirectCall                 avgt    3  0.257 ± 0.016  ns/op</span><br><span class="line">ReflectTest.twoObjectParameterMethodHandleCall           avgt    3  2.104 ± 0.344  ns/op</span><br><span class="line">ReflectTest.twoObjectParameterReflectionCall             avgt    3  3.860 ± 0.397  ns/op</span><br><span class="line">ReflectTest.twoPrimateParameterDirectCall                avgt    3  0.262 ± 0.081  ns/op</span><br><span class="line">ReflectTest.twoPrimateParameterMethodHandleCall          avgt    3  1.990 ± 0.337  ns/op</span><br><span class="line">ReflectTest.twoPrimateParameterReflectionCall            avgt    3  4.267 ± 0.496  ns/op</span><br></pre></td></tr></table></figure>
+
+<p>具体的结果,可以在git仓库的doc目录找到,而且这个项目开箱即用,如果想测试的话,自己本机测试跑跑也可以的</p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><ol>
+<li>反射从微观层面来说,增加了至少7.69倍的调用时间(最简单的无形参调用),如果是原始类型的多形参调用,以3个原始类型为例,竟然可以是16.14倍,从微观层面讲,的确反射很慢</li>
+<li>反射,装箱,拆箱的话,效率更低,的确原始类型的拆箱装箱大量调用,对性能有一定的损耗</li>
+<li>MethodHandle相比Method的确存在优化,在jdk21的时候,一些反射耗时较长的时候,竟然能达到它的一半</li>
+<li>反射从微观层面讲,一个方法的调用增加了7.69~16.14倍的调用时间,但是实际情况下,方法如果本身的执行时间比较长,这个时间其实是可以忽略的,因为本身方法的调用时间就不长,<br>但是如果是大量耗时十分短的方法,长时间大量调用,这个就比较可观了</li>
+<li>现在编程的环境,开发效率大于执行效率,反射其实是个非常强大的特性,经常被框架大量使用</li>
+<li>spring就重度使用反射,几乎spring的所有功能都依赖反射,但是spring的效率低下,反射只是其中一个原因</li>
+</ol>
+<h2 id="后话"><a href="#后话" class="headerlink" title="后话"></a>后话</h2><p>总体来说,java反射的慢是可以接受的,但是,现在去反射也有这样的框架,比如micronaut,就通过annotationProcessor生成静态的类,然后避免了反射,启动速度大幅降低,<br>如果能消除反射,程序的性能也是可以得到一定程度的提高的</p>
+]]></content>
+      <categories>
+        <category>java</category>
+      </categories>
+      <tags>
+        <tag>java热加载</tag>
       </tags>
   </entry>
   <entry>
@@ -598,6 +596,44 @@
       </categories>
       <tags>
         <tag>classLoader</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>java热加载机制的实现方式简介</title>
+    <url>/2022/05/29/java%E7%83%AD%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F%E7%AE%80%E4%BB%8B/</url>
+    <content><![CDATA[<h1 id="java热部署机制的实现方式简介"><a href="#java热部署机制的实现方式简介" class="headerlink" title="java热部署机制的实现方式简介"></a>java热部署机制的实现方式简介</h1><h2 id="热部署和热加载定义"><a href="#热部署和热加载定义" class="headerlink" title="热部署和热加载定义"></a>热部署和热加载定义</h2><p>可以看到,热部署是包含热加载的,不过,这些概念并不太重要</p>
+<img src="/2022/05/29/java%E7%83%AD%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F%E7%AE%80%E4%BB%8B/airplane.jpeg" class="" title="热部署相当于给飞行中的飞机更换引擎">
+
+<h3 id="热部署-hot-deploy"><a href="#热部署-hot-deploy" class="headerlink" title="热部署 hot deploy"></a>热部署 hot deploy</h3><p>热部署针对的是容器或者是整个应用，部署了新的资源或者修改了一些代码，需要在不停机的情况下的重新加载整个应用。</p>
+<h3 id="热加载-hotswap"><a href="#热加载-hotswap" class="headerlink" title="热加载 hotswap"></a>热加载 hotswap</h3><p>热加载针对的是单个字节码文件，指的是重新编译后，不需要停机，应用程序就可以加载使用新的class文件</p>
+<h2 id="目前存在的方案"><a href="#目前存在的方案" class="headerlink" title="目前存在的方案"></a>目前存在的方案</h2><h3 id="java-hotswap"><a href="#java-hotswap" class="headerlink" title="java hotswap"></a>java hotswap</h3><p>Java Platform Debugger Architecture是java IDE 调试的基础,<br>修改jvm启动参数即可打开,</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">-agentlib:jdwp=transport=dt_socket,address=8000,server=y,suspend=n</span><br></pre></td></tr></table></figure>
+<p>技术原理也是java instrument api,<br>确定：仅能修改方法体，不能增加修改方法、field</p>
+<h2 id="另一种可行的思路"><a href="#另一种可行的思路" class="headerlink" title="另一种可行的思路"></a>另一种可行的思路</h2><p>实现的思路是多种多样的,比如可以定制jvm,但是这里不讨论这些,这里只是讨论其中一种相对简单的实现  </p>
+<p>因为jvm中的class是不可变的,而且同一个classloader的同一个名字的class,jvm才会当作一个class,所以,不能直接去改变class,需要变通一下,用自定义的classloader<br>去加载新的class,同时业务上,需要去使用新的class,这样才可以变相的达到目的,</p>
+<h2 id="如何生成新的class"><a href="#如何生成新的class" class="headerlink" title="如何生成新的class"></a>如何生成新的class</h2><ol>
+<li>自己用字节码生成,相对硬核一些,不太友好,也不方便</li>
+<li>用源码生成,相对简单,直接,更友好</li>
+</ol>
+<h3 id="自己使用字节码生成"><a href="#自己使用字节码生成" class="headerlink" title="自己使用字节码生成"></a>自己使用字节码生成</h3><p>java的库比较丰富,字节码框架还是非常多的,无论是基础的ASM,还是javaAssist,还是byteBuddy,都是各有千秋,适用于不同的场景,可以自行选择</p>
+<h3 id="用源码生成"><a href="#用源码生成" class="headerlink" title="用源码生成"></a>用源码生成</h3><ol>
+<li>groovy编译java源码</li>
+<li>eclipse的ECJ</li>
+<li>java的JSR199的JavaCompilerAPI</li>
+</ol>
+<h4 id="groovy编译java源码"><a href="#groovy编译java源码" class="headerlink" title="groovy编译java源码"></a>groovy编译java源码</h4><p>groovy是个好东西,尤其是当你需要动态特性的时候,没错,groovy本来写的编译器是用来编译groovy源码的,但是需要交叉编译,所以,顺带也会编译java的代码,所以,没错,groovy的compiler也会编译java的代码,没有任何的问题</p>
+<h4 id="eclipse的ECJ"><a href="#eclipse的ECJ" class="headerlink" title="eclipse的ECJ"></a>eclipse的ECJ</h4><p>eclipse本来是java的IDE,为了实现增量编译之类的一些特性吧,或者是别的特性,eclipse自己也开发了一套编译器,用来编译java的代码</p>
+<h4 id="java的JSR199的JavaCompilerAPI"><a href="#java的JSR199的JavaCompilerAPI" class="headerlink" title="java的JSR199的JavaCompilerAPI"></a>java的JSR199的JavaCompilerAPI</h4><p>这个就是直接的java api,原生的,相当于包裹了一下javac,效率不错</p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>groovy和ecj的方式非常简单,java的jsr199相对繁琐,但是原生,跟着jdk版本走,最有效,相对来说,可能性能也最好,兼容性也更好,但是需要JDK,你装一个JRE是不行的</p>
+<h2 id="如何加载新的class"><a href="#如何加载新的class" class="headerlink" title="如何加载新的class"></a>如何加载新的class</h2><p>前面提到的思路,已经说明了,java的同名类,类加载其必须是不同的,所以,每次加载,都需要一个新的classLoader,不过不用担心内存泄漏,java的class也是会内存回收的,原来不用的类,你只要切断所有的引用,这个类也是可以回收的</p>
+<h2 id="真的那么简单吗"><a href="#真的那么简单吗" class="headerlink" title="真的那么简单吗"></a>真的那么简单吗</h2><p>其实讲到这里,技术的问题其实都已经解决了,但是类加载,不光光是技术上的问题,还有很多业务的问题,比如,类更改以后,如果让新的对象,全部派生自这个类,还有,尤其是对一些复杂的系统,比如spring,里面有相对复杂的初始化机制,问题就没那么简单,所以,<br>一旦类改变以后,你甚至还是触发一系列刷新的动作才可以,这里想表达的是,一旦类重新以后,jvm本质上是一个静态的系统,不是为动态设计的,所以,一旦出现动态以后,业务上差不多对是要做调整和兼容的,所以,使用的时候,想要和业务相结合</p>
+<h2 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h2><p>本文,分析了一种热加载的技术,就是直接用别的classloader加载一个新的同名类,然后再使用业务上的方式让这个重新加载的类生效,同时,也顺带的分析了,如何生成一个新的类的几种方式,并做了简单的对比</p>
+]]></content>
+      <categories>
+        <category>java</category>
+      </categories>
+      <tags>
+        <tag>java热加载</tag>
       </tags>
   </entry>
   <entry>
@@ -719,6 +755,71 @@
       </tags>
   </entry>
   <entry>
+    <title>mysql中tinyint(1)和tinyint(4)到底有什么区别</title>
+    <url>/2019/11/30/mysql%E4%B8%ADtinyint-1-%E5%92%8Ctinyint-4-%E5%88%B0%E5%BA%95%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB/</url>
+    <content><![CDATA[<h1 id="mysql中tinyint-1-和tinyint-4-到底有什么区别"><a href="#mysql中tinyint-1-和tinyint-4-到底有什么区别" class="headerlink" title="mysql中tinyint(1)和tinyint(4)到底有什么区别"></a>mysql中tinyint(1)和tinyint(4)到底有什么区别</h1><h2 id="tinyint基础"><a href="#tinyint基础" class="headerlink" title="tinyint基础"></a>tinyint基础</h2><p>tinyint存储使用了1个字节,就是8位,只能存储2^8即256个数字.在mysql实现中,有符号是-128-127,无符号是0-255,tinyint后面的括号带的数字,以后暂称之为M,<strong>那么1和4到底有什么区别呢?</strong><br>接下来我们就探讨一下M的作用</p>
+<h2 id="先下结论"><a href="#先下结论" class="headerlink" title="先下结论"></a>先下结论</h2><ol>
+<li>存储上没有任何区别,都是1个字节,8位</li>
+<li>唯一的区别就是字段如何设置了zerofill零填充的时候,控制台返回的时候,会根据数字的长度自动填充成对应的位数,现在基本都是可视化操作了,这个特性,控制台,console才会用,几乎没啥作用</li>
+</ol>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>实践出真知</p>
+<h3 id="1-常规测试"><a href="#1-常规测试" class="headerlink" title="1. 常规测试"></a>1. 常规测试</h3><p>使用基本的表,插入基本的数据</p>
+<img src="/2019/11/30/mysql%E4%B8%ADtinyint-1-%E5%92%8Ctinyint-4-%E5%88%B0%E5%BA%95%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB/basic_table.png" class="" title="基本表">
+
+<p>查询后发现没有任何区别</p>
+<img src="/2019/11/30/mysql%E4%B8%ADtinyint-1-%E5%92%8Ctinyint-4-%E5%88%B0%E5%BA%95%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB/basic_test.png" class="" title="基本测试">
+
+<p>可以发现没有任何区别,实际上就是没有任何区别,如果你用navicat之类的工具试验,也会发现没有任何差别,详情可以参见引用<a href="http://stackoverflow.com/questions/12839927/mysql-tinyint-2-vs-tinyint1-what-is-the-difference" title="stackoverflow的链接" target="">stackoverflow用户AamirR的回答</a>里面Aamir的回答可以做很好的验证</p>
+<h3 id="2-无符号建表-同时zerofill"><a href="#2-无符号建表-同时zerofill" class="headerlink" title="2. 无符号建表,同时zerofill"></a>2. 无符号建表,同时zerofill</h3><p>建表的基本语句是</p>
+<img src="/2019/11/30/mysql%E4%B8%ADtinyint-1-%E5%92%8Ctinyint-4-%E5%88%B0%E5%BA%95%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB/unsigned_table.png" class="" title="无符号建表">
+<p>最后查询结果如下,比较明显</p>
+<img src="/2019/11/30/mysql%E4%B8%ADtinyint-1-%E5%92%8Ctinyint-4-%E5%88%B0%E5%BA%95%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB/unsigned_query.png" class="" title="无符号查询">
+
+<p>zerofill的整数字段必须无符号,这里可以看出M显示出了特定的宽度,不够的时候会填充0,多余了不作处理</p>
+<h2 id="官方解释"><a href="#官方解释" class="headerlink" title="官方解释"></a>官方解释</h2><p>这里查阅的官方文档是5.7英文版<a href="https://dev.mysql.com/doc/refman/5.7/en/numeric-type-attributes.html" title="官方文档的链接" target="">传送门</a></p>
+<p>这里摘抄其中重要的一段</p>
+<p>MySQL supports an extension for optionally specifying the display width of integer data types in parentheses following the base keyword for the type. For example, INT(4) specifies an INT with a display width of four digits. This optional display width may be used by applications to display integer values having a width less than the width specified for the column by left-padding them with spaces. (That is, this width is present in the metadata returned with result sets. Whether it is used or not is up to the application.)</p>
+<p>The display width does not constrain the range of values that can be stored in the column. Nor does it prevent values wider than the column display width from being displayed correctly. For example, a column specified as SMALLINT(3) has the usual SMALLINT range of -32768 to 32767, and values outside the range permitted by three digits are displayed in full using more than three digits.</p>
+<p>When used in conjunction with the optional (nonstandard) attribute ZEROFILL, the default padding of spaces is replaced with zeros. For example, for a column declared as INT(4) ZEROFILL, a value of 5 is retrieved as 0005.</p>
+<p>至此,也验证了我们的结论.</p>
+<ol>
+<li>M绝对和存储的值没有关系</li>
+<li>无符号和zerofill的时候会填充0,显示成M对应的宽度</li>
+<li>整数类型都一样,有默认的显示宽度</li>
+<li>M作为元数据存储,推荐是显示的宽度,但是最终的解释权归使用的程序所有</li>
+</ol>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>最后,我的建议是,就是M其实没用,tinyint默认是4,其余的数字类型也有默认值,以后程序开发中,涉及整形数字的M时,可以不必纠结,直接忽略,使用数据库默认的M值即可</p>
+]]></content>
+      <categories>
+        <category>数据库</category>
+      </categories>
+      <tags>
+        <tag>mysql</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>qemu优化后跑分测试</title>
+    <url>/2022/11/09/qemu%E4%BC%98%E5%8C%96%E5%90%8E%E8%B7%91%E5%88%86%E6%B5%8B%E8%AF%95/</url>
+    <content><![CDATA[<h1 id="qemu优化后跑分测试"><a href="#qemu优化后跑分测试" class="headerlink" title="qemu优化后跑分测试"></a>qemu优化后跑分测试</h1><p>前面写过一片文章,就是qemu优化,今天分享一下qemu拉满优化以后的跑分,用娱乐大师,看看效果如何</p>
+<h2 id="话不多说-直接上图"><a href="#话不多说-直接上图" class="headerlink" title="话不多说,直接上图"></a>话不多说,直接上图</h2><img src="/2022/11/09/qemu%E4%BC%98%E5%8C%96%E5%90%8E%E8%B7%91%E5%88%86%E6%B5%8B%E8%AF%95/ludashi.PNG" class="" title="性能几乎没有损耗">
+
+<p>解读一下,这个跑分</p>
+<ol>
+<li>cpu,9600k本来的平均跑分36w左右,这里30w,还用了4个核,其实是超常发挥的(<strong>这里是cpu pin,cpu设置和真机保持一致,避免了线程切换的损耗</strong>)</li>
+<li>显卡跑分,rx460的跑分,本来就是8w左右的样子,看来这里的显卡直通,完整的发挥了硬件的性能,几乎没有任何的损耗(<strong>显卡直通</strong>)</li>
+<li>内存跑分,内存跑分,这个不同的内存差距比较大,不过我的是ddr4 2666hz,我看网上的例子,单通道的ddr4 2666hz差不多是5w分(<strong>这里直接使用了大页内存,8个1g的内存,直接连续,减少了寻址的次数</strong>)</li>
+<li>存储的分数,前面也有讲过,这个其实水分很大,因为连续读写用了缓存,是虚假的跑分,意义不大(<strong>virtIO虽然比不上存储直通,但是无论是sata和nvme的ssd的virtIO驱动,都是够用的,不会成为瓶颈</strong>)</li>
+</ol>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>我们前面的优化都是非常有效的,从cpu pin,再到使用大页的内存,再到显卡直通,几乎获得了一个和真机一样的虚拟机,而且从cpu,内存,再到存储,几乎没有短板(<strong>小心木桶效应</strong>),<br>我还用他来打游戏测试了,没错,一点也不卡,非常流畅,这样的机器,其实用起来,你都不觉得是一个虚拟机,因为非常快</p>
+]]></content>
+      <categories>
+        <category>虚拟机</category>
+      </categories>
+      <tags>
+        <tag>qemu</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>manjaro使用qemu安装win10详细教程</title>
     <url>/2022/11/27/manjaro%E4%BD%BF%E7%94%A8qemu%E5%AE%89%E8%A3%85win10%E8%AF%A6%E7%BB%86%E6%95%99%E7%A8%8B/</url>
     <content><![CDATA[<h1 id="manjaro使用qemu安装win10详细教程"><a href="#manjaro使用qemu安装win10详细教程" class="headerlink" title="manjaro使用qemu安装win10详细教程"></a>manjaro使用qemu安装win10详细教程</h1><p>主机是manjaro,使用qemu安装win10,以前那些文章,上来讲的都是怎么优化,而且并不是很详细,所以,这里,就详细的讲了如何安装win10</p>
@@ -783,71 +884,6 @@
 <h2 id="linux主机和windows文件共享"><a href="#linux主机和windows文件共享" class="headerlink" title="linux主机和windows文件共享"></a>linux主机和windows文件共享</h2><p>使用linux的samba,详情可以参考arch的samba文档</p>
 <h2 id="开始优化"><a href="#开始优化" class="headerlink" title="开始优化"></a>开始优化</h2><p>现在虚拟机已经安装安全,接下来,可以参考我前面的几篇文章优化,或者进行显卡直通,最终将会体验翻倍,堪比真机</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本篇从0到1的展示了,在一个manjaro系统,如何使用qemu安装win10,定位就是详细教程,可以看到里面有大量的截图,希望能帮到你</p>
-]]></content>
-      <categories>
-        <category>虚拟机</category>
-      </categories>
-      <tags>
-        <tag>qemu</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>mysql中tinyint(1)和tinyint(4)到底有什么区别</title>
-    <url>/2019/11/30/mysql%E4%B8%ADtinyint-1-%E5%92%8Ctinyint-4-%E5%88%B0%E5%BA%95%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB/</url>
-    <content><![CDATA[<h1 id="mysql中tinyint-1-和tinyint-4-到底有什么区别"><a href="#mysql中tinyint-1-和tinyint-4-到底有什么区别" class="headerlink" title="mysql中tinyint(1)和tinyint(4)到底有什么区别"></a>mysql中tinyint(1)和tinyint(4)到底有什么区别</h1><h2 id="tinyint基础"><a href="#tinyint基础" class="headerlink" title="tinyint基础"></a>tinyint基础</h2><p>tinyint存储使用了1个字节,就是8位,只能存储2^8即256个数字.在mysql实现中,有符号是-128-127,无符号是0-255,tinyint后面的括号带的数字,以后暂称之为M,<strong>那么1和4到底有什么区别呢?</strong><br>接下来我们就探讨一下M的作用</p>
-<h2 id="先下结论"><a href="#先下结论" class="headerlink" title="先下结论"></a>先下结论</h2><ol>
-<li>存储上没有任何区别,都是1个字节,8位</li>
-<li>唯一的区别就是字段如何设置了zerofill零填充的时候,控制台返回的时候,会根据数字的长度自动填充成对应的位数,现在基本都是可视化操作了,这个特性,控制台,console才会用,几乎没啥作用</li>
-</ol>
-<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>实践出真知</p>
-<h3 id="1-常规测试"><a href="#1-常规测试" class="headerlink" title="1. 常规测试"></a>1. 常规测试</h3><p>使用基本的表,插入基本的数据</p>
-<img src="/2019/11/30/mysql%E4%B8%ADtinyint-1-%E5%92%8Ctinyint-4-%E5%88%B0%E5%BA%95%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB/basic_table.png" class="" title="基本表">
-
-<p>查询后发现没有任何区别</p>
-<img src="/2019/11/30/mysql%E4%B8%ADtinyint-1-%E5%92%8Ctinyint-4-%E5%88%B0%E5%BA%95%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB/basic_test.png" class="" title="基本测试">
-
-<p>可以发现没有任何区别,实际上就是没有任何区别,如果你用navicat之类的工具试验,也会发现没有任何差别,详情可以参见引用<a href="http://stackoverflow.com/questions/12839927/mysql-tinyint-2-vs-tinyint1-what-is-the-difference" title="stackoverflow的链接" target="">stackoverflow用户AamirR的回答</a>里面Aamir的回答可以做很好的验证</p>
-<h3 id="2-无符号建表-同时zerofill"><a href="#2-无符号建表-同时zerofill" class="headerlink" title="2. 无符号建表,同时zerofill"></a>2. 无符号建表,同时zerofill</h3><p>建表的基本语句是</p>
-<img src="/2019/11/30/mysql%E4%B8%ADtinyint-1-%E5%92%8Ctinyint-4-%E5%88%B0%E5%BA%95%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB/unsigned_table.png" class="" title="无符号建表">
-<p>最后查询结果如下,比较明显</p>
-<img src="/2019/11/30/mysql%E4%B8%ADtinyint-1-%E5%92%8Ctinyint-4-%E5%88%B0%E5%BA%95%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB/unsigned_query.png" class="" title="无符号查询">
-
-<p>zerofill的整数字段必须无符号,这里可以看出M显示出了特定的宽度,不够的时候会填充0,多余了不作处理</p>
-<h2 id="官方解释"><a href="#官方解释" class="headerlink" title="官方解释"></a>官方解释</h2><p>这里查阅的官方文档是5.7英文版<a href="https://dev.mysql.com/doc/refman/5.7/en/numeric-type-attributes.html" title="官方文档的链接" target="">传送门</a></p>
-<p>这里摘抄其中重要的一段</p>
-<p>MySQL supports an extension for optionally specifying the display width of integer data types in parentheses following the base keyword for the type. For example, INT(4) specifies an INT with a display width of four digits. This optional display width may be used by applications to display integer values having a width less than the width specified for the column by left-padding them with spaces. (That is, this width is present in the metadata returned with result sets. Whether it is used or not is up to the application.)</p>
-<p>The display width does not constrain the range of values that can be stored in the column. Nor does it prevent values wider than the column display width from being displayed correctly. For example, a column specified as SMALLINT(3) has the usual SMALLINT range of -32768 to 32767, and values outside the range permitted by three digits are displayed in full using more than three digits.</p>
-<p>When used in conjunction with the optional (nonstandard) attribute ZEROFILL, the default padding of spaces is replaced with zeros. For example, for a column declared as INT(4) ZEROFILL, a value of 5 is retrieved as 0005.</p>
-<p>至此,也验证了我们的结论.</p>
-<ol>
-<li>M绝对和存储的值没有关系</li>
-<li>无符号和zerofill的时候会填充0,显示成M对应的宽度</li>
-<li>整数类型都一样,有默认的显示宽度</li>
-<li>M作为元数据存储,推荐是显示的宽度,但是最终的解释权归使用的程序所有</li>
-</ol>
-<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>最后,我的建议是,就是M其实没用,tinyint默认是4,其余的数字类型也有默认值,以后程序开发中,涉及整形数字的M时,可以不必纠结,直接忽略,使用数据库默认的M值即可</p>
-]]></content>
-      <categories>
-        <category>数据库</category>
-      </categories>
-      <tags>
-        <tag>mysql</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>qemu优化后跑分测试</title>
-    <url>/2022/11/09/qemu%E4%BC%98%E5%8C%96%E5%90%8E%E8%B7%91%E5%88%86%E6%B5%8B%E8%AF%95/</url>
-    <content><![CDATA[<h1 id="qemu优化后跑分测试"><a href="#qemu优化后跑分测试" class="headerlink" title="qemu优化后跑分测试"></a>qemu优化后跑分测试</h1><p>前面写过一片文章,就是qemu优化,今天分享一下qemu拉满优化以后的跑分,用娱乐大师,看看效果如何</p>
-<h2 id="话不多说-直接上图"><a href="#话不多说-直接上图" class="headerlink" title="话不多说,直接上图"></a>话不多说,直接上图</h2><img src="/2022/11/09/qemu%E4%BC%98%E5%8C%96%E5%90%8E%E8%B7%91%E5%88%86%E6%B5%8B%E8%AF%95/ludashi.PNG" class="" title="性能几乎没有损耗">
-
-<p>解读一下,这个跑分</p>
-<ol>
-<li>cpu,9600k本来的平均跑分36w左右,这里30w,还用了4个核,其实是超常发挥的(<strong>这里是cpu pin,cpu设置和真机保持一致,避免了线程切换的损耗</strong>)</li>
-<li>显卡跑分,rx460的跑分,本来就是8w左右的样子,看来这里的显卡直通,完整的发挥了硬件的性能,几乎没有任何的损耗(<strong>显卡直通</strong>)</li>
-<li>内存跑分,内存跑分,这个不同的内存差距比较大,不过我的是ddr4 2666hz,我看网上的例子,单通道的ddr4 2666hz差不多是5w分(<strong>这里直接使用了大页内存,8个1g的内存,直接连续,减少了寻址的次数</strong>)</li>
-<li>存储的分数,前面也有讲过,这个其实水分很大,因为连续读写用了缓存,是虚假的跑分,意义不大(<strong>virtIO虽然比不上存储直通,但是无论是sata和nvme的ssd的virtIO驱动,都是够用的,不会成为瓶颈</strong>)</li>
-</ol>
-<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>我们前面的优化都是非常有效的,从cpu pin,再到使用大页的内存,再到显卡直通,几乎获得了一个和真机一样的虚拟机,而且从cpu,内存,再到存储,几乎没有短板(<strong>小心木桶效应</strong>),<br>我还用他来打游戏测试了,没错,一点也不卡,非常流畅,这样的机器,其实用起来,你都不觉得是一个虚拟机,因为非常快</p>
 ]]></content>
       <categories>
         <category>虚拟机</category>
@@ -1108,144 +1144,6 @@
       </tags>
   </entry>
   <entry>
-    <title>skyWalking-javaAgent解析</title>
-    <url>/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/</url>
-    <content><![CDATA[<h1 id="skyWalking-java如何收集数据"><a href="#skyWalking-java如何收集数据" class="headerlink" title="skyWalking java如何收集数据"></a>skyWalking java如何收集数据</h1><p>skyWalking被java程序使用的时候,需要添加-javaagent参数,javaagent的作用其实很多,但是简单来说,就是启动前替换java类</p>
-<p><strong>代码引用基于<code>v8.7.0</code>版本</strong></p>
-<h3 id="instrument"><a href="#instrument" class="headerlink" title="instrument"></a>instrument</h3><p>jdk5引入了<code>java.lang.instrument</code>,该包提供了一个Java编程API,可以用来开发增强Java应用程序的工具,例如监视它们或收集性能信息. 使用<code>instrumentation</code>,开发者可以构建一个独立于应用程序的代理程序（Agent,用来监测和协助运行在 JVM 上的程序,甚至能够替换和修改某些类的定义.有了这样的功能,开发者就可以实现更为灵活的运行时虚拟机监控和Java类操作了,这样的特性实际上提供了一种虚拟机级别支持的 AOP 实现方式,使得开发者无需对 JDK 做任何升级和改动,就可以实现某些 AOP 的功能了.</p>
-<p><strong>这里的AOP是JVM级别的AOP,已经和业务无关,和业务有关的AOP就不能用这个类型,比如事务,缓存,因为这里的AOP完全与业务解耦了,所以,基本上,<code>instrumentation</code>一般只能用来监控</strong></p>
-<h3 id="AOP"><a href="#AOP" class="headerlink" title="AOP"></a>AOP</h3><p>其实监控,就是方法执行前,执行后做一些动作.平常我们其实也经常用AOP,比如日志,缓存,事务等等,所以说,skyWalking收集数据的思路就是使用AOP.AOP的实现就是创建代理类,也就是修改类,做处理.</p>
-<h2 id="自己动手写一个javaagent"><a href="#自己动手写一个javaagent" class="headerlink" title="自己动手写一个javaagent"></a>自己动手写一个javaagent</h2><ol>
-<li>编写带有特定方法的类<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">premain</span><span class="params">(String agentArgs, Instrumentation inst)</span>&#123;&#125;</span><br></pre></td></tr></table></figure></li>
-<li>打包成jar,并且添加manifest属性<code>Premain-Class: pers.apricot.MyAgent</code></li>
-<li>应用添加<code>-javaagent:agent.jar=$&#123;agentArgs&#125;</code>启动,就可以看到效果</li>
-</ol>
-<p>我这里写了一个简单的不带aop的agent</p>
-<img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/myagent.png" class="" title="一个简单的javaagent">
-<img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/instrumentation.png" class="" title="instrumentation">
-<img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/class_file_transformer.png" class="" title="classFileTransformer">
-
-<h2 id="org-apache-agent-SkyWalkingAgent-解析"><a href="#org-apache-agent-SkyWalkingAgent-解析" class="headerlink" title="org.apache.**.agent.SkyWalkingAgent 解析"></a>org.apache.**.agent.SkyWalkingAgent 解析</h2><p>这里可以看到其明显使用了我们刚才介绍的<code>instrument</code>,并且这里有个新的框架<code>bytebuddy</code>.</p>
-<img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/sky_walking-agent.png" class="" title="SkyWalkingAgent">
-
-<h3 id="bytebuddy简介"><a href="#bytebuddy简介" class="headerlink" title="bytebuddy简介"></a><code>bytebuddy</code>简介</h3><p>动态修改类有两派,一派是java source类型,就是用string新建类和修改类,这类的典型代表是javaassist,还有一类就是非常硬核的修改bytecode,如asm,前者比较简单,后者需要掌握的就比较多.</p>
-<p><code>bytebuddy</code>属于java source派,可以动态的生成java字节码文件,比起我们自己进行字节码文件的生成,它屏蔽了底层细节,提供一套统一易上手的Api,简化了字节码增强的学习难度,而且<code>bytebuddy</code>针对javaagent做了封装,<br>我们可以非常简单的使用它的api挑选我们自己想要增强的类,来增强<br><a href="https://blog.csdn.net/m0_37556444/article/details/106695202">ByteBuddy使用入坑</a></p>
-<h2 id="skyWalking自定义插件"><a href="#skyWalking自定义插件" class="headerlink" title="skyWalking自定义插件"></a>skyWalking自定义插件</h2><p><code>skyWalking</code>虽然使用<code>byteBuddy</code>但是,自己定义了一套插件机制,而不是直接使用字节码增加</p>
-<p><code>skyWalking</code>自定义了一套插件体系,并且<code>skyWalking</code>官方维护了很多常用的插件,开发完插件以后,放到<code>plugins</code>目录即可生效</p>
-<img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/sky-walking-plugin.png" class="" title="plugins">
-<p>这里可以看到同一个插件,因为版本不同,也需要不同plugin,可见,插件的开发也是一项繁重的体力活</p>
-<p><a href="https://skyapm.github.io/document-cn-translation-of-skywalking/zh/6.2.0/guides/Java-Plugin-Development-Guide.html">插件开发指南</a></p>
-<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>追踪的基本方法是拦截Java方法,使用字节码操作技术和AOP概念.SkyWalking包装了字节码操作技术,并追踪上下文的传播.所以你只需要定义拦截点(换句话说就是Spring的切面).</p>
-<h3 id="拦截"><a href="#拦截" class="headerlink" title="拦截"></a>拦截</h3><p><code>skywalking</code>提供了两类通用的定义去拦截构造方法,实例方法和静态方法</p>
-<ol>
-<li><code>ClassInstanceMethodsEnhancePluginDefine</code>定义了<code>Contructor</code>和<code>instance method</code>实例方法拦截点</li>
-<li><code>ClassStaticMethodsEnhancePluginDefine</code>定义了<code>class method</code>拦截点</li>
-<li>继承<code>ClassEnhancePluginDefine</code>去设置所有的拦截点,不常用</li>
-</ol>
-<h3 id="匹配目标类"><a href="#匹配目标类" class="headerlink" title="匹配目标类"></a>匹配目标类</h3><p>定义<code>ClassInstanceMethodsEnhancePluginDefine</code>的子类,重写<code>enhanceClass</code>去匹配目标类.</p>
-<p><code>ClassMatch</code>ClassMatch表示如何去匹配目标类,这里有四种方法</p>
-<ol>
-<li>byName, 通过类的全限定名(Fully Qualified Class Name, 即 包名 + . + 类名).</li>
-<li>byClassAnnotationMatch, 根据目标类是否存在某些注解.</li>
-<li>byMethodAnnotationMatch, 根据目标类的方法是否存在某些注解.</li>
-<li>byHierarchyMatch, 根据目标类的父类或接口</li>
-</ol>
-<p><strong>注意事项:</strong></p>
-<ol>
-<li>禁止使用 <em>.class.getName() 去获取类名, 建议你使用文本字符串, 这是为了避免 ClassLoader 的问题.by</em>AnnotationMatch 不支持从父类继承来的注解.</li>
-<li>除非确实必要, 否则不建议使用 byHierarchyMatch, 因为使用它可能会触发拦截许多预期之外的方法, 会导致性能问题和不稳定.</li>
-</ol>
-<img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/driver-instrumentation.png" class="" title="DriverInstrumentation">
-
-<h3 id="定义方法拦截"><a href="#定义方法拦截" class="headerlink" title="定义方法拦截"></a>定义方法拦截</h3><p>重新<code>getInstanceMethodsInterceptPoints</code>方法</p>
-<img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/get_instance_methods_intercept_points.png" class="" title="getInstanceMethodsInterceptPoints">
-
-<ol>
-<li>重新方法</li>
-<li>定义拦截方法的几种逻辑</li>
-<li>方法匹配</li>
-<li>放回方法拦截器的全类名,这个<code>ElementMatcher</code>是<code>byteBuddy</code>的内容,所以,<code>skyWalking</code>这块的实现直接套用了<code>byteBuddy</code>的东西,省了一些代码</li>
-<li>是否覆盖参数,如果你需要在拦截器中更改引用的参数,就需要返回<code>true</code>,修改<code>InstanceMethodsAroundInterceptor</code>的<code>allArguments</code>才起效</li>
-</ol>
-<h3 id="skywalking-plugin-def-添加定义"><a href="#skywalking-plugin-def-添加定义" class="headerlink" title="skywalking-plugin.def 添加定义"></a>skywalking-plugin.def 添加定义</h3><p>key是语义化的名字即可,然后后面是<code>Instrumentation</code>的全限定类名,也就是定义拦截的类,拦截的方法,拦截的逻辑,这三个要素的类</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">key=com.any.SomeClass</span><br></pre></td></tr></table></figure>
-
-<h3 id="实现拦截器"><a href="#实现拦截器" class="headerlink" title="实现拦截器"></a>实现拦截器</h3><img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/instance_methods_around_interceptor.png" class="" title="InstanceMethodsAroundInterceptor">
-
-<ol>
-<li>接口名称</li>
-<li>方法执行前,获取该对象,该方法,传的参数,参数类型,方法拦截结果</li>
-<li>方法执行后,返回的结果,这里可以返回自定义的结果,也s就是返回代理对象</li>
-</ol>
-<h2 id="skyWalking-jdbc-插件解析"><a href="#skyWalking-jdbc-插件解析" class="headerlink" title="skyWalking jdbc 插件解析"></a>skyWalking jdbc 插件解析</h2><img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/PreparedStatementInstrumentation.png" class="" title="PreparedStatementInstrumentation">
-
-<ol>
-<li>定义拦截的类</li>
-<li>定义拦截的方法</li>
-</ol>
-<img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/PreparedStatementExecuteMethodsInterceptor.png" class="" title="PreparedStatementExecuteMethodsInterceptor">
-
-<ol>
-<li>定义拦截的逻辑,创建span</li>
-<li>设定cmponent</li>
-<li>设定layer</li>
-</ol>
-<img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/skywalking-plugin.png" class="" title="def-plugin">
-
-<ol>
-<li>添加定义</li>
-</ol>
-<h2 id="自定义开发组件"><a href="#自定义开发组件" class="headerlink" title="自定义开发组件"></a>自定义开发组件</h2><p>在项目中,我使用了<code>RestTemplate</code>和外部的接口交互,获取数据,假定我想记录我发送了多少次请求,每次请求的内容是什么,返回的内容是什么,以这个作为需求来<br>开发一个<code>skyWalking</code>的插件</p>
-<h3 id="拦截的类和方法"><a href="#拦截的类和方法" class="headerlink" title="拦截的类和方法"></a>拦截的类和方法</h3><img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/postForEntity.png" class="" title="postForEntity">
-
-<p>我主要就用了这一个方法,名字是<code>postForEntity</code>,有三个重载的方法,但是我只拦截这一个</p>
-<h3 id="Instrumentation编码"><a href="#Instrumentation编码" class="headerlink" title="Instrumentation编码"></a>Instrumentation编码</h3><img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/RestTemplateInstrumentation.png" class="" title="RestTemplateInstrumentation">
-
-<ol>
-<li>拦截的类名</li>
-<li>拦截的方法,需要按照需要精确定义</li>
-<li>拦截器</li>
-</ol>
-<h3 id="Interceptor-编码"><a href="#Interceptor-编码" class="headerlink" title="Interceptor 编码"></a>Interceptor 编码</h3><img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/RestTemplateInterceptor.png" class="" title="RestTemplateInterceptor">
-
-<p>我根据需求,根据入参和返回的参数,获取我需要数据,完成了http发送请求请求参数和返回数据的获取</p>
-<ol>
-<li>创建<code>ContextCarrier</code></li>
-<li>定义<code>component</code></li>
-<li>定义<code>layer</code></li>
-<li>设置<code>params</code></li>
-<li>设置<code>body</code></li>
-</ol>
-<h3 id="skywalking-plugin-def"><a href="#skywalking-plugin-def" class="headerlink" title="skywalking-plugin.def"></a>skywalking-plugin.def</h3><p>根据规范设置Instrumentation</p>
-<img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/skywalking-plugin_def.png" class="" title="skywalking-plugin.def">
-
-<h3 id="查询效果"><a href="#查询效果" class="headerlink" title="查询效果"></a>查询效果</h3><ol>
-<li>我首先打包这个jar</li>
-<li>然后放到<code>plugins</code>目录</li>
-<li>依次启动服务,然后触发这些记录</li>
-</ol>
-<p>可以看到多加了一条我自己的记录</p>
-<img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/trace_tree.png" class="" title="trace">
-
-<img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/span_info.png" class="" title="span">
-
-<ol>
-<li>component被正确设置</li>
-<li>peer也被正确设置</li>
-<li>url被正确设置</li>
-<li>params都被正常设置</li>
-<li>body被正常设置</li>
-</ol>
-]]></content>
-      <categories>
-        <category>中间件</category>
-      </categories>
-      <tags>
-        <tag>skyWalking</tag>
-        <tag>监控</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>shardingsphere简要介绍</title>
     <url>/2022/03/02/shardingsphere%E7%AE%80%E8%A6%81%E4%BB%8B%E7%BB%8D/</url>
     <content><![CDATA[<h1 id="shardingsphere简要介绍"><a href="#shardingsphere简要介绍" class="headerlink" title="shardingsphere简要介绍"></a>shardingsphere简要介绍</h1><p>可以做什么</p>
@@ -1454,6 +1352,144 @@
 <li>还可以搭建skyWalking UI服务的集群,使用nginx进行负责均衡</li>
 </ol>
 <p>总体可以看到,任何一个环节都是集群,来满足高可用</p>
+]]></content>
+      <categories>
+        <category>中间件</category>
+      </categories>
+      <tags>
+        <tag>skyWalking</tag>
+        <tag>监控</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>skyWalking-javaAgent解析</title>
+    <url>/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/</url>
+    <content><![CDATA[<h1 id="skyWalking-java如何收集数据"><a href="#skyWalking-java如何收集数据" class="headerlink" title="skyWalking java如何收集数据"></a>skyWalking java如何收集数据</h1><p>skyWalking被java程序使用的时候,需要添加-javaagent参数,javaagent的作用其实很多,但是简单来说,就是启动前替换java类</p>
+<p><strong>代码引用基于<code>v8.7.0</code>版本</strong></p>
+<h3 id="instrument"><a href="#instrument" class="headerlink" title="instrument"></a>instrument</h3><p>jdk5引入了<code>java.lang.instrument</code>,该包提供了一个Java编程API,可以用来开发增强Java应用程序的工具,例如监视它们或收集性能信息. 使用<code>instrumentation</code>,开发者可以构建一个独立于应用程序的代理程序（Agent,用来监测和协助运行在 JVM 上的程序,甚至能够替换和修改某些类的定义.有了这样的功能,开发者就可以实现更为灵活的运行时虚拟机监控和Java类操作了,这样的特性实际上提供了一种虚拟机级别支持的 AOP 实现方式,使得开发者无需对 JDK 做任何升级和改动,就可以实现某些 AOP 的功能了.</p>
+<p><strong>这里的AOP是JVM级别的AOP,已经和业务无关,和业务有关的AOP就不能用这个类型,比如事务,缓存,因为这里的AOP完全与业务解耦了,所以,基本上,<code>instrumentation</code>一般只能用来监控</strong></p>
+<h3 id="AOP"><a href="#AOP" class="headerlink" title="AOP"></a>AOP</h3><p>其实监控,就是方法执行前,执行后做一些动作.平常我们其实也经常用AOP,比如日志,缓存,事务等等,所以说,skyWalking收集数据的思路就是使用AOP.AOP的实现就是创建代理类,也就是修改类,做处理.</p>
+<h2 id="自己动手写一个javaagent"><a href="#自己动手写一个javaagent" class="headerlink" title="自己动手写一个javaagent"></a>自己动手写一个javaagent</h2><ol>
+<li>编写带有特定方法的类<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">premain</span><span class="params">(String agentArgs, Instrumentation inst)</span>&#123;&#125;</span><br></pre></td></tr></table></figure></li>
+<li>打包成jar,并且添加manifest属性<code>Premain-Class: pers.apricot.MyAgent</code></li>
+<li>应用添加<code>-javaagent:agent.jar=$&#123;agentArgs&#125;</code>启动,就可以看到效果</li>
+</ol>
+<p>我这里写了一个简单的不带aop的agent</p>
+<img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/myagent.png" class="" title="一个简单的javaagent">
+<img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/instrumentation.png" class="" title="instrumentation">
+<img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/class_file_transformer.png" class="" title="classFileTransformer">
+
+<h2 id="org-apache-agent-SkyWalkingAgent-解析"><a href="#org-apache-agent-SkyWalkingAgent-解析" class="headerlink" title="org.apache.**.agent.SkyWalkingAgent 解析"></a>org.apache.**.agent.SkyWalkingAgent 解析</h2><p>这里可以看到其明显使用了我们刚才介绍的<code>instrument</code>,并且这里有个新的框架<code>bytebuddy</code>.</p>
+<img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/sky_walking-agent.png" class="" title="SkyWalkingAgent">
+
+<h3 id="bytebuddy简介"><a href="#bytebuddy简介" class="headerlink" title="bytebuddy简介"></a><code>bytebuddy</code>简介</h3><p>动态修改类有两派,一派是java source类型,就是用string新建类和修改类,这类的典型代表是javaassist,还有一类就是非常硬核的修改bytecode,如asm,前者比较简单,后者需要掌握的就比较多.</p>
+<p><code>bytebuddy</code>属于java source派,可以动态的生成java字节码文件,比起我们自己进行字节码文件的生成,它屏蔽了底层细节,提供一套统一易上手的Api,简化了字节码增强的学习难度,而且<code>bytebuddy</code>针对javaagent做了封装,<br>我们可以非常简单的使用它的api挑选我们自己想要增强的类,来增强<br><a href="https://blog.csdn.net/m0_37556444/article/details/106695202">ByteBuddy使用入坑</a></p>
+<h2 id="skyWalking自定义插件"><a href="#skyWalking自定义插件" class="headerlink" title="skyWalking自定义插件"></a>skyWalking自定义插件</h2><p><code>skyWalking</code>虽然使用<code>byteBuddy</code>但是,自己定义了一套插件机制,而不是直接使用字节码增加</p>
+<p><code>skyWalking</code>自定义了一套插件体系,并且<code>skyWalking</code>官方维护了很多常用的插件,开发完插件以后,放到<code>plugins</code>目录即可生效</p>
+<img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/sky-walking-plugin.png" class="" title="plugins">
+<p>这里可以看到同一个插件,因为版本不同,也需要不同plugin,可见,插件的开发也是一项繁重的体力活</p>
+<p><a href="https://skyapm.github.io/document-cn-translation-of-skywalking/zh/6.2.0/guides/Java-Plugin-Development-Guide.html">插件开发指南</a></p>
+<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>追踪的基本方法是拦截Java方法,使用字节码操作技术和AOP概念.SkyWalking包装了字节码操作技术,并追踪上下文的传播.所以你只需要定义拦截点(换句话说就是Spring的切面).</p>
+<h3 id="拦截"><a href="#拦截" class="headerlink" title="拦截"></a>拦截</h3><p><code>skywalking</code>提供了两类通用的定义去拦截构造方法,实例方法和静态方法</p>
+<ol>
+<li><code>ClassInstanceMethodsEnhancePluginDefine</code>定义了<code>Contructor</code>和<code>instance method</code>实例方法拦截点</li>
+<li><code>ClassStaticMethodsEnhancePluginDefine</code>定义了<code>class method</code>拦截点</li>
+<li>继承<code>ClassEnhancePluginDefine</code>去设置所有的拦截点,不常用</li>
+</ol>
+<h3 id="匹配目标类"><a href="#匹配目标类" class="headerlink" title="匹配目标类"></a>匹配目标类</h3><p>定义<code>ClassInstanceMethodsEnhancePluginDefine</code>的子类,重写<code>enhanceClass</code>去匹配目标类.</p>
+<p><code>ClassMatch</code>ClassMatch表示如何去匹配目标类,这里有四种方法</p>
+<ol>
+<li>byName, 通过类的全限定名(Fully Qualified Class Name, 即 包名 + . + 类名).</li>
+<li>byClassAnnotationMatch, 根据目标类是否存在某些注解.</li>
+<li>byMethodAnnotationMatch, 根据目标类的方法是否存在某些注解.</li>
+<li>byHierarchyMatch, 根据目标类的父类或接口</li>
+</ol>
+<p><strong>注意事项:</strong></p>
+<ol>
+<li>禁止使用 <em>.class.getName() 去获取类名, 建议你使用文本字符串, 这是为了避免 ClassLoader 的问题.by</em>AnnotationMatch 不支持从父类继承来的注解.</li>
+<li>除非确实必要, 否则不建议使用 byHierarchyMatch, 因为使用它可能会触发拦截许多预期之外的方法, 会导致性能问题和不稳定.</li>
+</ol>
+<img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/driver-instrumentation.png" class="" title="DriverInstrumentation">
+
+<h3 id="定义方法拦截"><a href="#定义方法拦截" class="headerlink" title="定义方法拦截"></a>定义方法拦截</h3><p>重新<code>getInstanceMethodsInterceptPoints</code>方法</p>
+<img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/get_instance_methods_intercept_points.png" class="" title="getInstanceMethodsInterceptPoints">
+
+<ol>
+<li>重新方法</li>
+<li>定义拦截方法的几种逻辑</li>
+<li>方法匹配</li>
+<li>放回方法拦截器的全类名,这个<code>ElementMatcher</code>是<code>byteBuddy</code>的内容,所以,<code>skyWalking</code>这块的实现直接套用了<code>byteBuddy</code>的东西,省了一些代码</li>
+<li>是否覆盖参数,如果你需要在拦截器中更改引用的参数,就需要返回<code>true</code>,修改<code>InstanceMethodsAroundInterceptor</code>的<code>allArguments</code>才起效</li>
+</ol>
+<h3 id="skywalking-plugin-def-添加定义"><a href="#skywalking-plugin-def-添加定义" class="headerlink" title="skywalking-plugin.def 添加定义"></a>skywalking-plugin.def 添加定义</h3><p>key是语义化的名字即可,然后后面是<code>Instrumentation</code>的全限定类名,也就是定义拦截的类,拦截的方法,拦截的逻辑,这三个要素的类</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">key=com.any.SomeClass</span><br></pre></td></tr></table></figure>
+
+<h3 id="实现拦截器"><a href="#实现拦截器" class="headerlink" title="实现拦截器"></a>实现拦截器</h3><img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/instance_methods_around_interceptor.png" class="" title="InstanceMethodsAroundInterceptor">
+
+<ol>
+<li>接口名称</li>
+<li>方法执行前,获取该对象,该方法,传的参数,参数类型,方法拦截结果</li>
+<li>方法执行后,返回的结果,这里可以返回自定义的结果,也s就是返回代理对象</li>
+</ol>
+<h2 id="skyWalking-jdbc-插件解析"><a href="#skyWalking-jdbc-插件解析" class="headerlink" title="skyWalking jdbc 插件解析"></a>skyWalking jdbc 插件解析</h2><img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/PreparedStatementInstrumentation.png" class="" title="PreparedStatementInstrumentation">
+
+<ol>
+<li>定义拦截的类</li>
+<li>定义拦截的方法</li>
+</ol>
+<img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/PreparedStatementExecuteMethodsInterceptor.png" class="" title="PreparedStatementExecuteMethodsInterceptor">
+
+<ol>
+<li>定义拦截的逻辑,创建span</li>
+<li>设定cmponent</li>
+<li>设定layer</li>
+</ol>
+<img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/skywalking-plugin.png" class="" title="def-plugin">
+
+<ol>
+<li>添加定义</li>
+</ol>
+<h2 id="自定义开发组件"><a href="#自定义开发组件" class="headerlink" title="自定义开发组件"></a>自定义开发组件</h2><p>在项目中,我使用了<code>RestTemplate</code>和外部的接口交互,获取数据,假定我想记录我发送了多少次请求,每次请求的内容是什么,返回的内容是什么,以这个作为需求来<br>开发一个<code>skyWalking</code>的插件</p>
+<h3 id="拦截的类和方法"><a href="#拦截的类和方法" class="headerlink" title="拦截的类和方法"></a>拦截的类和方法</h3><img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/postForEntity.png" class="" title="postForEntity">
+
+<p>我主要就用了这一个方法,名字是<code>postForEntity</code>,有三个重载的方法,但是我只拦截这一个</p>
+<h3 id="Instrumentation编码"><a href="#Instrumentation编码" class="headerlink" title="Instrumentation编码"></a>Instrumentation编码</h3><img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/RestTemplateInstrumentation.png" class="" title="RestTemplateInstrumentation">
+
+<ol>
+<li>拦截的类名</li>
+<li>拦截的方法,需要按照需要精确定义</li>
+<li>拦截器</li>
+</ol>
+<h3 id="Interceptor-编码"><a href="#Interceptor-编码" class="headerlink" title="Interceptor 编码"></a>Interceptor 编码</h3><img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/RestTemplateInterceptor.png" class="" title="RestTemplateInterceptor">
+
+<p>我根据需求,根据入参和返回的参数,获取我需要数据,完成了http发送请求请求参数和返回数据的获取</p>
+<ol>
+<li>创建<code>ContextCarrier</code></li>
+<li>定义<code>component</code></li>
+<li>定义<code>layer</code></li>
+<li>设置<code>params</code></li>
+<li>设置<code>body</code></li>
+</ol>
+<h3 id="skywalking-plugin-def"><a href="#skywalking-plugin-def" class="headerlink" title="skywalking-plugin.def"></a>skywalking-plugin.def</h3><p>根据规范设置Instrumentation</p>
+<img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/skywalking-plugin_def.png" class="" title="skywalking-plugin.def">
+
+<h3 id="查询效果"><a href="#查询效果" class="headerlink" title="查询效果"></a>查询效果</h3><ol>
+<li>我首先打包这个jar</li>
+<li>然后放到<code>plugins</code>目录</li>
+<li>依次启动服务,然后触发这些记录</li>
+</ol>
+<p>可以看到多加了一条我自己的记录</p>
+<img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/trace_tree.png" class="" title="trace">
+
+<img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/span_info.png" class="" title="span">
+
+<ol>
+<li>component被正确设置</li>
+<li>peer也被正确设置</li>
+<li>url被正确设置</li>
+<li>params都被正常设置</li>
+<li>body被正常设置</li>
+</ol>
 ]]></content>
       <categories>
         <category>中间件</category>
