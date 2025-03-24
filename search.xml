@@ -1,6 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>NoSuchMethodError的bug修复</title>
+    <url>/2021/11/15/NoSuchMethodError%E7%9A%84bug%E4%BF%AE%E5%A4%8D/</url>
+    <content><![CDATA[<h1 id="记一次NoSuchMethodError"><a href="#记一次NoSuchMethodError" class="headerlink" title="记一次NoSuchMethodError"></a>记一次<code>NoSuchMethodError</code></h1><p><code>NoSuchMethodError</code>的就有类找到了,但是方法没有,所以,思路主要有两个</p>
+<ol>
+<li>找错了类,也就是有同名类,一般不会有同名类,出现同名类的场景比较少,这里列举一个.比如<code>guava</code>,和<code>google-collections</code>,两个jar,但是命名空间一样,<br>里面有些类重复了,没错,<code>google-collections</code>废弃了,然后<code>guava</code>一直在维护,类加载顺序本身存在不确定性,所以<code>guava</code>用到了<code>google-collections</code>的<br>类,这样就不行了,这种比较奇怪,定位也很麻烦.那个方法出错了,可以自己写一下,然后debug要进去的时候,ide就会提示你重复,才能定位</li>
+<li>类没找错,但是版本不对,这种比较常见,就是多个lib协同的问题,比如<code>hive</code>用了新的<code>guava</code>,但是你是老版的<code>guava</code>,有这个类,但是没这个方法,所以需要<br>妥善处理好类之间的协同关系,这里,<code>springBoot</code>就出现了<code>dependencyManagement</code>,来缓解这个情况</li>
+</ol>
+<p>总结下来,就是类有,但是要么重名,要么版本不对,主要分这两个情况需要注意</p>
+]]></content>
+      <categories>
+        <category>日记</category>
+      </categories>
+      <tags>
+        <tag>bug</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>ansible简介</title>
     <url>/2021/10/15/ansible%E7%AE%80%E4%BB%8B/</url>
     <content><![CDATA[<h1 id="ansible简介"><a href="#ansible简介" class="headerlink" title="ansible简介"></a>ansible简介</h1><img src="/2021/10/15/ansible%E7%AE%80%E4%BB%8B/ansible-logo.png" class="" title="ansible-logo">
@@ -120,23 +137,6 @@
       </categories>
       <tags>
         <tag>ansible</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>NoSuchMethodError的bug修复</title>
-    <url>/2021/11/15/NoSuchMethodError%E7%9A%84bug%E4%BF%AE%E5%A4%8D/</url>
-    <content><![CDATA[<h1 id="记一次NoSuchMethodError"><a href="#记一次NoSuchMethodError" class="headerlink" title="记一次NoSuchMethodError"></a>记一次<code>NoSuchMethodError</code></h1><p><code>NoSuchMethodError</code>的就有类找到了,但是方法没有,所以,思路主要有两个</p>
-<ol>
-<li>找错了类,也就是有同名类,一般不会有同名类,出现同名类的场景比较少,这里列举一个.比如<code>guava</code>,和<code>google-collections</code>,两个jar,但是命名空间一样,<br>里面有些类重复了,没错,<code>google-collections</code>废弃了,然后<code>guava</code>一直在维护,类加载顺序本身存在不确定性,所以<code>guava</code>用到了<code>google-collections</code>的<br>类,这样就不行了,这种比较奇怪,定位也很麻烦.那个方法出错了,可以自己写一下,然后debug要进去的时候,ide就会提示你重复,才能定位</li>
-<li>类没找错,但是版本不对,这种比较常见,就是多个lib协同的问题,比如<code>hive</code>用了新的<code>guava</code>,但是你是老版的<code>guava</code>,有这个类,但是没这个方法,所以需要<br>妥善处理好类之间的协同关系,这里,<code>springBoot</code>就出现了<code>dependencyManagement</code>,来缓解这个情况</li>
-</ol>
-<p>总结下来,就是类有,但是要么重名,要么版本不对,主要分这两个情况需要注意</p>
-]]></content>
-      <categories>
-        <category>日记</category>
-      </categories>
-      <tags>
-        <tag>bug</tag>
       </tags>
   </entry>
   <entry>
@@ -308,6 +308,69 @@
       </tags>
   </entry>
   <entry>
+    <title>flyway简介</title>
+    <url>/2021/10/27/flyway%E7%AE%80%E4%BB%8B/</url>
+    <content><![CDATA[<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p><strong>本文基于springboot2集成使用</strong></p>
+<h3 id="flyway是什么"><a href="#flyway是什么" class="headerlink" title="flyway是什么"></a>flyway是什么</h3><p>flyway是一款开源的资料库版本管理工具，它更倾向于规约优于配置的方式。<br>flyway可以独立于应用实现管理并跟踪资料库变更，支援资料库版本自动升级，并且有一套预设的规约，<br>不需要复杂的配置。Migrations可以写成SQL指令码，也可以写在Java程式码中，不仅支援Command Line和Java API，<br>还支援Build构建工具和Spring Boot等。同时在分散式环境下能够安全可靠地升级资料库，同时也支援失败恢复等。</p>
+<h3 id="为什么要使用Flyway"><a href="#为什么要使用Flyway" class="headerlink" title="为什么要使用Flyway"></a>为什么要使用Flyway</h3><ol>
+<li>自己写的SQL忘了在所有环境执行；</li>
+<li>别人写的SQL我们不能确定是否都在所有环境执行过了；</li>
+<li>有人修改了已经执行过的SQL，期望再次执行；</li>
+<li>需要新增环境做数据迁移；</li>
+<li>每次发版需要手动控制先发DB版本，再发布应用版本；</li>
+<li>…</li>
+</ol>
+<h2 id="flyway工作原理"><a href="#flyway工作原理" class="headerlink" title="flyway工作原理"></a>flyway工作原理</h2><p>一言以蔽之：flyway通过历史记录表（flyway_schema_history）来记录版本历史。<br>每次随专案启动时将会自动扫描在resources&#x2F;db&#x2F;migration下的档案并查询flyway_schema_history判断是否为新增档案。<br>如果是新增的档案，则执行该迁移档案。如果不是，则忽略。</p>
+<ol>
+<li>当flyway在一个空资料库执行时，它将直接建立一张预设名为flyway_schema_history的资料记录为空的历史记录表，这张表将被用来跟踪或记录资料库的状态。</li>
+<li>flyway将会开始扫描文件系统或专案classpath路径下的迁移档案。flyway按版本号顺序排列迁移档案，并按序执行，并更新历史记录表中的内容</li>
+<li>当专案再次发版时，flyway会再次扫描迁移档案，然后将迁移文的版本号与历史记录表中的版本号进行对比。<br>flyway会忽略版本号小于等于表中当前最大版本的迁移档案，剩余待执行迁移档案会按版本号升序执行。</li>
+</ol>
+<p><strong>并非真正忽略，而是会校验checksum值是否一致，以此来保证历史版本档案未被篡改</strong></p>
+<img src="/2021/10/27/flyway%E7%AE%80%E4%BB%8B/database-version.png" class="" title="数据库版本记录">
+
+<h2 id="flyway实践"><a href="#flyway实践" class="headerlink" title="flyway实践"></a>flyway实践</h2><h3 id="添加引用"><a href="#添加引用" class="headerlink" title="添加引用"></a>添加引用</h3><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span>  <span class="comment">&lt;!-- 注意,这是springboot环境中,已经有版本了,所以无需添加,其余环境需要自己看情况 --&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.flywaydb<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>flyway-core<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="添加配置"><a href="#添加配置" class="headerlink" title="添加配置"></a>添加配置</h3><p>springboot为例</p>
+<figure class="highlight properties"><table><tr><td class="code"><pre><span class="line"><span class="attr">spring.flyway.enabled</span>=<span class="string">true # 开启flyway,默认true</span></span><br><span class="line"><span class="attr">spring.flyway.baseline-on-migrate</span>=<span class="string">true #当迁移时发现目标schema非空，而且带有没有后设资料的表时，是否自动执行基准迁移，预设false.</span></span><br><span class="line"><span class="attr">spring.flyway.locations</span>=<span class="string">classpath:db/migration # sql文件地址,默认就是 classpath:db/migration </span></span><br><span class="line"><span class="attr">spring.flyway.table</span>=<span class="string">dataease_version # 记录数据库记录的表的名称</span></span><br><span class="line"><span class="attr">spring.flyway.baseline-version</span>=<span class="string">0 # 开始执行基准迁移时对现有的schema的版本打标签，默认值为1</span></span><br><span class="line"><span class="attr">spring.flyway.encoding</span>=<span class="string">UTF-8 # 编码,默认就是UTF-8</span></span><br><span class="line"><span class="attr">spring.flyway.validate-on-migrate</span>=<span class="string">false # 迁移是否校验,默认为true</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="添加sql"><a href="#添加sql" class="headerlink" title="添加sql"></a>添加sql</h3><p>依次执行</p>
+<img src="/2021/10/27/flyway%E7%AE%80%E4%BB%8B/dbmigration.png" class="" title="sql文件">
+
+<h2 id="进阶知识点"><a href="#进阶知识点" class="headerlink" title="进阶知识点"></a>进阶知识点</h2><h3 id="版本号规范"><a href="#版本号规范" class="headerlink" title="版本号规范"></a>版本号规范</h3><p>Flyway 是如何比较两个 SQL 文件的先后顺序呢？它采用 采用左对齐原则, 缺位用 0 代替 。举几个例子：</p>
+<p>1.0.1.1 比 1.0.1 版本高。<br>1.0.10 比 1.0.9.4 版本高。<br>1.0.10 和 1.0.010 版本号一样高, 每个版本号部分的前导 0 会被忽略。  </p>
+<p>Flyway 将 SQL 文件分为 <strong>Versioned</strong> 、<strong>Repeatable</strong> 和 <strong>Undo</strong> 三种：</p>
+<ol>
+<li>Versioned 用于版本升级, 每个版本有唯一的版本号并只能执行一次.</li>
+<li>Repeatable 可重复执行, 当 Flyway检测到 Repeatable 类型的 SQL 脚本的 checksum 有变动,<br>Flyway 就会重新应用该脚本. 它并不用于版本更新, 这类的 migration 总是在 Versioned 执行之后才被执行。</li>
+<li>Undo 用于撤销具有相同版本的版本化迁移带来的影响。但是该回滚过于粗暴，过于机械化，一般不推荐使用。一般建议使用 Versioned 模式来解决。</li>
+</ol>
+<img src="/2021/10/27/flyway%E7%AE%80%E4%BB%8B/concepts_migrations.png" class="" title="命名规则">
+
+<ol>
+<li>Prefix 可配置，前缀标识，默认值 V 表示 Versioned, R 表示 Repeatable, U 表示 Undo</li>
+<li>Version 标识版本号, 由一个或多个数字构成, 数字之间的分隔符可用点 . 或下划线 _</li>
+<li>Separator 可配置, 用于分隔版本标识与描述信息, 默认为两个下划线 __</li>
+<li>Description 描述信息, 文字之间可以用下划线 _ 或空格 分隔</li>
+<li>Suffix 可配置, 后续标识, 默认为 .sql</li>
+</ol>
+<h3 id="另一种sql文件夹风格"><a href="#另一种sql文件夹风格" class="headerlink" title="另一种sql文件夹风格"></a>另一种sql文件夹风格</h3><p>可以使用文件夹来区分,但是还是依照版本号规则来执行</p>
+<img src="/2021/10/27/flyway%E7%AE%80%E4%BB%8B/sql_directory.png" class="" title="多文件夹">
+
+
+<h2 id="最佳实践"><a href="#最佳实践" class="headerlink" title="最佳实践"></a>最佳实践</h2><h3 id="语义化sql文件名字"><a href="#语义化sql文件名字" class="headerlink" title="语义化sql文件名字"></a>语义化sql文件名字</h3><p>前面给的例子中,都是用的v1,v2,v3这样的版本号,其实是非常不友好的,因为这样的话,我不知道我的语义化版本和我的sql脚本到底怎么对应,所以,这样是非常不好的,好的方式应该是<br>使用语义化版本来命名这些sql文件,这样约定下来,就非常清晰</p>
+<img src="/2021/10/27/flyway%E7%AE%80%E4%BB%8B/semver_sqlfile.png" class="" title="语义化版本sql文件命名">
+
+<h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><h3 id="配置详解"><a href="#配置详解" class="headerlink" title="配置详解"></a>配置详解</h3><figure class="highlight properties"><table><tr><td class="code"><pre><span class="line"><span class="attr">flyway.baseline-description对执行迁移时基准版本的描述.</span></span><br><span class="line"><span class="attr">flyway.baseline-on-migrate当迁移时发现目标schema非空，而且带有没有元数据的表时，是否自动执行基准迁移，默认false.</span></span><br><span class="line"><span class="attr">flyway.baseline-version开始执行基准迁移时对现有的schema的版本打标签，默认值为1.</span></span><br><span class="line"><span class="attr">flyway.check-location检查迁移脚本的位置是否存在，默认false.</span></span><br><span class="line"><span class="attr">flyway.clean-on-validation-error当发现校验错误时是否自动调用clean，默认false.</span></span><br><span class="line"><span class="attr">flyway.enabled是否开启flywary，默认true.</span></span><br><span class="line"><span class="attr">flyway.encoding设置迁移时的编码，默认UTF-8.</span></span><br><span class="line"><span class="attr">flyway.ignore-failed-future-migration当读取元数据表时是否忽略错误的迁移，默认false.</span></span><br><span class="line"><span class="attr">flyway.init-sqls当初始化好连接时要执行的SQL.</span></span><br><span class="line"><span class="attr">flyway.locations迁移脚本的位置，默认db/migration.</span></span><br><span class="line"><span class="attr">flyway.out-of-order是否允许无序的迁移，默认false.</span></span><br><span class="line"><span class="attr">flyway.password目标数据库的密码.</span></span><br><span class="line"><span class="attr">flyway.placeholder-prefix设置每个placeholder的前缀，默认$&#123;.</span></span><br><span class="line"><span class="attr">flyway.placeholder-replacementplaceholders是否要被替换，默认true.</span></span><br><span class="line"><span class="attr">flyway.placeholder-suffix设置每个placeholder的后缀，默认&#125;.</span></span><br><span class="line"><span class="attr">flyway.placeholders.[placeholder</span> <span class="string">name]设置placeholder的value</span></span><br><span class="line"><span class="attr">flyway.schemas设定需要flywary迁移的schema，大小写敏感，默认为连接默认的schema.</span></span><br><span class="line"><span class="attr">flyway.sql-migration-prefix迁移文件的前缀，默认为V.</span></span><br><span class="line"><span class="attr">flyway.sql-migration-separator迁移脚本的文件名分隔符，默认__</span></span><br><span class="line"><span class="attr">flyway.sql-migration-suffix迁移脚本的后缀，默认为.sql</span></span><br><span class="line"><span class="attr">flyway.tableflyway使用的元数据表名，默认为schema_version</span></span><br><span class="line"><span class="attr">flyway.target迁移时使用的目标版本，默认为latest</span> <span class="string">version</span></span><br><span class="line"><span class="attr">flyway.url迁移时使用的JDBC</span> <span class="string">URL，如果没有指定的话，将使用配置的主数据源</span></span><br><span class="line"><span class="attr">flyway.user迁移数据库的用户名</span></span><br><span class="line"><span class="attr">flyway.validate-on-migrate迁移时是否校验，默认为true</span></span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>中间件</category>
+      </categories>
+      <tags>
+        <tag>数据库版本控制</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>hazelcast-management-center控制中心简介</title>
     <url>/2022/12/09/hazelcast-management-center%E6%8E%A7%E5%88%B6%E4%B8%AD%E5%BF%83%E7%AE%80%E4%BB%8B/</url>
     <content><![CDATA[<h1 id="hazelcast-management-center控制中心简介"><a href="#hazelcast-management-center控制中心简介" class="headerlink" title="hazelcast-management-center控制中心简介"></a>hazelcast-management-center控制中心简介</h1><p>hazelcast和ignite一样,为了可视化操作,都自带了控制中心一样的东西</p>
@@ -418,69 +481,6 @@
       </tags>
   </entry>
   <entry>
-    <title>flyway简介</title>
-    <url>/2021/10/27/flyway%E7%AE%80%E4%BB%8B/</url>
-    <content><![CDATA[<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p><strong>本文基于springboot2集成使用</strong></p>
-<h3 id="flyway是什么"><a href="#flyway是什么" class="headerlink" title="flyway是什么"></a>flyway是什么</h3><p>flyway是一款开源的资料库版本管理工具，它更倾向于规约优于配置的方式。<br>flyway可以独立于应用实现管理并跟踪资料库变更，支援资料库版本自动升级，并且有一套预设的规约，<br>不需要复杂的配置。Migrations可以写成SQL指令码，也可以写在Java程式码中，不仅支援Command Line和Java API，<br>还支援Build构建工具和Spring Boot等。同时在分散式环境下能够安全可靠地升级资料库，同时也支援失败恢复等。</p>
-<h3 id="为什么要使用Flyway"><a href="#为什么要使用Flyway" class="headerlink" title="为什么要使用Flyway"></a>为什么要使用Flyway</h3><ol>
-<li>自己写的SQL忘了在所有环境执行；</li>
-<li>别人写的SQL我们不能确定是否都在所有环境执行过了；</li>
-<li>有人修改了已经执行过的SQL，期望再次执行；</li>
-<li>需要新增环境做数据迁移；</li>
-<li>每次发版需要手动控制先发DB版本，再发布应用版本；</li>
-<li>…</li>
-</ol>
-<h2 id="flyway工作原理"><a href="#flyway工作原理" class="headerlink" title="flyway工作原理"></a>flyway工作原理</h2><p>一言以蔽之：flyway通过历史记录表（flyway_schema_history）来记录版本历史。<br>每次随专案启动时将会自动扫描在resources&#x2F;db&#x2F;migration下的档案并查询flyway_schema_history判断是否为新增档案。<br>如果是新增的档案，则执行该迁移档案。如果不是，则忽略。</p>
-<ol>
-<li>当flyway在一个空资料库执行时，它将直接建立一张预设名为flyway_schema_history的资料记录为空的历史记录表，这张表将被用来跟踪或记录资料库的状态。</li>
-<li>flyway将会开始扫描文件系统或专案classpath路径下的迁移档案。flyway按版本号顺序排列迁移档案，并按序执行，并更新历史记录表中的内容</li>
-<li>当专案再次发版时，flyway会再次扫描迁移档案，然后将迁移文的版本号与历史记录表中的版本号进行对比。<br>flyway会忽略版本号小于等于表中当前最大版本的迁移档案，剩余待执行迁移档案会按版本号升序执行。</li>
-</ol>
-<p><strong>并非真正忽略，而是会校验checksum值是否一致，以此来保证历史版本档案未被篡改</strong></p>
-<img src="/2021/10/27/flyway%E7%AE%80%E4%BB%8B/database-version.png" class="" title="数据库版本记录">
-
-<h2 id="flyway实践"><a href="#flyway实践" class="headerlink" title="flyway实践"></a>flyway实践</h2><h3 id="添加引用"><a href="#添加引用" class="headerlink" title="添加引用"></a>添加引用</h3><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span>  <span class="comment">&lt;!-- 注意,这是springboot环境中,已经有版本了,所以无需添加,其余环境需要自己看情况 --&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.flywaydb<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>flyway-core<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="添加配置"><a href="#添加配置" class="headerlink" title="添加配置"></a>添加配置</h3><p>springboot为例</p>
-<figure class="highlight properties"><table><tr><td class="code"><pre><span class="line"><span class="attr">spring.flyway.enabled</span>=<span class="string">true # 开启flyway,默认true</span></span><br><span class="line"><span class="attr">spring.flyway.baseline-on-migrate</span>=<span class="string">true #当迁移时发现目标schema非空，而且带有没有后设资料的表时，是否自动执行基准迁移，预设false.</span></span><br><span class="line"><span class="attr">spring.flyway.locations</span>=<span class="string">classpath:db/migration # sql文件地址,默认就是 classpath:db/migration </span></span><br><span class="line"><span class="attr">spring.flyway.table</span>=<span class="string">dataease_version # 记录数据库记录的表的名称</span></span><br><span class="line"><span class="attr">spring.flyway.baseline-version</span>=<span class="string">0 # 开始执行基准迁移时对现有的schema的版本打标签，默认值为1</span></span><br><span class="line"><span class="attr">spring.flyway.encoding</span>=<span class="string">UTF-8 # 编码,默认就是UTF-8</span></span><br><span class="line"><span class="attr">spring.flyway.validate-on-migrate</span>=<span class="string">false # 迁移是否校验,默认为true</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="添加sql"><a href="#添加sql" class="headerlink" title="添加sql"></a>添加sql</h3><p>依次执行</p>
-<img src="/2021/10/27/flyway%E7%AE%80%E4%BB%8B/dbmigration.png" class="" title="sql文件">
-
-<h2 id="进阶知识点"><a href="#进阶知识点" class="headerlink" title="进阶知识点"></a>进阶知识点</h2><h3 id="版本号规范"><a href="#版本号规范" class="headerlink" title="版本号规范"></a>版本号规范</h3><p>Flyway 是如何比较两个 SQL 文件的先后顺序呢？它采用 采用左对齐原则, 缺位用 0 代替 。举几个例子：</p>
-<p>1.0.1.1 比 1.0.1 版本高。<br>1.0.10 比 1.0.9.4 版本高。<br>1.0.10 和 1.0.010 版本号一样高, 每个版本号部分的前导 0 会被忽略。  </p>
-<p>Flyway 将 SQL 文件分为 <strong>Versioned</strong> 、<strong>Repeatable</strong> 和 <strong>Undo</strong> 三种：</p>
-<ol>
-<li>Versioned 用于版本升级, 每个版本有唯一的版本号并只能执行一次.</li>
-<li>Repeatable 可重复执行, 当 Flyway检测到 Repeatable 类型的 SQL 脚本的 checksum 有变动,<br>Flyway 就会重新应用该脚本. 它并不用于版本更新, 这类的 migration 总是在 Versioned 执行之后才被执行。</li>
-<li>Undo 用于撤销具有相同版本的版本化迁移带来的影响。但是该回滚过于粗暴，过于机械化，一般不推荐使用。一般建议使用 Versioned 模式来解决。</li>
-</ol>
-<img src="/2021/10/27/flyway%E7%AE%80%E4%BB%8B/concepts_migrations.png" class="" title="命名规则">
-
-<ol>
-<li>Prefix 可配置，前缀标识，默认值 V 表示 Versioned, R 表示 Repeatable, U 表示 Undo</li>
-<li>Version 标识版本号, 由一个或多个数字构成, 数字之间的分隔符可用点 . 或下划线 _</li>
-<li>Separator 可配置, 用于分隔版本标识与描述信息, 默认为两个下划线 __</li>
-<li>Description 描述信息, 文字之间可以用下划线 _ 或空格 分隔</li>
-<li>Suffix 可配置, 后续标识, 默认为 .sql</li>
-</ol>
-<h3 id="另一种sql文件夹风格"><a href="#另一种sql文件夹风格" class="headerlink" title="另一种sql文件夹风格"></a>另一种sql文件夹风格</h3><p>可以使用文件夹来区分,但是还是依照版本号规则来执行</p>
-<img src="/2021/10/27/flyway%E7%AE%80%E4%BB%8B/sql_directory.png" class="" title="多文件夹">
-
-
-<h2 id="最佳实践"><a href="#最佳实践" class="headerlink" title="最佳实践"></a>最佳实践</h2><h3 id="语义化sql文件名字"><a href="#语义化sql文件名字" class="headerlink" title="语义化sql文件名字"></a>语义化sql文件名字</h3><p>前面给的例子中,都是用的v1,v2,v3这样的版本号,其实是非常不友好的,因为这样的话,我不知道我的语义化版本和我的sql脚本到底怎么对应,所以,这样是非常不好的,好的方式应该是<br>使用语义化版本来命名这些sql文件,这样约定下来,就非常清晰</p>
-<img src="/2021/10/27/flyway%E7%AE%80%E4%BB%8B/semver_sqlfile.png" class="" title="语义化版本sql文件命名">
-
-<h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><h3 id="配置详解"><a href="#配置详解" class="headerlink" title="配置详解"></a>配置详解</h3><figure class="highlight properties"><table><tr><td class="code"><pre><span class="line"><span class="attr">flyway.baseline-description对执行迁移时基准版本的描述.</span></span><br><span class="line"><span class="attr">flyway.baseline-on-migrate当迁移时发现目标schema非空，而且带有没有元数据的表时，是否自动执行基准迁移，默认false.</span></span><br><span class="line"><span class="attr">flyway.baseline-version开始执行基准迁移时对现有的schema的版本打标签，默认值为1.</span></span><br><span class="line"><span class="attr">flyway.check-location检查迁移脚本的位置是否存在，默认false.</span></span><br><span class="line"><span class="attr">flyway.clean-on-validation-error当发现校验错误时是否自动调用clean，默认false.</span></span><br><span class="line"><span class="attr">flyway.enabled是否开启flywary，默认true.</span></span><br><span class="line"><span class="attr">flyway.encoding设置迁移时的编码，默认UTF-8.</span></span><br><span class="line"><span class="attr">flyway.ignore-failed-future-migration当读取元数据表时是否忽略错误的迁移，默认false.</span></span><br><span class="line"><span class="attr">flyway.init-sqls当初始化好连接时要执行的SQL.</span></span><br><span class="line"><span class="attr">flyway.locations迁移脚本的位置，默认db/migration.</span></span><br><span class="line"><span class="attr">flyway.out-of-order是否允许无序的迁移，默认false.</span></span><br><span class="line"><span class="attr">flyway.password目标数据库的密码.</span></span><br><span class="line"><span class="attr">flyway.placeholder-prefix设置每个placeholder的前缀，默认$&#123;.</span></span><br><span class="line"><span class="attr">flyway.placeholder-replacementplaceholders是否要被替换，默认true.</span></span><br><span class="line"><span class="attr">flyway.placeholder-suffix设置每个placeholder的后缀，默认&#125;.</span></span><br><span class="line"><span class="attr">flyway.placeholders.[placeholder</span> <span class="string">name]设置placeholder的value</span></span><br><span class="line"><span class="attr">flyway.schemas设定需要flywary迁移的schema，大小写敏感，默认为连接默认的schema.</span></span><br><span class="line"><span class="attr">flyway.sql-migration-prefix迁移文件的前缀，默认为V.</span></span><br><span class="line"><span class="attr">flyway.sql-migration-separator迁移脚本的文件名分隔符，默认__</span></span><br><span class="line"><span class="attr">flyway.sql-migration-suffix迁移脚本的后缀，默认为.sql</span></span><br><span class="line"><span class="attr">flyway.tableflyway使用的元数据表名，默认为schema_version</span></span><br><span class="line"><span class="attr">flyway.target迁移时使用的目标版本，默认为latest</span> <span class="string">version</span></span><br><span class="line"><span class="attr">flyway.url迁移时使用的JDBC</span> <span class="string">URL，如果没有指定的话，将使用配置的主数据源</span></span><br><span class="line"><span class="attr">flyway.user迁移数据库的用户名</span></span><br><span class="line"><span class="attr">flyway.validate-on-migrate迁移时是否校验，默认为true</span></span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>中间件</category>
-      </categories>
-      <tags>
-        <tag>数据库版本控制</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>javaagent简介</title>
     <url>/2022/05/30/javaagent%E7%AE%80%E4%BB%8B/</url>
     <content><![CDATA[<h1 id="javaagent的作用"><a href="#javaagent的作用" class="headerlink" title="javaagent的作用"></a>javaagent的作用</h1><p>javaAgent属于java比较高级的用法,平常java开发中几乎是接触不到的,比如<code>skywalking</code>用到了javaAgent的启动前的<code>premain</code>,因为可以修改加载的类,被用来做jvm级别的AOP,然后jvm诊断工具,<code>Arthas</code>用到了javaAgent的<code>agentmain</code>,启动后,也可以修改jvm的类,然后做jvm级别的AOP,然后做监控,当然<code>Arthas</code>还有很多其它的功能,不过大部分功能都和<code>agentmain</code>相关,需要修改现成的类</p>
@@ -506,42 +506,6 @@
       </categories>
       <tags>
         <tag>javaagent</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>java反射到底有多慢</title>
-    <url>/2025/03/22/java%E5%8F%8D%E5%B0%84%E5%88%B0%E5%BA%95%E6%9C%89%E5%A4%9A%E6%85%A2/</url>
-    <content><![CDATA[<h1 id="java反射到底有多慢"><a href="#java反射到底有多慢" class="headerlink" title="java反射到底有多慢"></a>java反射到底有多慢</h1><h2 id="java反射慢吗"><a href="#java反射慢吗" class="headerlink" title="java反射慢吗"></a>java反射慢吗</h2><p>java反射慢,我想这个现象大家都知道,但是为什么慢,到底慢多少,这个好像还真没有人深究过,今天就来探索一下</p>
-<h2 id="先写benchmark"><a href="#先写benchmark" class="headerlink" title="先写benchmark"></a>先写benchmark</h2><p>这是git仓库的地址<br><a href="https://gitee.com/david0624/java-reflect-benchmark">java-reflect-benchmark</a></p>
-<h2 id="影响反射快慢的方式有哪些"><a href="#影响反射快慢的方式有哪些" class="headerlink" title="影响反射快慢的方式有哪些"></a>影响反射快慢的方式有哪些</h2><ol>
-<li>调用方式,使用Method还是MethodHandle</li>
-<li>是否使用多态,即是使用接口调用,还是使用类调用</li>
-<li>形参的数量,因为动态需要做检查,所以数量多了,就表现出来了</li>
-<li>形参是对象还是primitive类型,因为涉及到装箱,拆箱</li>
-<li>jdk版本的差异,比如8 11 17 21等等</li>
-</ol>
-<h2 id="测试结果"><a href="#测试结果" class="headerlink" title="测试结果"></a>测试结果</h2><p>我在自己机器上跑的,只是简要测试,并不太严谨,严谨的测试,应该专门找一个没有任何负载的物理机器,专门跑这个测试,才能排除一切的干扰,<br>不过最后的结果也很有参考价值,先上jdk8的</p>
-<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">Benchmark                                                Mode  Cnt  Score   Error  Units</span><br><span class="line">ReflectTest.genericDirectCall                            avgt    3  0.239 ± 0.023  ns/op</span><br><span class="line">ReflectTest.genericMethodHandleCall                      avgt    3  1.815 ± 0.236  ns/op</span><br><span class="line">ReflectTest.genericReflectionCall                        avgt    3  2.139 ± 0.754  ns/op</span><br><span class="line">ReflectTest.noParameterDirectCall                        avgt    3  0.237 ± 0.015  ns/op</span><br><span class="line">ReflectTest.noParameterMethodHandleCall                  avgt    3  1.823 ± 0.198  ns/op</span><br><span class="line">ReflectTest.noParameterTestReflectionCall                avgt    3  1.672 ± 0.452  ns/op</span><br><span class="line">ReflectTest.oneObjectParameterDirectCall                 avgt    3  0.241 ± 0.022  ns/op</span><br><span class="line">ReflectTest.oneObjectParameterMethodHandleCall           avgt    3  1.818 ± 0.304  ns/op</span><br><span class="line">ReflectTest.oneObjectParameterReflectionCall             avgt    3  2.120 ± 1.026  ns/op</span><br><span class="line">ReflectTest.oneParameterInterfaceMethodDirectCall        avgt    3  0.329 ± 0.052  ns/op</span><br><span class="line">ReflectTest.oneParameterInterfaceMethodMethodHandleCall  avgt    3  1.839 ± 0.328  ns/op</span><br><span class="line">ReflectTest.oneParameterInterfaceMethodReflectionCall    avgt    3  2.140 ± 0.625  ns/op</span><br><span class="line">ReflectTest.onePrimateParameterDirectCall                avgt    3  0.246 ± 0.061  ns/op</span><br><span class="line">ReflectTest.onePrimateParameterMethodHandleCall          avgt    3  1.786 ± 0.190  ns/op</span><br><span class="line">ReflectTest.onePrimateParameterReflectionCall            avgt    3  2.275 ± 0.519  ns/op</span><br><span class="line">ReflectTest.override1DirectCall1                         avgt    3  0.241 ± 0.028  ns/op</span><br><span class="line">ReflectTest.override1DirectCall2                         avgt    3  0.249 ± 0.043  ns/op</span><br><span class="line">ReflectTest.override1DirectCall3                         avgt    3  0.250 ± 0.020  ns/op</span><br><span class="line">ReflectTest.override1MethodHandleCall1                   avgt    3  1.848 ± 0.648  ns/op</span><br><span class="line">ReflectTest.override1MethodHandleCall2                   avgt    3  1.795 ± 0.229  ns/op</span><br><span class="line">ReflectTest.override1MethodHandleCall3                   avgt    3  1.810 ± 0.086  ns/op</span><br><span class="line">ReflectTest.override1ReflectionCall1                     avgt    3  2.049 ± 0.461  ns/op</span><br><span class="line">ReflectTest.override1ReflectionCall2                     avgt    3  2.087 ± 0.063  ns/op</span><br><span class="line">ReflectTest.override1ReflectionCall3                     avgt    3  2.549 ± 0.369  ns/op</span><br><span class="line">ReflectTest.threeObjectParameterDirectCall               avgt    3  0.245 ± 0.023  ns/op</span><br><span class="line">ReflectTest.threeObjectParameterMethodHandleCall         avgt    3  1.822 ± 0.097  ns/op</span><br><span class="line">ReflectTest.threeObjectParameterReflectionCall           avgt    3  2.553 ± 0.175  ns/op</span><br><span class="line">ReflectTest.threePrimateParameterDirectCall              avgt    3  0.246 ± 0.120  ns/op</span><br><span class="line">ReflectTest.threePrimateParameterMethodHandleCall        avgt    3  1.820 ± 0.363  ns/op</span><br><span class="line">ReflectTest.threePrimateParameterReflectionCall          avgt    3  4.038 ± 0.640  ns/op</span><br><span class="line">ReflectTest.twoObjectParameterDirectCall                 avgt    3  0.253 ± 0.019  ns/op</span><br><span class="line">ReflectTest.twoObjectParameterMethodHandleCall           avgt    3  1.797 ± 0.232  ns/op</span><br><span class="line">ReflectTest.twoObjectParameterReflectionCall             avgt    3  2.175 ± 0.405  ns/op</span><br><span class="line">ReflectTest.twoPrimateParameterDirectCall                avgt    3  0.249 ± 0.031  ns/op</span><br><span class="line">ReflectTest.twoPrimateParameterMethodHandleCall          avgt    3  1.799 ± 0.207  ns/op</span><br><span class="line">ReflectTest.twoPrimateParameterReflectionCall            avgt    3  2.980 ± 0.725  ns/op</span><br></pre></td></tr></table></figure>
-
-<p>这是jdk21的</p>
-<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">Benchmark                                                Mode  Cnt  Score   Error  Units</span><br><span class="line">ReflectTest.genericDirectCall                            avgt    3  0.259 ± 0.111  ns/op</span><br><span class="line">ReflectTest.genericMethodHandleCall                      avgt    3  2.092 ± 0.183  ns/op</span><br><span class="line">ReflectTest.genericReflectionCall                        avgt    3  3.778 ± 0.286  ns/op</span><br><span class="line">ReflectTest.noParameterDirectCall                        avgt    3  0.264 ± 0.095  ns/op</span><br><span class="line">ReflectTest.noParameterMethodHandleCall                  avgt    3  1.936 ± 0.251  ns/op</span><br><span class="line">ReflectTest.noParameterTestReflectionCall                avgt    3  3.522 ± 0.401  ns/op</span><br><span class="line">ReflectTest.oneObjectParameterDirectCall                 avgt    3  0.258 ± 0.134  ns/op</span><br><span class="line">ReflectTest.oneObjectParameterMethodHandleCall           avgt    3  1.997 ± 0.286  ns/op</span><br><span class="line">ReflectTest.oneObjectParameterReflectionCall             avgt    3  3.738 ± 0.169  ns/op</span><br><span class="line">ReflectTest.oneParameterInterfaceMethodDirectCall        avgt    3  0.400 ± 0.029  ns/op</span><br><span class="line">ReflectTest.oneParameterInterfaceMethodMethodHandleCall  avgt    3  2.037 ± 0.350  ns/op</span><br><span class="line">ReflectTest.oneParameterInterfaceMethodReflectionCall    avgt    3  4.038 ± 0.027  ns/op</span><br><span class="line">ReflectTest.onePrimateParameterDirectCall                avgt    3  0.256 ± 0.020  ns/op</span><br><span class="line">ReflectTest.onePrimateParameterMethodHandleCall          avgt    3  1.955 ± 0.053  ns/op</span><br><span class="line">ReflectTest.onePrimateParameterReflectionCall            avgt    3  4.077 ± 0.326  ns/op</span><br><span class="line">ReflectTest.override1DirectCall1                         avgt    3  0.265 ± 0.139  ns/op</span><br><span class="line">ReflectTest.override1DirectCall2                         avgt    3  0.256 ± 0.028  ns/op</span><br><span class="line">ReflectTest.override1DirectCall3                         avgt    3  0.256 ± 0.023  ns/op</span><br><span class="line">ReflectTest.override1MethodHandleCall1                   avgt    3  1.993 ± 0.303  ns/op</span><br><span class="line">ReflectTest.override1MethodHandleCall2                   avgt    3  2.086 ± 0.172  ns/op</span><br><span class="line">ReflectTest.override1MethodHandleCall3                   avgt    3  2.085 ± 0.174  ns/op</span><br><span class="line">ReflectTest.override1ReflectionCall1                     avgt    3  3.706 ± 0.149  ns/op</span><br><span class="line">ReflectTest.override1ReflectionCall2                     avgt    3  3.830 ± 0.201  ns/op</span><br><span class="line">ReflectTest.override1ReflectionCall3                     avgt    3  4.042 ± 0.418  ns/op</span><br><span class="line">ReflectTest.threeObjectParameterDirectCall               avgt    3  0.272 ± 0.025  ns/op</span><br><span class="line">ReflectTest.threeObjectParameterMethodHandleCall         avgt    3  2.095 ± 0.212  ns/op</span><br><span class="line">ReflectTest.threeObjectParameterReflectionCall           avgt    3  4.038 ± 0.442  ns/op</span><br><span class="line">ReflectTest.threePrimateParameterDirectCall              avgt    3  0.262 ± 0.067  ns/op</span><br><span class="line">ReflectTest.threePrimateParameterMethodHandleCall        avgt    3  2.076 ± 0.121  ns/op</span><br><span class="line">ReflectTest.threePrimateParameterReflectionCall          avgt    3  4.546 ± 2.780  ns/op</span><br><span class="line">ReflectTest.twoObjectParameterDirectCall                 avgt    3  0.257 ± 0.016  ns/op</span><br><span class="line">ReflectTest.twoObjectParameterMethodHandleCall           avgt    3  2.104 ± 0.344  ns/op</span><br><span class="line">ReflectTest.twoObjectParameterReflectionCall             avgt    3  3.860 ± 0.397  ns/op</span><br><span class="line">ReflectTest.twoPrimateParameterDirectCall                avgt    3  0.262 ± 0.081  ns/op</span><br><span class="line">ReflectTest.twoPrimateParameterMethodHandleCall          avgt    3  1.990 ± 0.337  ns/op</span><br><span class="line">ReflectTest.twoPrimateParameterReflectionCall            avgt    3  4.267 ± 0.496  ns/op</span><br></pre></td></tr></table></figure>
-
-<p>具体的结果,可以在git仓库的doc目录找到,而且这个项目开箱即用,如果想测试的话,自己本机测试跑跑也可以的</p>
-<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><ol>
-<li>反射从微观层面来说,增加了至少7.69倍的调用时间(最简单的无形参调用),如果是原始类型的多形参调用,以3个原始类型为例,竟然可以是16.14倍,从微观层面讲,的确反射很慢</li>
-<li>反射,装箱,拆箱的话,效率更低,的确原始类型的拆箱装箱大量调用,对性能有一定的损耗</li>
-<li>MethodHandle相比Method的确存在优化,在jdk21的时候,一些反射耗时较长的时候,竟然能达到它的一半</li>
-<li>反射从微观层面讲,一个方法的调用增加了7.69~16.14倍的调用时间,但是实际情况下,方法如果本身的执行时间比较长,这个时间其实是可以忽略的,因为本身方法的调用时间就不长,<br>但是如果是大量耗时十分短的方法,长时间大量调用,这个就比较可观了</li>
-<li>现在编程的环境,开发效率大于执行效率,反射其实是个非常强大的特性,经常被框架大量使用</li>
-<li>spring就重度使用反射,几乎spring的所有功能都依赖反射,但是spring的效率低下,反射只是其中一个原因</li>
-</ol>
-<h2 id="后话"><a href="#后话" class="headerlink" title="后话"></a>后话</h2><p>总体来说,java反射的慢是可以接受的,但是,现在去反射也有这样的框架,比如micronaut,就通过annotationProcessor生成静态的类,然后避免了反射,启动速度大幅降低,<br>如果能消除反射,程序的性能也是可以得到一定程度的提高的</p>
-]]></content>
-      <categories>
-        <category>java</category>
-      </categories>
-      <tags>
-        <tag>java热加载</tag>
       </tags>
   </entry>
   <entry>
@@ -596,6 +560,42 @@
       </categories>
       <tags>
         <tag>classLoader</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>java反射到底有多慢</title>
+    <url>/2025/03/22/java%E5%8F%8D%E5%B0%84%E5%88%B0%E5%BA%95%E6%9C%89%E5%A4%9A%E6%85%A2/</url>
+    <content><![CDATA[<h1 id="java反射到底有多慢"><a href="#java反射到底有多慢" class="headerlink" title="java反射到底有多慢"></a>java反射到底有多慢</h1><h2 id="java反射慢吗"><a href="#java反射慢吗" class="headerlink" title="java反射慢吗"></a>java反射慢吗</h2><p>java反射慢,我想这个现象大家都知道,但是为什么慢,到底慢多少,这个好像还真没有人深究过,今天就来探索一下</p>
+<h2 id="先写benchmark"><a href="#先写benchmark" class="headerlink" title="先写benchmark"></a>先写benchmark</h2><p>这是git仓库的地址<br><a href="https://gitee.com/david0624/java-reflect-benchmark">java-reflect-benchmark</a></p>
+<h2 id="影响反射快慢的方式有哪些"><a href="#影响反射快慢的方式有哪些" class="headerlink" title="影响反射快慢的方式有哪些"></a>影响反射快慢的方式有哪些</h2><ol>
+<li>调用方式,使用Method还是MethodHandle</li>
+<li>是否使用多态,即是使用接口调用,还是使用类调用</li>
+<li>形参的数量,因为动态需要做检查,所以数量多了,就表现出来了</li>
+<li>形参是对象还是primitive类型,因为涉及到装箱,拆箱</li>
+<li>jdk版本的差异,比如8 11 17 21等等</li>
+</ol>
+<h2 id="测试结果"><a href="#测试结果" class="headerlink" title="测试结果"></a>测试结果</h2><p>我在自己机器上跑的,只是简要测试,并不太严谨,严谨的测试,应该专门找一个没有任何负载的物理机器,专门跑这个测试,才能排除一切的干扰,<br>不过最后的结果也很有参考价值,先上jdk8的</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">Benchmark                                                Mode  Cnt  Score   Error  Units</span><br><span class="line">ReflectTest.genericDirectCall                            avgt    3  0.239 ± 0.023  ns/op</span><br><span class="line">ReflectTest.genericMethodHandleCall                      avgt    3  1.815 ± 0.236  ns/op</span><br><span class="line">ReflectTest.genericReflectionCall                        avgt    3  2.139 ± 0.754  ns/op</span><br><span class="line">ReflectTest.noParameterDirectCall                        avgt    3  0.237 ± 0.015  ns/op</span><br><span class="line">ReflectTest.noParameterMethodHandleCall                  avgt    3  1.823 ± 0.198  ns/op</span><br><span class="line">ReflectTest.noParameterTestReflectionCall                avgt    3  1.672 ± 0.452  ns/op</span><br><span class="line">ReflectTest.oneObjectParameterDirectCall                 avgt    3  0.241 ± 0.022  ns/op</span><br><span class="line">ReflectTest.oneObjectParameterMethodHandleCall           avgt    3  1.818 ± 0.304  ns/op</span><br><span class="line">ReflectTest.oneObjectParameterReflectionCall             avgt    3  2.120 ± 1.026  ns/op</span><br><span class="line">ReflectTest.oneParameterInterfaceMethodDirectCall        avgt    3  0.329 ± 0.052  ns/op</span><br><span class="line">ReflectTest.oneParameterInterfaceMethodMethodHandleCall  avgt    3  1.839 ± 0.328  ns/op</span><br><span class="line">ReflectTest.oneParameterInterfaceMethodReflectionCall    avgt    3  2.140 ± 0.625  ns/op</span><br><span class="line">ReflectTest.onePrimateParameterDirectCall                avgt    3  0.246 ± 0.061  ns/op</span><br><span class="line">ReflectTest.onePrimateParameterMethodHandleCall          avgt    3  1.786 ± 0.190  ns/op</span><br><span class="line">ReflectTest.onePrimateParameterReflectionCall            avgt    3  2.275 ± 0.519  ns/op</span><br><span class="line">ReflectTest.override1DirectCall1                         avgt    3  0.241 ± 0.028  ns/op</span><br><span class="line">ReflectTest.override1DirectCall2                         avgt    3  0.249 ± 0.043  ns/op</span><br><span class="line">ReflectTest.override1DirectCall3                         avgt    3  0.250 ± 0.020  ns/op</span><br><span class="line">ReflectTest.override1MethodHandleCall1                   avgt    3  1.848 ± 0.648  ns/op</span><br><span class="line">ReflectTest.override1MethodHandleCall2                   avgt    3  1.795 ± 0.229  ns/op</span><br><span class="line">ReflectTest.override1MethodHandleCall3                   avgt    3  1.810 ± 0.086  ns/op</span><br><span class="line">ReflectTest.override1ReflectionCall1                     avgt    3  2.049 ± 0.461  ns/op</span><br><span class="line">ReflectTest.override1ReflectionCall2                     avgt    3  2.087 ± 0.063  ns/op</span><br><span class="line">ReflectTest.override1ReflectionCall3                     avgt    3  2.549 ± 0.369  ns/op</span><br><span class="line">ReflectTest.threeObjectParameterDirectCall               avgt    3  0.245 ± 0.023  ns/op</span><br><span class="line">ReflectTest.threeObjectParameterMethodHandleCall         avgt    3  1.822 ± 0.097  ns/op</span><br><span class="line">ReflectTest.threeObjectParameterReflectionCall           avgt    3  2.553 ± 0.175  ns/op</span><br><span class="line">ReflectTest.threePrimateParameterDirectCall              avgt    3  0.246 ± 0.120  ns/op</span><br><span class="line">ReflectTest.threePrimateParameterMethodHandleCall        avgt    3  1.820 ± 0.363  ns/op</span><br><span class="line">ReflectTest.threePrimateParameterReflectionCall          avgt    3  4.038 ± 0.640  ns/op</span><br><span class="line">ReflectTest.twoObjectParameterDirectCall                 avgt    3  0.253 ± 0.019  ns/op</span><br><span class="line">ReflectTest.twoObjectParameterMethodHandleCall           avgt    3  1.797 ± 0.232  ns/op</span><br><span class="line">ReflectTest.twoObjectParameterReflectionCall             avgt    3  2.175 ± 0.405  ns/op</span><br><span class="line">ReflectTest.twoPrimateParameterDirectCall                avgt    3  0.249 ± 0.031  ns/op</span><br><span class="line">ReflectTest.twoPrimateParameterMethodHandleCall          avgt    3  1.799 ± 0.207  ns/op</span><br><span class="line">ReflectTest.twoPrimateParameterReflectionCall            avgt    3  2.980 ± 0.725  ns/op</span><br></pre></td></tr></table></figure>
+
+<p>这是jdk21的</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">Benchmark                                                Mode  Cnt  Score   Error  Units</span><br><span class="line">ReflectTest.genericDirectCall                            avgt    3  0.259 ± 0.111  ns/op</span><br><span class="line">ReflectTest.genericMethodHandleCall                      avgt    3  2.092 ± 0.183  ns/op</span><br><span class="line">ReflectTest.genericReflectionCall                        avgt    3  3.778 ± 0.286  ns/op</span><br><span class="line">ReflectTest.noParameterDirectCall                        avgt    3  0.264 ± 0.095  ns/op</span><br><span class="line">ReflectTest.noParameterMethodHandleCall                  avgt    3  1.936 ± 0.251  ns/op</span><br><span class="line">ReflectTest.noParameterTestReflectionCall                avgt    3  3.522 ± 0.401  ns/op</span><br><span class="line">ReflectTest.oneObjectParameterDirectCall                 avgt    3  0.258 ± 0.134  ns/op</span><br><span class="line">ReflectTest.oneObjectParameterMethodHandleCall           avgt    3  1.997 ± 0.286  ns/op</span><br><span class="line">ReflectTest.oneObjectParameterReflectionCall             avgt    3  3.738 ± 0.169  ns/op</span><br><span class="line">ReflectTest.oneParameterInterfaceMethodDirectCall        avgt    3  0.400 ± 0.029  ns/op</span><br><span class="line">ReflectTest.oneParameterInterfaceMethodMethodHandleCall  avgt    3  2.037 ± 0.350  ns/op</span><br><span class="line">ReflectTest.oneParameterInterfaceMethodReflectionCall    avgt    3  4.038 ± 0.027  ns/op</span><br><span class="line">ReflectTest.onePrimateParameterDirectCall                avgt    3  0.256 ± 0.020  ns/op</span><br><span class="line">ReflectTest.onePrimateParameterMethodHandleCall          avgt    3  1.955 ± 0.053  ns/op</span><br><span class="line">ReflectTest.onePrimateParameterReflectionCall            avgt    3  4.077 ± 0.326  ns/op</span><br><span class="line">ReflectTest.override1DirectCall1                         avgt    3  0.265 ± 0.139  ns/op</span><br><span class="line">ReflectTest.override1DirectCall2                         avgt    3  0.256 ± 0.028  ns/op</span><br><span class="line">ReflectTest.override1DirectCall3                         avgt    3  0.256 ± 0.023  ns/op</span><br><span class="line">ReflectTest.override1MethodHandleCall1                   avgt    3  1.993 ± 0.303  ns/op</span><br><span class="line">ReflectTest.override1MethodHandleCall2                   avgt    3  2.086 ± 0.172  ns/op</span><br><span class="line">ReflectTest.override1MethodHandleCall3                   avgt    3  2.085 ± 0.174  ns/op</span><br><span class="line">ReflectTest.override1ReflectionCall1                     avgt    3  3.706 ± 0.149  ns/op</span><br><span class="line">ReflectTest.override1ReflectionCall2                     avgt    3  3.830 ± 0.201  ns/op</span><br><span class="line">ReflectTest.override1ReflectionCall3                     avgt    3  4.042 ± 0.418  ns/op</span><br><span class="line">ReflectTest.threeObjectParameterDirectCall               avgt    3  0.272 ± 0.025  ns/op</span><br><span class="line">ReflectTest.threeObjectParameterMethodHandleCall         avgt    3  2.095 ± 0.212  ns/op</span><br><span class="line">ReflectTest.threeObjectParameterReflectionCall           avgt    3  4.038 ± 0.442  ns/op</span><br><span class="line">ReflectTest.threePrimateParameterDirectCall              avgt    3  0.262 ± 0.067  ns/op</span><br><span class="line">ReflectTest.threePrimateParameterMethodHandleCall        avgt    3  2.076 ± 0.121  ns/op</span><br><span class="line">ReflectTest.threePrimateParameterReflectionCall          avgt    3  4.546 ± 2.780  ns/op</span><br><span class="line">ReflectTest.twoObjectParameterDirectCall                 avgt    3  0.257 ± 0.016  ns/op</span><br><span class="line">ReflectTest.twoObjectParameterMethodHandleCall           avgt    3  2.104 ± 0.344  ns/op</span><br><span class="line">ReflectTest.twoObjectParameterReflectionCall             avgt    3  3.860 ± 0.397  ns/op</span><br><span class="line">ReflectTest.twoPrimateParameterDirectCall                avgt    3  0.262 ± 0.081  ns/op</span><br><span class="line">ReflectTest.twoPrimateParameterMethodHandleCall          avgt    3  1.990 ± 0.337  ns/op</span><br><span class="line">ReflectTest.twoPrimateParameterReflectionCall            avgt    3  4.267 ± 0.496  ns/op</span><br></pre></td></tr></table></figure>
+
+<p>具体的结果,可以在git仓库的doc目录找到,而且这个项目开箱即用,如果想测试的话,自己本机测试跑跑也可以的</p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><ol>
+<li>反射从微观层面来说,增加了至少7.69倍的调用时间(最简单的无形参调用),如果是原始类型的多形参调用,以3个原始类型为例,竟然可以是16.14倍,从微观层面讲,的确反射很慢</li>
+<li>反射,装箱,拆箱的话,效率更低,的确原始类型的拆箱装箱大量调用,对性能有一定的损耗</li>
+<li>MethodHandle相比Method的确存在优化,在jdk21的时候,一些反射耗时较长的时候,竟然能达到它的一半</li>
+<li>反射从微观层面讲,一个方法的调用增加了7.69~16.14倍的调用时间,但是实际情况下,方法如果本身的执行时间比较长,这个时间其实是可以忽略的,因为本身方法的调用时间就不长,<br>但是如果是大量耗时十分短的方法,长时间大量调用,这个就比较可观了</li>
+<li>现在编程的环境,开发效率大于执行效率,反射其实是个非常强大的特性,经常被框架大量使用</li>
+<li>spring就重度使用反射,几乎spring的所有功能都依赖反射,但是spring的效率低下,反射只是其中一个原因</li>
+</ol>
+<h2 id="后话"><a href="#后话" class="headerlink" title="后话"></a>后话</h2><p>总体来说,java反射的慢是可以接受的,但是,现在去反射也有这样的框架,比如micronaut,就通过annotationProcessor生成静态的类,然后避免了反射,启动速度大幅降低,<br>如果能消除反射,程序的性能也是可以得到一定程度的提高的</p>
+]]></content>
+      <categories>
+        <category>java</category>
+      </categories>
+      <tags>
+        <tag>java热加载</tag>
       </tags>
   </entry>
   <entry>
@@ -755,71 +755,6 @@
       </tags>
   </entry>
   <entry>
-    <title>mysql中tinyint(1)和tinyint(4)到底有什么区别</title>
-    <url>/2019/11/30/mysql%E4%B8%ADtinyint-1-%E5%92%8Ctinyint-4-%E5%88%B0%E5%BA%95%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB/</url>
-    <content><![CDATA[<h1 id="mysql中tinyint-1-和tinyint-4-到底有什么区别"><a href="#mysql中tinyint-1-和tinyint-4-到底有什么区别" class="headerlink" title="mysql中tinyint(1)和tinyint(4)到底有什么区别"></a>mysql中tinyint(1)和tinyint(4)到底有什么区别</h1><h2 id="tinyint基础"><a href="#tinyint基础" class="headerlink" title="tinyint基础"></a>tinyint基础</h2><p>tinyint存储使用了1个字节,就是8位,只能存储2^8即256个数字.在mysql实现中,有符号是-128-127,无符号是0-255,tinyint后面的括号带的数字,以后暂称之为M,<strong>那么1和4到底有什么区别呢?</strong><br>接下来我们就探讨一下M的作用</p>
-<h2 id="先下结论"><a href="#先下结论" class="headerlink" title="先下结论"></a>先下结论</h2><ol>
-<li>存储上没有任何区别,都是1个字节,8位</li>
-<li>唯一的区别就是字段如何设置了zerofill零填充的时候,控制台返回的时候,会根据数字的长度自动填充成对应的位数,现在基本都是可视化操作了,这个特性,控制台,console才会用,几乎没啥作用</li>
-</ol>
-<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>实践出真知</p>
-<h3 id="1-常规测试"><a href="#1-常规测试" class="headerlink" title="1. 常规测试"></a>1. 常规测试</h3><p>使用基本的表,插入基本的数据</p>
-<img src="/2019/11/30/mysql%E4%B8%ADtinyint-1-%E5%92%8Ctinyint-4-%E5%88%B0%E5%BA%95%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB/basic_table.png" class="" title="基本表">
-
-<p>查询后发现没有任何区别</p>
-<img src="/2019/11/30/mysql%E4%B8%ADtinyint-1-%E5%92%8Ctinyint-4-%E5%88%B0%E5%BA%95%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB/basic_test.png" class="" title="基本测试">
-
-<p>可以发现没有任何区别,实际上就是没有任何区别,如果你用navicat之类的工具试验,也会发现没有任何差别,详情可以参见引用<a href="http://stackoverflow.com/questions/12839927/mysql-tinyint-2-vs-tinyint1-what-is-the-difference" title="stackoverflow的链接" target="">stackoverflow用户AamirR的回答</a>里面Aamir的回答可以做很好的验证</p>
-<h3 id="2-无符号建表-同时zerofill"><a href="#2-无符号建表-同时zerofill" class="headerlink" title="2. 无符号建表,同时zerofill"></a>2. 无符号建表,同时zerofill</h3><p>建表的基本语句是</p>
-<img src="/2019/11/30/mysql%E4%B8%ADtinyint-1-%E5%92%8Ctinyint-4-%E5%88%B0%E5%BA%95%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB/unsigned_table.png" class="" title="无符号建表">
-<p>最后查询结果如下,比较明显</p>
-<img src="/2019/11/30/mysql%E4%B8%ADtinyint-1-%E5%92%8Ctinyint-4-%E5%88%B0%E5%BA%95%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB/unsigned_query.png" class="" title="无符号查询">
-
-<p>zerofill的整数字段必须无符号,这里可以看出M显示出了特定的宽度,不够的时候会填充0,多余了不作处理</p>
-<h2 id="官方解释"><a href="#官方解释" class="headerlink" title="官方解释"></a>官方解释</h2><p>这里查阅的官方文档是5.7英文版<a href="https://dev.mysql.com/doc/refman/5.7/en/numeric-type-attributes.html" title="官方文档的链接" target="">传送门</a></p>
-<p>这里摘抄其中重要的一段</p>
-<p>MySQL supports an extension for optionally specifying the display width of integer data types in parentheses following the base keyword for the type. For example, INT(4) specifies an INT with a display width of four digits. This optional display width may be used by applications to display integer values having a width less than the width specified for the column by left-padding them with spaces. (That is, this width is present in the metadata returned with result sets. Whether it is used or not is up to the application.)</p>
-<p>The display width does not constrain the range of values that can be stored in the column. Nor does it prevent values wider than the column display width from being displayed correctly. For example, a column specified as SMALLINT(3) has the usual SMALLINT range of -32768 to 32767, and values outside the range permitted by three digits are displayed in full using more than three digits.</p>
-<p>When used in conjunction with the optional (nonstandard) attribute ZEROFILL, the default padding of spaces is replaced with zeros. For example, for a column declared as INT(4) ZEROFILL, a value of 5 is retrieved as 0005.</p>
-<p>至此,也验证了我们的结论.</p>
-<ol>
-<li>M绝对和存储的值没有关系</li>
-<li>无符号和zerofill的时候会填充0,显示成M对应的宽度</li>
-<li>整数类型都一样,有默认的显示宽度</li>
-<li>M作为元数据存储,推荐是显示的宽度,但是最终的解释权归使用的程序所有</li>
-</ol>
-<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>最后,我的建议是,就是M其实没用,tinyint默认是4,其余的数字类型也有默认值,以后程序开发中,涉及整形数字的M时,可以不必纠结,直接忽略,使用数据库默认的M值即可</p>
-]]></content>
-      <categories>
-        <category>数据库</category>
-      </categories>
-      <tags>
-        <tag>mysql</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>qemu优化后跑分测试</title>
-    <url>/2022/11/09/qemu%E4%BC%98%E5%8C%96%E5%90%8E%E8%B7%91%E5%88%86%E6%B5%8B%E8%AF%95/</url>
-    <content><![CDATA[<h1 id="qemu优化后跑分测试"><a href="#qemu优化后跑分测试" class="headerlink" title="qemu优化后跑分测试"></a>qemu优化后跑分测试</h1><p>前面写过一片文章,就是qemu优化,今天分享一下qemu拉满优化以后的跑分,用娱乐大师,看看效果如何</p>
-<h2 id="话不多说-直接上图"><a href="#话不多说-直接上图" class="headerlink" title="话不多说,直接上图"></a>话不多说,直接上图</h2><img src="/2022/11/09/qemu%E4%BC%98%E5%8C%96%E5%90%8E%E8%B7%91%E5%88%86%E6%B5%8B%E8%AF%95/ludashi.PNG" class="" title="性能几乎没有损耗">
-
-<p>解读一下,这个跑分</p>
-<ol>
-<li>cpu,9600k本来的平均跑分36w左右,这里30w,还用了4个核,其实是超常发挥的(<strong>这里是cpu pin,cpu设置和真机保持一致,避免了线程切换的损耗</strong>)</li>
-<li>显卡跑分,rx460的跑分,本来就是8w左右的样子,看来这里的显卡直通,完整的发挥了硬件的性能,几乎没有任何的损耗(<strong>显卡直通</strong>)</li>
-<li>内存跑分,内存跑分,这个不同的内存差距比较大,不过我的是ddr4 2666hz,我看网上的例子,单通道的ddr4 2666hz差不多是5w分(<strong>这里直接使用了大页内存,8个1g的内存,直接连续,减少了寻址的次数</strong>)</li>
-<li>存储的分数,前面也有讲过,这个其实水分很大,因为连续读写用了缓存,是虚假的跑分,意义不大(<strong>virtIO虽然比不上存储直通,但是无论是sata和nvme的ssd的virtIO驱动,都是够用的,不会成为瓶颈</strong>)</li>
-</ol>
-<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>我们前面的优化都是非常有效的,从cpu pin,再到使用大页的内存,再到显卡直通,几乎获得了一个和真机一样的虚拟机,而且从cpu,内存,再到存储,几乎没有短板(<strong>小心木桶效应</strong>),<br>我还用他来打游戏测试了,没错,一点也不卡,非常流畅,这样的机器,其实用起来,你都不觉得是一个虚拟机,因为非常快</p>
-]]></content>
-      <categories>
-        <category>虚拟机</category>
-      </categories>
-      <tags>
-        <tag>qemu</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>manjaro使用qemu安装win10详细教程</title>
     <url>/2022/11/27/manjaro%E4%BD%BF%E7%94%A8qemu%E5%AE%89%E8%A3%85win10%E8%AF%A6%E7%BB%86%E6%95%99%E7%A8%8B/</url>
     <content><![CDATA[<h1 id="manjaro使用qemu安装win10详细教程"><a href="#manjaro使用qemu安装win10详细教程" class="headerlink" title="manjaro使用qemu安装win10详细教程"></a>manjaro使用qemu安装win10详细教程</h1><p>主机是manjaro,使用qemu安装win10,以前那些文章,上来讲的都是怎么优化,而且并不是很详细,所以,这里,就详细的讲了如何安装win10</p>
@@ -884,6 +819,71 @@
 <h2 id="linux主机和windows文件共享"><a href="#linux主机和windows文件共享" class="headerlink" title="linux主机和windows文件共享"></a>linux主机和windows文件共享</h2><p>使用linux的samba,详情可以参考arch的samba文档</p>
 <h2 id="开始优化"><a href="#开始优化" class="headerlink" title="开始优化"></a>开始优化</h2><p>现在虚拟机已经安装安全,接下来,可以参考我前面的几篇文章优化,或者进行显卡直通,最终将会体验翻倍,堪比真机</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本篇从0到1的展示了,在一个manjaro系统,如何使用qemu安装win10,定位就是详细教程,可以看到里面有大量的截图,希望能帮到你</p>
+]]></content>
+      <categories>
+        <category>虚拟机</category>
+      </categories>
+      <tags>
+        <tag>qemu</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>mysql中tinyint(1)和tinyint(4)到底有什么区别</title>
+    <url>/2019/11/30/mysql%E4%B8%ADtinyint-1-%E5%92%8Ctinyint-4-%E5%88%B0%E5%BA%95%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB/</url>
+    <content><![CDATA[<h1 id="mysql中tinyint-1-和tinyint-4-到底有什么区别"><a href="#mysql中tinyint-1-和tinyint-4-到底有什么区别" class="headerlink" title="mysql中tinyint(1)和tinyint(4)到底有什么区别"></a>mysql中tinyint(1)和tinyint(4)到底有什么区别</h1><h2 id="tinyint基础"><a href="#tinyint基础" class="headerlink" title="tinyint基础"></a>tinyint基础</h2><p>tinyint存储使用了1个字节,就是8位,只能存储2^8即256个数字.在mysql实现中,有符号是-128-127,无符号是0-255,tinyint后面的括号带的数字,以后暂称之为M,<strong>那么1和4到底有什么区别呢?</strong><br>接下来我们就探讨一下M的作用</p>
+<h2 id="先下结论"><a href="#先下结论" class="headerlink" title="先下结论"></a>先下结论</h2><ol>
+<li>存储上没有任何区别,都是1个字节,8位</li>
+<li>唯一的区别就是字段如何设置了zerofill零填充的时候,控制台返回的时候,会根据数字的长度自动填充成对应的位数,现在基本都是可视化操作了,这个特性,控制台,console才会用,几乎没啥作用</li>
+</ol>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>实践出真知</p>
+<h3 id="1-常规测试"><a href="#1-常规测试" class="headerlink" title="1. 常规测试"></a>1. 常规测试</h3><p>使用基本的表,插入基本的数据</p>
+<img src="/2019/11/30/mysql%E4%B8%ADtinyint-1-%E5%92%8Ctinyint-4-%E5%88%B0%E5%BA%95%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB/basic_table.png" class="" title="基本表">
+
+<p>查询后发现没有任何区别</p>
+<img src="/2019/11/30/mysql%E4%B8%ADtinyint-1-%E5%92%8Ctinyint-4-%E5%88%B0%E5%BA%95%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB/basic_test.png" class="" title="基本测试">
+
+<p>可以发现没有任何区别,实际上就是没有任何区别,如果你用navicat之类的工具试验,也会发现没有任何差别,详情可以参见引用<a href="http://stackoverflow.com/questions/12839927/mysql-tinyint-2-vs-tinyint1-what-is-the-difference" title="stackoverflow的链接" target="">stackoverflow用户AamirR的回答</a>里面Aamir的回答可以做很好的验证</p>
+<h3 id="2-无符号建表-同时zerofill"><a href="#2-无符号建表-同时zerofill" class="headerlink" title="2. 无符号建表,同时zerofill"></a>2. 无符号建表,同时zerofill</h3><p>建表的基本语句是</p>
+<img src="/2019/11/30/mysql%E4%B8%ADtinyint-1-%E5%92%8Ctinyint-4-%E5%88%B0%E5%BA%95%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB/unsigned_table.png" class="" title="无符号建表">
+<p>最后查询结果如下,比较明显</p>
+<img src="/2019/11/30/mysql%E4%B8%ADtinyint-1-%E5%92%8Ctinyint-4-%E5%88%B0%E5%BA%95%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB/unsigned_query.png" class="" title="无符号查询">
+
+<p>zerofill的整数字段必须无符号,这里可以看出M显示出了特定的宽度,不够的时候会填充0,多余了不作处理</p>
+<h2 id="官方解释"><a href="#官方解释" class="headerlink" title="官方解释"></a>官方解释</h2><p>这里查阅的官方文档是5.7英文版<a href="https://dev.mysql.com/doc/refman/5.7/en/numeric-type-attributes.html" title="官方文档的链接" target="">传送门</a></p>
+<p>这里摘抄其中重要的一段</p>
+<p>MySQL supports an extension for optionally specifying the display width of integer data types in parentheses following the base keyword for the type. For example, INT(4) specifies an INT with a display width of four digits. This optional display width may be used by applications to display integer values having a width less than the width specified for the column by left-padding them with spaces. (That is, this width is present in the metadata returned with result sets. Whether it is used or not is up to the application.)</p>
+<p>The display width does not constrain the range of values that can be stored in the column. Nor does it prevent values wider than the column display width from being displayed correctly. For example, a column specified as SMALLINT(3) has the usual SMALLINT range of -32768 to 32767, and values outside the range permitted by three digits are displayed in full using more than three digits.</p>
+<p>When used in conjunction with the optional (nonstandard) attribute ZEROFILL, the default padding of spaces is replaced with zeros. For example, for a column declared as INT(4) ZEROFILL, a value of 5 is retrieved as 0005.</p>
+<p>至此,也验证了我们的结论.</p>
+<ol>
+<li>M绝对和存储的值没有关系</li>
+<li>无符号和zerofill的时候会填充0,显示成M对应的宽度</li>
+<li>整数类型都一样,有默认的显示宽度</li>
+<li>M作为元数据存储,推荐是显示的宽度,但是最终的解释权归使用的程序所有</li>
+</ol>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>最后,我的建议是,就是M其实没用,tinyint默认是4,其余的数字类型也有默认值,以后程序开发中,涉及整形数字的M时,可以不必纠结,直接忽略,使用数据库默认的M值即可</p>
+]]></content>
+      <categories>
+        <category>数据库</category>
+      </categories>
+      <tags>
+        <tag>mysql</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>qemu优化后跑分测试</title>
+    <url>/2022/11/09/qemu%E4%BC%98%E5%8C%96%E5%90%8E%E8%B7%91%E5%88%86%E6%B5%8B%E8%AF%95/</url>
+    <content><![CDATA[<h1 id="qemu优化后跑分测试"><a href="#qemu优化后跑分测试" class="headerlink" title="qemu优化后跑分测试"></a>qemu优化后跑分测试</h1><p>前面写过一片文章,就是qemu优化,今天分享一下qemu拉满优化以后的跑分,用娱乐大师,看看效果如何</p>
+<h2 id="话不多说-直接上图"><a href="#话不多说-直接上图" class="headerlink" title="话不多说,直接上图"></a>话不多说,直接上图</h2><img src="/2022/11/09/qemu%E4%BC%98%E5%8C%96%E5%90%8E%E8%B7%91%E5%88%86%E6%B5%8B%E8%AF%95/ludashi.PNG" class="" title="性能几乎没有损耗">
+
+<p>解读一下,这个跑分</p>
+<ol>
+<li>cpu,9600k本来的平均跑分36w左右,这里30w,还用了4个核,其实是超常发挥的(<strong>这里是cpu pin,cpu设置和真机保持一致,避免了线程切换的损耗</strong>)</li>
+<li>显卡跑分,rx460的跑分,本来就是8w左右的样子,看来这里的显卡直通,完整的发挥了硬件的性能,几乎没有任何的损耗(<strong>显卡直通</strong>)</li>
+<li>内存跑分,内存跑分,这个不同的内存差距比较大,不过我的是ddr4 2666hz,我看网上的例子,单通道的ddr4 2666hz差不多是5w分(<strong>这里直接使用了大页内存,8个1g的内存,直接连续,减少了寻址的次数</strong>)</li>
+<li>存储的分数,前面也有讲过,这个其实水分很大,因为连续读写用了缓存,是虚假的跑分,意义不大(<strong>virtIO虽然比不上存储直通,但是无论是sata和nvme的ssd的virtIO驱动,都是够用的,不会成为瓶颈</strong>)</li>
+</ol>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>我们前面的优化都是非常有效的,从cpu pin,再到使用大页的内存,再到显卡直通,几乎获得了一个和真机一样的虚拟机,而且从cpu,内存,再到存储,几乎没有短板(<strong>小心木桶效应</strong>),<br>我还用他来打游戏测试了,没错,一点也不卡,非常流畅,这样的机器,其实用起来,你都不觉得是一个虚拟机,因为非常快</p>
 ]]></content>
       <categories>
         <category>虚拟机</category>
@@ -1029,6 +1029,26 @@
       </tags>
   </entry>
   <entry>
+    <title>qemu简介</title>
+    <url>/2022/10/26/qemu%E7%AE%80%E4%BB%8B/</url>
+    <content><![CDATA[<h1 id="qemu简介"><a href="#qemu简介" class="headerlink" title="qemu简介"></a>qemu简介</h1><p>QEMU开源,是一个托管的虚拟机，它通过动态的二进制转换，模拟CPU，并且提供一组设备模型，使它能够运行多种未修改的客户机OS，可以通过与KVM一起使用进而接近本地速度运行虚拟机（接近真实电脑的速度）。  </p>
+<p>QEMU还可以为user-level的进程执行CPU仿真，进而允许了为一种架构编译的程序在另外一种架构上面运行（借由VMM的形式）。</p>
+
+
+<h2 id="kvm"><a href="#kvm" class="headerlink" title="kvm"></a>kvm</h2><p>基于内核的虚拟机（英语：Kernel-based Virtual Machine，缩写为KVM）是一种用于Linux内核中的虚拟化基础设施，可将Linux内核转化为一个虚拟机监视器。KVM于2007年2月5日被导入Linux 2.6.20核心中。KVM需要支持硬件虚拟化拓展特性的处理器。</p>
+<h2 id="qemu-kvm"><a href="#qemu-kvm" class="headerlink" title="qemu-kvm"></a>qemu-kvm</h2><p>qemu负责外围设备,比如存储可以直通,然后kvm负责虚拟内核,qemu-kvm,再加上一些其它的优化,其中显卡也可以直通,可以获得几乎真机80-90%的性能,非常强大</p>
+<h2 id="其它常见的面向用户的虚拟机"><a href="#其它常见的面向用户的虚拟机" class="headerlink" title="其它常见的面向用户的虚拟机"></a>其它常见的面向用户的虚拟机</h2><p>virtualbox和vmware也是两款强大的虚拟机,并且开箱易用,一般情况下是够用的,但是和qemu-kvm,比起来,几乎没法比较,尤其是优化拉满的<br>qemu-kvm虚拟机,几乎和真机一样强大,不过qemu需要自己了解一些常见的优化,而且并不是那样开箱易用</p>
+<p>还有其它类型的虚拟机,但是面向的是专业人士,不是普通的用户,这里就不提了,但是虚拟机还是有很多种,每种也有很多类</p>
+<h1 id="qemu-kvm真强"><a href="#qemu-kvm真强" class="headerlink" title="qemu-kvm真强"></a>qemu-kvm真强</h1><p>qemu-kvm这对组合,非常强大,因为我是使用linux系统作为办公,windows也是必不可少的,所以,我以前是virtualbox和vmware的重度用户,那时候我为了追求<br>虚拟机的性能,一般都是用的win8.1的32位系统,后来现在慢慢32位被淘汰了以后,我用了win10的64位虚拟机,先是virtualbox不能用,后是vmware间接性卡,<br>所以,我转向qemu,经常一段时间的摸索以后,我发现,比起这两个,强太多了,简直可以媲美真机,而且占用的损耗也非常低,所以,接下来,我会把握这一段事件的收获分享一下,带大家感受一下强大的qemu-kvm</p>
+]]></content>
+      <categories>
+        <category>虚拟机</category>
+      </categories>
+      <tags>
+        <tag>qemu</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>qemu显卡直通详细教程</title>
     <url>/2022/11/27/qemu%E6%98%BE%E5%8D%A1%E7%9B%B4%E9%80%9A%E8%AF%A6%E7%BB%86%E6%95%99%E7%A8%8B/</url>
     <content><![CDATA[<h1 id="qemu显卡直通详细教程"><a href="#qemu显卡直通详细教程" class="headerlink" title="qemu显卡直通详细教程"></a>qemu显卡直通详细教程</h1><p>虚拟机的3d性能,除了直通以外,都是模拟的,性能一般有好有坏,无论是virtualbox还是vmware,其实他们的3d性能,不论好与坏,都是模拟的驱动,<br>这点你可以通过windows的设备管理器看出来,与真实的差距其实还是不小的,2d的游戏可以玩,但是3d的游戏,就算是能玩,综合各方面的因素,体验也是上不去的,<br>所以,<strong>如果你想要一个强大的虚拟机,显卡直通是必然的,只有这一条路</strong>,只有显卡直通以后,3d性能变成原生的,你的虚拟机,才会没有短板,综合体验也上去</p>
@@ -1124,23 +1144,141 @@
       </tags>
   </entry>
   <entry>
-    <title>qemu简介</title>
-    <url>/2022/10/26/qemu%E7%AE%80%E4%BB%8B/</url>
-    <content><![CDATA[<h1 id="qemu简介"><a href="#qemu简介" class="headerlink" title="qemu简介"></a>qemu简介</h1><p>QEMU开源,是一个托管的虚拟机，它通过动态的二进制转换，模拟CPU，并且提供一组设备模型，使它能够运行多种未修改的客户机OS，可以通过与KVM一起使用进而接近本地速度运行虚拟机（接近真实电脑的速度）。  </p>
-<p>QEMU还可以为user-level的进程执行CPU仿真，进而允许了为一种架构编译的程序在另外一种架构上面运行（借由VMM的形式）。</p>
+    <title>skyWalking-javaAgent解析</title>
+    <url>/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/</url>
+    <content><![CDATA[<h1 id="skyWalking-java如何收集数据"><a href="#skyWalking-java如何收集数据" class="headerlink" title="skyWalking java如何收集数据"></a>skyWalking java如何收集数据</h1><p>skyWalking被java程序使用的时候,需要添加-javaagent参数,javaagent的作用其实很多,但是简单来说,就是启动前替换java类</p>
+<p><strong>代码引用基于<code>v8.7.0</code>版本</strong></p>
+<h3 id="instrument"><a href="#instrument" class="headerlink" title="instrument"></a>instrument</h3><p>jdk5引入了<code>java.lang.instrument</code>,该包提供了一个Java编程API,可以用来开发增强Java应用程序的工具,例如监视它们或收集性能信息. 使用<code>instrumentation</code>,开发者可以构建一个独立于应用程序的代理程序（Agent,用来监测和协助运行在 JVM 上的程序,甚至能够替换和修改某些类的定义.有了这样的功能,开发者就可以实现更为灵活的运行时虚拟机监控和Java类操作了,这样的特性实际上提供了一种虚拟机级别支持的 AOP 实现方式,使得开发者无需对 JDK 做任何升级和改动,就可以实现某些 AOP 的功能了.</p>
+<p><strong>这里的AOP是JVM级别的AOP,已经和业务无关,和业务有关的AOP就不能用这个类型,比如事务,缓存,因为这里的AOP完全与业务解耦了,所以,基本上,<code>instrumentation</code>一般只能用来监控</strong></p>
+<h3 id="AOP"><a href="#AOP" class="headerlink" title="AOP"></a>AOP</h3><p>其实监控,就是方法执行前,执行后做一些动作.平常我们其实也经常用AOP,比如日志,缓存,事务等等,所以说,skyWalking收集数据的思路就是使用AOP.AOP的实现就是创建代理类,也就是修改类,做处理.</p>
+<h2 id="自己动手写一个javaagent"><a href="#自己动手写一个javaagent" class="headerlink" title="自己动手写一个javaagent"></a>自己动手写一个javaagent</h2><ol>
+<li>编写带有特定方法的类<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">premain</span><span class="params">(String agentArgs, Instrumentation inst)</span>&#123;&#125;</span><br></pre></td></tr></table></figure></li>
+<li>打包成jar,并且添加manifest属性<code>Premain-Class: pers.apricot.MyAgent</code></li>
+<li>应用添加<code>-javaagent:agent.jar=$&#123;agentArgs&#125;</code>启动,就可以看到效果</li>
+</ol>
+<p>我这里写了一个简单的不带aop的agent</p>
+<img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/myagent.png" class="" title="一个简单的javaagent">
+<img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/instrumentation.png" class="" title="instrumentation">
+<img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/class_file_transformer.png" class="" title="classFileTransformer">
 
+<h2 id="org-apache-agent-SkyWalkingAgent-解析"><a href="#org-apache-agent-SkyWalkingAgent-解析" class="headerlink" title="org.apache.**.agent.SkyWalkingAgent 解析"></a>org.apache.**.agent.SkyWalkingAgent 解析</h2><p>这里可以看到其明显使用了我们刚才介绍的<code>instrument</code>,并且这里有个新的框架<code>bytebuddy</code>.</p>
+<img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/sky_walking-agent.png" class="" title="SkyWalkingAgent">
 
-<h2 id="kvm"><a href="#kvm" class="headerlink" title="kvm"></a>kvm</h2><p>基于内核的虚拟机（英语：Kernel-based Virtual Machine，缩写为KVM）是一种用于Linux内核中的虚拟化基础设施，可将Linux内核转化为一个虚拟机监视器。KVM于2007年2月5日被导入Linux 2.6.20核心中。KVM需要支持硬件虚拟化拓展特性的处理器。</p>
-<h2 id="qemu-kvm"><a href="#qemu-kvm" class="headerlink" title="qemu-kvm"></a>qemu-kvm</h2><p>qemu负责外围设备,比如存储可以直通,然后kvm负责虚拟内核,qemu-kvm,再加上一些其它的优化,其中显卡也可以直通,可以获得几乎真机80-90%的性能,非常强大</p>
-<h2 id="其它常见的面向用户的虚拟机"><a href="#其它常见的面向用户的虚拟机" class="headerlink" title="其它常见的面向用户的虚拟机"></a>其它常见的面向用户的虚拟机</h2><p>virtualbox和vmware也是两款强大的虚拟机,并且开箱易用,一般情况下是够用的,但是和qemu-kvm,比起来,几乎没法比较,尤其是优化拉满的<br>qemu-kvm虚拟机,几乎和真机一样强大,不过qemu需要自己了解一些常见的优化,而且并不是那样开箱易用</p>
-<p>还有其它类型的虚拟机,但是面向的是专业人士,不是普通的用户,这里就不提了,但是虚拟机还是有很多种,每种也有很多类</p>
-<h1 id="qemu-kvm真强"><a href="#qemu-kvm真强" class="headerlink" title="qemu-kvm真强"></a>qemu-kvm真强</h1><p>qemu-kvm这对组合,非常强大,因为我是使用linux系统作为办公,windows也是必不可少的,所以,我以前是virtualbox和vmware的重度用户,那时候我为了追求<br>虚拟机的性能,一般都是用的win8.1的32位系统,后来现在慢慢32位被淘汰了以后,我用了win10的64位虚拟机,先是virtualbox不能用,后是vmware间接性卡,<br>所以,我转向qemu,经常一段时间的摸索以后,我发现,比起这两个,强太多了,简直可以媲美真机,而且占用的损耗也非常低,所以,接下来,我会把握这一段事件的收获分享一下,带大家感受一下强大的qemu-kvm</p>
+<h3 id="bytebuddy简介"><a href="#bytebuddy简介" class="headerlink" title="bytebuddy简介"></a><code>bytebuddy</code>简介</h3><p>动态修改类有两派,一派是java source类型,就是用string新建类和修改类,这类的典型代表是javaassist,还有一类就是非常硬核的修改bytecode,如asm,前者比较简单,后者需要掌握的就比较多.</p>
+<p><code>bytebuddy</code>属于java source派,可以动态的生成java字节码文件,比起我们自己进行字节码文件的生成,它屏蔽了底层细节,提供一套统一易上手的Api,简化了字节码增强的学习难度,而且<code>bytebuddy</code>针对javaagent做了封装,<br>我们可以非常简单的使用它的api挑选我们自己想要增强的类,来增强<br><a href="https://blog.csdn.net/m0_37556444/article/details/106695202">ByteBuddy使用入坑</a></p>
+<h2 id="skyWalking自定义插件"><a href="#skyWalking自定义插件" class="headerlink" title="skyWalking自定义插件"></a>skyWalking自定义插件</h2><p><code>skyWalking</code>虽然使用<code>byteBuddy</code>但是,自己定义了一套插件机制,而不是直接使用字节码增加</p>
+<p><code>skyWalking</code>自定义了一套插件体系,并且<code>skyWalking</code>官方维护了很多常用的插件,开发完插件以后,放到<code>plugins</code>目录即可生效</p>
+<img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/sky-walking-plugin.png" class="" title="plugins">
+<p>这里可以看到同一个插件,因为版本不同,也需要不同plugin,可见,插件的开发也是一项繁重的体力活</p>
+<p><a href="https://skyapm.github.io/document-cn-translation-of-skywalking/zh/6.2.0/guides/Java-Plugin-Development-Guide.html">插件开发指南</a></p>
+<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>追踪的基本方法是拦截Java方法,使用字节码操作技术和AOP概念.SkyWalking包装了字节码操作技术,并追踪上下文的传播.所以你只需要定义拦截点(换句话说就是Spring的切面).</p>
+<h3 id="拦截"><a href="#拦截" class="headerlink" title="拦截"></a>拦截</h3><p><code>skywalking</code>提供了两类通用的定义去拦截构造方法,实例方法和静态方法</p>
+<ol>
+<li><code>ClassInstanceMethodsEnhancePluginDefine</code>定义了<code>Contructor</code>和<code>instance method</code>实例方法拦截点</li>
+<li><code>ClassStaticMethodsEnhancePluginDefine</code>定义了<code>class method</code>拦截点</li>
+<li>继承<code>ClassEnhancePluginDefine</code>去设置所有的拦截点,不常用</li>
+</ol>
+<h3 id="匹配目标类"><a href="#匹配目标类" class="headerlink" title="匹配目标类"></a>匹配目标类</h3><p>定义<code>ClassInstanceMethodsEnhancePluginDefine</code>的子类,重写<code>enhanceClass</code>去匹配目标类.</p>
+<p><code>ClassMatch</code>ClassMatch表示如何去匹配目标类,这里有四种方法</p>
+<ol>
+<li>byName, 通过类的全限定名(Fully Qualified Class Name, 即 包名 + . + 类名).</li>
+<li>byClassAnnotationMatch, 根据目标类是否存在某些注解.</li>
+<li>byMethodAnnotationMatch, 根据目标类的方法是否存在某些注解.</li>
+<li>byHierarchyMatch, 根据目标类的父类或接口</li>
+</ol>
+<p><strong>注意事项:</strong></p>
+<ol>
+<li>禁止使用 <em>.class.getName() 去获取类名, 建议你使用文本字符串, 这是为了避免 ClassLoader 的问题.by</em>AnnotationMatch 不支持从父类继承来的注解.</li>
+<li>除非确实必要, 否则不建议使用 byHierarchyMatch, 因为使用它可能会触发拦截许多预期之外的方法, 会导致性能问题和不稳定.</li>
+</ol>
+<img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/driver-instrumentation.png" class="" title="DriverInstrumentation">
+
+<h3 id="定义方法拦截"><a href="#定义方法拦截" class="headerlink" title="定义方法拦截"></a>定义方法拦截</h3><p>重新<code>getInstanceMethodsInterceptPoints</code>方法</p>
+<img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/get_instance_methods_intercept_points.png" class="" title="getInstanceMethodsInterceptPoints">
+
+<ol>
+<li>重新方法</li>
+<li>定义拦截方法的几种逻辑</li>
+<li>方法匹配</li>
+<li>放回方法拦截器的全类名,这个<code>ElementMatcher</code>是<code>byteBuddy</code>的内容,所以,<code>skyWalking</code>这块的实现直接套用了<code>byteBuddy</code>的东西,省了一些代码</li>
+<li>是否覆盖参数,如果你需要在拦截器中更改引用的参数,就需要返回<code>true</code>,修改<code>InstanceMethodsAroundInterceptor</code>的<code>allArguments</code>才起效</li>
+</ol>
+<h3 id="skywalking-plugin-def-添加定义"><a href="#skywalking-plugin-def-添加定义" class="headerlink" title="skywalking-plugin.def 添加定义"></a>skywalking-plugin.def 添加定义</h3><p>key是语义化的名字即可,然后后面是<code>Instrumentation</code>的全限定类名,也就是定义拦截的类,拦截的方法,拦截的逻辑,这三个要素的类</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">key=com.any.SomeClass</span><br></pre></td></tr></table></figure>
+
+<h3 id="实现拦截器"><a href="#实现拦截器" class="headerlink" title="实现拦截器"></a>实现拦截器</h3><img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/instance_methods_around_interceptor.png" class="" title="InstanceMethodsAroundInterceptor">
+
+<ol>
+<li>接口名称</li>
+<li>方法执行前,获取该对象,该方法,传的参数,参数类型,方法拦截结果</li>
+<li>方法执行后,返回的结果,这里可以返回自定义的结果,也s就是返回代理对象</li>
+</ol>
+<h2 id="skyWalking-jdbc-插件解析"><a href="#skyWalking-jdbc-插件解析" class="headerlink" title="skyWalking jdbc 插件解析"></a>skyWalking jdbc 插件解析</h2><img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/PreparedStatementInstrumentation.png" class="" title="PreparedStatementInstrumentation">
+
+<ol>
+<li>定义拦截的类</li>
+<li>定义拦截的方法</li>
+</ol>
+<img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/PreparedStatementExecuteMethodsInterceptor.png" class="" title="PreparedStatementExecuteMethodsInterceptor">
+
+<ol>
+<li>定义拦截的逻辑,创建span</li>
+<li>设定cmponent</li>
+<li>设定layer</li>
+</ol>
+<img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/skywalking-plugin.png" class="" title="def-plugin">
+
+<ol>
+<li>添加定义</li>
+</ol>
+<h2 id="自定义开发组件"><a href="#自定义开发组件" class="headerlink" title="自定义开发组件"></a>自定义开发组件</h2><p>在项目中,我使用了<code>RestTemplate</code>和外部的接口交互,获取数据,假定我想记录我发送了多少次请求,每次请求的内容是什么,返回的内容是什么,以这个作为需求来<br>开发一个<code>skyWalking</code>的插件</p>
+<h3 id="拦截的类和方法"><a href="#拦截的类和方法" class="headerlink" title="拦截的类和方法"></a>拦截的类和方法</h3><img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/postForEntity.png" class="" title="postForEntity">
+
+<p>我主要就用了这一个方法,名字是<code>postForEntity</code>,有三个重载的方法,但是我只拦截这一个</p>
+<h3 id="Instrumentation编码"><a href="#Instrumentation编码" class="headerlink" title="Instrumentation编码"></a>Instrumentation编码</h3><img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/RestTemplateInstrumentation.png" class="" title="RestTemplateInstrumentation">
+
+<ol>
+<li>拦截的类名</li>
+<li>拦截的方法,需要按照需要精确定义</li>
+<li>拦截器</li>
+</ol>
+<h3 id="Interceptor-编码"><a href="#Interceptor-编码" class="headerlink" title="Interceptor 编码"></a>Interceptor 编码</h3><img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/RestTemplateInterceptor.png" class="" title="RestTemplateInterceptor">
+
+<p>我根据需求,根据入参和返回的参数,获取我需要数据,完成了http发送请求请求参数和返回数据的获取</p>
+<ol>
+<li>创建<code>ContextCarrier</code></li>
+<li>定义<code>component</code></li>
+<li>定义<code>layer</code></li>
+<li>设置<code>params</code></li>
+<li>设置<code>body</code></li>
+</ol>
+<h3 id="skywalking-plugin-def"><a href="#skywalking-plugin-def" class="headerlink" title="skywalking-plugin.def"></a>skywalking-plugin.def</h3><p>根据规范设置Instrumentation</p>
+<img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/skywalking-plugin_def.png" class="" title="skywalking-plugin.def">
+
+<h3 id="查询效果"><a href="#查询效果" class="headerlink" title="查询效果"></a>查询效果</h3><ol>
+<li>我首先打包这个jar</li>
+<li>然后放到<code>plugins</code>目录</li>
+<li>依次启动服务,然后触发这些记录</li>
+</ol>
+<p>可以看到多加了一条我自己的记录</p>
+<img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/trace_tree.png" class="" title="trace">
+
+<img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/span_info.png" class="" title="span">
+
+<ol>
+<li>component被正确设置</li>
+<li>peer也被正确设置</li>
+<li>url被正确设置</li>
+<li>params都被正常设置</li>
+<li>body被正常设置</li>
+</ol>
 ]]></content>
       <categories>
-        <category>虚拟机</category>
+        <category>中间件</category>
       </categories>
       <tags>
-        <tag>qemu</tag>
+        <tag>skyWalking</tag>
+        <tag>监控</tag>
       </tags>
   </entry>
   <entry>
@@ -1352,144 +1490,6 @@
 <li>还可以搭建skyWalking UI服务的集群,使用nginx进行负责均衡</li>
 </ol>
 <p>总体可以看到,任何一个环节都是集群,来满足高可用</p>
-]]></content>
-      <categories>
-        <category>中间件</category>
-      </categories>
-      <tags>
-        <tag>skyWalking</tag>
-        <tag>监控</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>skyWalking-javaAgent解析</title>
-    <url>/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/</url>
-    <content><![CDATA[<h1 id="skyWalking-java如何收集数据"><a href="#skyWalking-java如何收集数据" class="headerlink" title="skyWalking java如何收集数据"></a>skyWalking java如何收集数据</h1><p>skyWalking被java程序使用的时候,需要添加-javaagent参数,javaagent的作用其实很多,但是简单来说,就是启动前替换java类</p>
-<p><strong>代码引用基于<code>v8.7.0</code>版本</strong></p>
-<h3 id="instrument"><a href="#instrument" class="headerlink" title="instrument"></a>instrument</h3><p>jdk5引入了<code>java.lang.instrument</code>,该包提供了一个Java编程API,可以用来开发增强Java应用程序的工具,例如监视它们或收集性能信息. 使用<code>instrumentation</code>,开发者可以构建一个独立于应用程序的代理程序（Agent,用来监测和协助运行在 JVM 上的程序,甚至能够替换和修改某些类的定义.有了这样的功能,开发者就可以实现更为灵活的运行时虚拟机监控和Java类操作了,这样的特性实际上提供了一种虚拟机级别支持的 AOP 实现方式,使得开发者无需对 JDK 做任何升级和改动,就可以实现某些 AOP 的功能了.</p>
-<p><strong>这里的AOP是JVM级别的AOP,已经和业务无关,和业务有关的AOP就不能用这个类型,比如事务,缓存,因为这里的AOP完全与业务解耦了,所以,基本上,<code>instrumentation</code>一般只能用来监控</strong></p>
-<h3 id="AOP"><a href="#AOP" class="headerlink" title="AOP"></a>AOP</h3><p>其实监控,就是方法执行前,执行后做一些动作.平常我们其实也经常用AOP,比如日志,缓存,事务等等,所以说,skyWalking收集数据的思路就是使用AOP.AOP的实现就是创建代理类,也就是修改类,做处理.</p>
-<h2 id="自己动手写一个javaagent"><a href="#自己动手写一个javaagent" class="headerlink" title="自己动手写一个javaagent"></a>自己动手写一个javaagent</h2><ol>
-<li>编写带有特定方法的类<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">premain</span><span class="params">(String agentArgs, Instrumentation inst)</span>&#123;&#125;</span><br></pre></td></tr></table></figure></li>
-<li>打包成jar,并且添加manifest属性<code>Premain-Class: pers.apricot.MyAgent</code></li>
-<li>应用添加<code>-javaagent:agent.jar=$&#123;agentArgs&#125;</code>启动,就可以看到效果</li>
-</ol>
-<p>我这里写了一个简单的不带aop的agent</p>
-<img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/myagent.png" class="" title="一个简单的javaagent">
-<img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/instrumentation.png" class="" title="instrumentation">
-<img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/class_file_transformer.png" class="" title="classFileTransformer">
-
-<h2 id="org-apache-agent-SkyWalkingAgent-解析"><a href="#org-apache-agent-SkyWalkingAgent-解析" class="headerlink" title="org.apache.**.agent.SkyWalkingAgent 解析"></a>org.apache.**.agent.SkyWalkingAgent 解析</h2><p>这里可以看到其明显使用了我们刚才介绍的<code>instrument</code>,并且这里有个新的框架<code>bytebuddy</code>.</p>
-<img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/sky_walking-agent.png" class="" title="SkyWalkingAgent">
-
-<h3 id="bytebuddy简介"><a href="#bytebuddy简介" class="headerlink" title="bytebuddy简介"></a><code>bytebuddy</code>简介</h3><p>动态修改类有两派,一派是java source类型,就是用string新建类和修改类,这类的典型代表是javaassist,还有一类就是非常硬核的修改bytecode,如asm,前者比较简单,后者需要掌握的就比较多.</p>
-<p><code>bytebuddy</code>属于java source派,可以动态的生成java字节码文件,比起我们自己进行字节码文件的生成,它屏蔽了底层细节,提供一套统一易上手的Api,简化了字节码增强的学习难度,而且<code>bytebuddy</code>针对javaagent做了封装,<br>我们可以非常简单的使用它的api挑选我们自己想要增强的类,来增强<br><a href="https://blog.csdn.net/m0_37556444/article/details/106695202">ByteBuddy使用入坑</a></p>
-<h2 id="skyWalking自定义插件"><a href="#skyWalking自定义插件" class="headerlink" title="skyWalking自定义插件"></a>skyWalking自定义插件</h2><p><code>skyWalking</code>虽然使用<code>byteBuddy</code>但是,自己定义了一套插件机制,而不是直接使用字节码增加</p>
-<p><code>skyWalking</code>自定义了一套插件体系,并且<code>skyWalking</code>官方维护了很多常用的插件,开发完插件以后,放到<code>plugins</code>目录即可生效</p>
-<img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/sky-walking-plugin.png" class="" title="plugins">
-<p>这里可以看到同一个插件,因为版本不同,也需要不同plugin,可见,插件的开发也是一项繁重的体力活</p>
-<p><a href="https://skyapm.github.io/document-cn-translation-of-skywalking/zh/6.2.0/guides/Java-Plugin-Development-Guide.html">插件开发指南</a></p>
-<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>追踪的基本方法是拦截Java方法,使用字节码操作技术和AOP概念.SkyWalking包装了字节码操作技术,并追踪上下文的传播.所以你只需要定义拦截点(换句话说就是Spring的切面).</p>
-<h3 id="拦截"><a href="#拦截" class="headerlink" title="拦截"></a>拦截</h3><p><code>skywalking</code>提供了两类通用的定义去拦截构造方法,实例方法和静态方法</p>
-<ol>
-<li><code>ClassInstanceMethodsEnhancePluginDefine</code>定义了<code>Contructor</code>和<code>instance method</code>实例方法拦截点</li>
-<li><code>ClassStaticMethodsEnhancePluginDefine</code>定义了<code>class method</code>拦截点</li>
-<li>继承<code>ClassEnhancePluginDefine</code>去设置所有的拦截点,不常用</li>
-</ol>
-<h3 id="匹配目标类"><a href="#匹配目标类" class="headerlink" title="匹配目标类"></a>匹配目标类</h3><p>定义<code>ClassInstanceMethodsEnhancePluginDefine</code>的子类,重写<code>enhanceClass</code>去匹配目标类.</p>
-<p><code>ClassMatch</code>ClassMatch表示如何去匹配目标类,这里有四种方法</p>
-<ol>
-<li>byName, 通过类的全限定名(Fully Qualified Class Name, 即 包名 + . + 类名).</li>
-<li>byClassAnnotationMatch, 根据目标类是否存在某些注解.</li>
-<li>byMethodAnnotationMatch, 根据目标类的方法是否存在某些注解.</li>
-<li>byHierarchyMatch, 根据目标类的父类或接口</li>
-</ol>
-<p><strong>注意事项:</strong></p>
-<ol>
-<li>禁止使用 <em>.class.getName() 去获取类名, 建议你使用文本字符串, 这是为了避免 ClassLoader 的问题.by</em>AnnotationMatch 不支持从父类继承来的注解.</li>
-<li>除非确实必要, 否则不建议使用 byHierarchyMatch, 因为使用它可能会触发拦截许多预期之外的方法, 会导致性能问题和不稳定.</li>
-</ol>
-<img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/driver-instrumentation.png" class="" title="DriverInstrumentation">
-
-<h3 id="定义方法拦截"><a href="#定义方法拦截" class="headerlink" title="定义方法拦截"></a>定义方法拦截</h3><p>重新<code>getInstanceMethodsInterceptPoints</code>方法</p>
-<img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/get_instance_methods_intercept_points.png" class="" title="getInstanceMethodsInterceptPoints">
-
-<ol>
-<li>重新方法</li>
-<li>定义拦截方法的几种逻辑</li>
-<li>方法匹配</li>
-<li>放回方法拦截器的全类名,这个<code>ElementMatcher</code>是<code>byteBuddy</code>的内容,所以,<code>skyWalking</code>这块的实现直接套用了<code>byteBuddy</code>的东西,省了一些代码</li>
-<li>是否覆盖参数,如果你需要在拦截器中更改引用的参数,就需要返回<code>true</code>,修改<code>InstanceMethodsAroundInterceptor</code>的<code>allArguments</code>才起效</li>
-</ol>
-<h3 id="skywalking-plugin-def-添加定义"><a href="#skywalking-plugin-def-添加定义" class="headerlink" title="skywalking-plugin.def 添加定义"></a>skywalking-plugin.def 添加定义</h3><p>key是语义化的名字即可,然后后面是<code>Instrumentation</code>的全限定类名,也就是定义拦截的类,拦截的方法,拦截的逻辑,这三个要素的类</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">key=com.any.SomeClass</span><br></pre></td></tr></table></figure>
-
-<h3 id="实现拦截器"><a href="#实现拦截器" class="headerlink" title="实现拦截器"></a>实现拦截器</h3><img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/instance_methods_around_interceptor.png" class="" title="InstanceMethodsAroundInterceptor">
-
-<ol>
-<li>接口名称</li>
-<li>方法执行前,获取该对象,该方法,传的参数,参数类型,方法拦截结果</li>
-<li>方法执行后,返回的结果,这里可以返回自定义的结果,也s就是返回代理对象</li>
-</ol>
-<h2 id="skyWalking-jdbc-插件解析"><a href="#skyWalking-jdbc-插件解析" class="headerlink" title="skyWalking jdbc 插件解析"></a>skyWalking jdbc 插件解析</h2><img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/PreparedStatementInstrumentation.png" class="" title="PreparedStatementInstrumentation">
-
-<ol>
-<li>定义拦截的类</li>
-<li>定义拦截的方法</li>
-</ol>
-<img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/PreparedStatementExecuteMethodsInterceptor.png" class="" title="PreparedStatementExecuteMethodsInterceptor">
-
-<ol>
-<li>定义拦截的逻辑,创建span</li>
-<li>设定cmponent</li>
-<li>设定layer</li>
-</ol>
-<img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/skywalking-plugin.png" class="" title="def-plugin">
-
-<ol>
-<li>添加定义</li>
-</ol>
-<h2 id="自定义开发组件"><a href="#自定义开发组件" class="headerlink" title="自定义开发组件"></a>自定义开发组件</h2><p>在项目中,我使用了<code>RestTemplate</code>和外部的接口交互,获取数据,假定我想记录我发送了多少次请求,每次请求的内容是什么,返回的内容是什么,以这个作为需求来<br>开发一个<code>skyWalking</code>的插件</p>
-<h3 id="拦截的类和方法"><a href="#拦截的类和方法" class="headerlink" title="拦截的类和方法"></a>拦截的类和方法</h3><img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/postForEntity.png" class="" title="postForEntity">
-
-<p>我主要就用了这一个方法,名字是<code>postForEntity</code>,有三个重载的方法,但是我只拦截这一个</p>
-<h3 id="Instrumentation编码"><a href="#Instrumentation编码" class="headerlink" title="Instrumentation编码"></a>Instrumentation编码</h3><img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/RestTemplateInstrumentation.png" class="" title="RestTemplateInstrumentation">
-
-<ol>
-<li>拦截的类名</li>
-<li>拦截的方法,需要按照需要精确定义</li>
-<li>拦截器</li>
-</ol>
-<h3 id="Interceptor-编码"><a href="#Interceptor-编码" class="headerlink" title="Interceptor 编码"></a>Interceptor 编码</h3><img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/RestTemplateInterceptor.png" class="" title="RestTemplateInterceptor">
-
-<p>我根据需求,根据入参和返回的参数,获取我需要数据,完成了http发送请求请求参数和返回数据的获取</p>
-<ol>
-<li>创建<code>ContextCarrier</code></li>
-<li>定义<code>component</code></li>
-<li>定义<code>layer</code></li>
-<li>设置<code>params</code></li>
-<li>设置<code>body</code></li>
-</ol>
-<h3 id="skywalking-plugin-def"><a href="#skywalking-plugin-def" class="headerlink" title="skywalking-plugin.def"></a>skywalking-plugin.def</h3><p>根据规范设置Instrumentation</p>
-<img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/skywalking-plugin_def.png" class="" title="skywalking-plugin.def">
-
-<h3 id="查询效果"><a href="#查询效果" class="headerlink" title="查询效果"></a>查询效果</h3><ol>
-<li>我首先打包这个jar</li>
-<li>然后放到<code>plugins</code>目录</li>
-<li>依次启动服务,然后触发这些记录</li>
-</ol>
-<p>可以看到多加了一条我自己的记录</p>
-<img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/trace_tree.png" class="" title="trace">
-
-<img src="/2021/09/06/skyWalking-javaAgent%E8%A7%A3%E6%9E%90/span_info.png" class="" title="span">
-
-<ol>
-<li>component被正确设置</li>
-<li>peer也被正确设置</li>
-<li>url被正确设置</li>
-<li>params都被正常设置</li>
-<li>body被正常设置</li>
-</ol>
 ]]></content>
       <categories>
         <category>中间件</category>
